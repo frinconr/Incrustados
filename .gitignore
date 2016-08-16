@@ -1,0 +1,3 @@
+# Ignore files created by CodeComposer
+src/RemoteSystemsTempFiles
+src/dvt
