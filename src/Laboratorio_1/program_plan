@@ -5,3 +5,55 @@
 *				-Fabián	Meléndez Bolaños (B24056)
 ************************************************************************
 
+/////////////////////////////////////////////////////////////////////////
+// Programa principal
+/////////////////////////////////////////////////////////////////////////
+
+// 1 - Llamado a subrutina de configuración del uC.
+//
+// void initial_setup()
+//
+// Se encarga de configurar los puertos de entrada salida, la latencia
+// del módulo de tiempos, el micrófono (A/D), 
+// 
+// Aún no activa las interrupciones. 
+
+// 2 - Decidir el modo de las lámparas, configuracion de usuario 
+// Preguntar al profe para definir cómo hacer esto.
+
+// 3 - Rutina inicial para confirmacion de configuración.
+// 
+// void start_routine()
+//
+// Rutina de parpadeo de los LEDS, es bloqueante, hace que los LEDs par-
+// padeen 3 veces.
+
+// 4 - Deteccion del estado inicial
+//
+// bool check_initial_state()
+//
+// Esta función verifica el nivel de brillo y decide si iniciar encendi-
+// do o apagado.
+
+// 5 - Activar las interrupciones
+//
+// void activate_interruptions()
+//
+// Activa las interrupciones de:
+// - Modulo de Tiempos
+// - Conversior A/D -- Microfono (?)
+// - ???
+ 
+// 6 - End LOOP
+// 
+// while(1) {}
+
+
+/////////////////////////////////////////////////////////////////////////
+// Subrutinas
+/////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////
+// Interrupciones
+/////////////////////////////////////////////////////////////////////////
