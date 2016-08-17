@@ -53,7 +53,24 @@
 // Subrutinas
 /////////////////////////////////////////////////////////////////////////
 
+// 1- Calcular promedio de datos
+// 2- Determinar el estado según el nivel de luz
+
 
 /////////////////////////////////////////////////////////////////////////
 // Interrupciones
 /////////////////////////////////////////////////////////////////////////
+
+//	1 -	Interrupción por sonido: Se deben guardar los datos obtenidos 
+//		en los primeros 5 seg después de la interrupción, calcular el
+//		el promedio y determinar si es menor o mayor en un 10% del valor 
+//		promedio de 1 segundo después. Si es mayor, se pone en alto una 
+//		bandera para encerder la lámpara.
+// 
+// 	2 -	Interrupción por botón de control: Si la lámpara esta apagada,
+//		levanta la bandera de encendido por 30 min.
+//
+//	3 -	Interrupción de módulo de tiempos: Cada cierto tiempo se revisa
+//		la bandera de encendido de los LEDs. En caso de estar en alto, 
+//		se encienden y se lleva un contador para determinar si han pasado
+//		30 seg.
