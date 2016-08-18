@@ -24,7 +24,7 @@
 
 // 3 - Rutina inicial para confirmacion de configuración.
 //
-// void start_routine()
+// void initial_blinking()
 //
 // Rutina de parpadeo de los LEDS, es bloqueante, hace que los LEDs par-
 // padeen 3 veces.

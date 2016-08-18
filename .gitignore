@@ -1,3 +1,6 @@
 # Ignore files created by CodeComposer
 src/RemoteSystemsTempFiles
 src/dvt
+**/.metadata
+**/.settings
+**/targetConfigs
