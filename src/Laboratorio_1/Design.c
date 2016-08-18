@@ -1,9 +1,10 @@
-************************************************************************
-*  	Laboratorio #1: Luz de noche accionada por voz.
-*	Estudiantes:	
-*				-Felipe Rincón Riveros (B25530)
-*				-Fabián	Meléndez Bolaños (B24056)
-************************************************************************
+/////////////////////////////////////////////////////////////////////////
+//  	Laboratorio #1: Luz de noche accionada por voz.
+//	Estudiantes:
+//				-Felipe Rincón Riveros (B25530)
+//				-Fabián	Meléndez Bolaños (B24056)
+//
+/////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////
 // Programa principal
@@ -14,15 +15,15 @@
 // void initial_setup()
 //
 // Se encarga de configurar los puertos de entrada salida, la latencia
-// del módulo de tiempos, el micrófono (A/D), 
-// 
-// Aún no activa las interrupciones. 
+// del módulo de tiempos, el micrófono (A/D),
+//
+// Aún no activa las interrupciones.
 
-// 2 - Decidir el modo de las lámparas, configuracion de usuario 
+// 2 - Decidir el modo de las lámparas, configuracion de usuario
 // Preguntar al profe para definir cómo hacer esto.
 
 // 3 - Rutina inicial para confirmacion de configuración.
-// 
+//
 // void start_routine()
 //
 // Rutina de parpadeo de los LEDS, es bloqueante, hace que los LEDs par-
@@ -42,10 +43,10 @@
 // Activa las interrupciones de:
 // - Modulo de Tiempos
 // - Conversior A/D -- Microfono (?)
-// - ???
- 
+// - Interrupción del botón manual
+
 // 6 - End LOOP
-// 
+//
 // while(1) {}
 
 
