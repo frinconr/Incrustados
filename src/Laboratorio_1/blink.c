@@ -6,7 +6,81 @@
 *
 ******************************************************************************/
 
+//////////////////////////////////////////////////////////////////////////////
+// Includes
+//////////////////////////////////////////////////////////////////////////////
+
 #include "msp.h"
+#include "lab01.h"
+
+//////////////////////////////////////////////////////////////////////////////
+// Global Variables
+//////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+// Function Definitions
+//////////////////////////////////////////////////////////////////////////////
+
+
+/** SetUp
+ *
+ * Configures the device.
+ * - General device config.
+ * - Ports configuration
+ * - Interruptions Configuration.
+ */
+void SetUp() {
+    // ****************************
+    //         DEVICE CONFIG
+    // ****************************
+    // - Disable WDT
+	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;
+
+    // ****************************
+    //         PORTS CONFIG
+    // ****************************
+	// - Configure P1.0 as output
+	P1->DIR |= LED_MASK;
+
+	// Disable interruptions
+	__disable_irq();
+}
+
+/** Enable Interruptions
+ *	- Enables all interruptions
+*/
+void EnableInterruptions() {
+	// Enable all interruptions
+	__enable_irq();
+}
+
+
+/** InitialBlinking
+ *
+ * Creates an initial blinking to confirm correct product configuration.
+ * - Blinks BLINKING_ITERATIONS
+ * - Using a loop delay of BLINKING_DELAY
+ * - LED color/power is defined by LED_MASK
+ */
+void InitialBlinking() {
+	// Counter for blinking iterations
+	uint8_t l_u8IterationCounter;
+	// Counter for delay between iterations
+	uint16_t l_u16DelayCounter;
+
+	for(l_u8IterationCounter = 0; l_u8IterationCounter < 2*BLINKING_ITERATIONS; l_u8IterationCounter++) {
+		// Toggle P1
+		P1->OUT ^= LED_MASK;
+
+		// Blinking delay
+		for(l_u16DelayCounter = BLINKING_DELAY; l_u16DelayCounter > 0; l_u16DelayCounter--);
+	}
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
+// MAIN
+//////////////////////////////////////////////////////////////////////////////
 
 void main(void)
 {
@@ -14,24 +88,9 @@ void main(void)
 	SetUp();
 
 	// Initial Blinking to show configuration succeeded
-	InitialBlinking
-}
+	InitialBlinking();
 
-void InitialBlinking() {
-	uint32_t l_counter1;
-	uint32_t l_counter2;
-
-	// The following code toggles P1.0 port
-	P1->DIR |= BIT0;                             /* Configure P1.0 as output */
-
-	for(l_counter2=0; l_counter2<3; l_counter2++) {
-		P1->OUT ^= BIT0;                         				/* Toggle P1.0 */
-		for(l_counter1=10000; l_counter1>0; l_counter1--);      /* Delay */
-	}
+	while(1) {}
 }
 
 
-void SetUp() {
-	/* Stop watchdog timer */
-	WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;
-}
