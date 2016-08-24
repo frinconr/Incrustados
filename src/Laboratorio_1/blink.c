@@ -16,6 +16,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
 //////////////////////////////////////////////////////////////////////////////
+volatile uint16_t g_u16TimerCounter = 0;
 
 //////////////////////////////////////////////////////////////////////////////
 // Function Definitions
@@ -44,6 +45,19 @@ void SetUp() {
 
 	// Disable interruptions
 	__disable_irq();
+
+	// ****************************
+	//       TIMER CONFIG
+	// ****************************
+	// - Configure Timer A0 with SMCLK, Division by 8, Enable the interrupt
+	// - Enable the interrupt in the NVIC
+	// - Start the timer in UP mode.
+	// - Re-enable interrupts
+	TIMER_A0->CTL = TIMER_A_CTL_SSEL__SMCLK | TIMER_A_CTL_ID__2 | TIMER_A_CTL_IE;
+	NVIC_SetPriority(TA0_N_IRQn,1);
+	NVIC_EnableIRQ(TA0_N_IRQn);
+	TIMER_A0->CCR[0] = 0xFFFF;
+	TIMER_A0->CTL |=  TIMER_A_CTL_MC__UP;
 }
 
 /** Enable Interruptions
@@ -79,6 +93,31 @@ void InitialBlinking() {
 
 
 //////////////////////////////////////////////////////////////////////////////
+// Interruptions
+//////////////////////////////////////////////////////////////////////////////
+
+/* This interruption happens every 0.02184 s
+ * This is because a 3MHz clock was selected and a divider by 8 was selected.
+ * */
+void TA0_0_ISR(void)
+{
+        // - Divide the clock further, to achieve human readable times.
+        if(g_u16TimerCounter == TIMERA0_COUNT)
+        {
+                // - Toggle P1.0
+                P1->OUT ^= BIT0;
+                g_u16TimerCounter = 0U;
+
+        }
+        else
+        {
+        	g_u16TimerCounter += 1;
+        }
+        return;
+}
+
+
+//////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
 
@@ -90,6 +129,10 @@ void main(void)
 	// Initial Blinking to show configuration succeeded
 	InitialBlinking();
 
+	// Enable Interruptions
+	EnableInterruptions();
+
+	// Final Loop
 	while(1) {}
 }
 

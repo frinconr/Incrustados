@@ -28,16 +28,15 @@
 #if PRODUCT_TYPE == PRODUCT_TYPE_05W
 	// LED will only use RED
 	#define LED_MASK BIT0
-
 #endif /* PRODUCT_TYPE_05W*/
 
-#if PRODUCT TYPE == PRODUCT_TYPE_10W
+#if PRODUCT_TYPE == PRODUCT_TYPE_10W
 	// LED will use blue
 	#define LED_MASK BIT1
 #endif /* PRODUCT_TYPE_10W */
 
-#if PRODUCT TYPE == PRODUCT_TYPE_15W
-	// LED will use blue
+#if PRODUCT_TYPE == PRODUCT_TYPE_15W
+	// LED will use green
 	#define LED_MASK BIT2
 #endif /* PRODUCT_TYPE_15W */
 
@@ -50,5 +49,7 @@
 // Loop iterations for blinking delay
 #define BLINKING_DELAY 10000
 
+// For the toggle of the LED.
+#define TIMERA0_COUNT 45
 
 #endif /* LAB01_H_DEFS */
