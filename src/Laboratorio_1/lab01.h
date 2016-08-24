@@ -19,7 +19,7 @@
 #define PRODUCT_TYPE_15W 15
 
 // Now define the product type
-#define PRODUCT_TYPE PRODUCT_TYPE_15W
+#define PRODUCT_TYPE PRODUCT_TYPE_05W
 
 
 #define LED_MASK BIT0
@@ -27,17 +27,17 @@
 // Custom implementations for each product TYPE
 #if PRODUCT_TYPE == PRODUCT_TYPE_05W
 	// LED will only use RED
-	#define LED_MASK BIT0
+	#define LED_MASK (uint16_t)(0x0001)
 #endif /* PRODUCT_TYPE_05W*/
 
 #if PRODUCT_TYPE == PRODUCT_TYPE_10W
 	// LED will use blue
-	#define LED_MASK BIT1
+	#define LED_MASK (uint16_t)(0x0011)
 #endif /* PRODUCT_TYPE_10W */
 
 #if PRODUCT_TYPE == PRODUCT_TYPE_15W
 	// LED will use green
-	#define LED_MASK BIT2
+	#define LED_MASK (uint16_t)(0x0111)
 #endif /* PRODUCT_TYPE_15W */
 
 //////////////////////////////////////////////////////////////////////////////
