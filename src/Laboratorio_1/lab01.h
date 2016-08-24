@@ -19,7 +19,7 @@
 #define PRODUCT_TYPE_15W 15
 
 // Now define the product type
-#define PRODUCT_TYPE PRODUCT_TYPE_05W
+#define PRODUCT_TYPE PRODUCT_TYPE_15W
 
 
 #define LED_MASK BIT0
@@ -47,9 +47,9 @@
 // Number of blinking iterations
 #define BLINKING_ITERATIONS 3
 // Loop iterations for blinking delay
-#define BLINKING_DELAY 10000
+#define BLINKING_DELAY 20000
 
 // For the toggle of the LED.
-#define TIMERA0_COUNT 45
+#define TIMERA0_COUNT 160000
 
 #endif /* LAB01_H_DEFS */
