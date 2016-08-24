@@ -29,7 +29,17 @@
 	// LED will only use RED
 	#define LED_MASK BIT0
 
-#endif /* PRODUCT_TYPE = 5*/
+#endif /* PRODUCT_TYPE_05W*/
+
+#if PRODUCT TYPE == PRODUCT_TYPE_10W
+	// LED will use blue
+	#define LED_MASK BIT1
+#endif /* PRODUCT_TYPE_10W */
+
+#if PRODUCT TYPE == PRODUCT_TYPE_15W
+	// LED will use blue
+	#define LED_MASK BIT2
+#endif /* PRODUCT_TYPE_15W */
 
 //////////////////////////////////////////////////////////////////////////////
 // CONSTANTS DEFINITIONS
