@@ -53,5 +53,14 @@
 #define TIMERA0_COUNT_01s 100
 #define TIMERA0_COUNT_30s 3000
 
+// Number of samples for one A/D conversion
+#define NUM_SAMPLES 8
+
+
+
+// Samples in the last second
+#define SAMPLES_PER_SECOND  5
+// Number of samples to store in samples array (5seconds of samples)
+#define MAX_SAMPLES 5*SAMPLES_PER_SECOND
 
 #endif /* LAB01_H_DEFS */
