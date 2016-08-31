@@ -169,7 +169,7 @@ void FillSamplesArray(uint16_t last_sample) {
 	for(l_i8LocalIndex = 0; l_i8LocalIndex < MAX_SAMPLES; l_i8LocalIndex++) {
 		l_u32AverageTotalSamples += g_u16ADCResults[l_i8LocalIndex];
 	}
-	l_u32AverageTotalSamples = l_u32Average/MAX_SAMPLES;
+	l_u32AverageTotalSamples = l_u32AverageTotalSamples/MAX_SAMPLES;
 
 	// Now we will calculate the average of the samples of the last second
 
@@ -179,7 +179,7 @@ void FillSamplesArray(uint16_t last_sample) {
 		l_i8LocalIndex += MAX_SAMPLES;
 	}
 
-	// Calculate the average (start with current value of index)
+	// Calculate the average (start with current value of index) -- Warning expected
 	for(l_i8LocalIndex; l_i8LocalIndex < g_u8ADCIndex; l_i8LocalIndex) {
 		l_u32AverageLastSecond += g_u16ADCResults[l_i8LocalIndex];
 	}
