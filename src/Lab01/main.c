@@ -57,15 +57,48 @@
 /* Standard Includes */
 #include <stdint.h>
 #include <stdbool.h>
+
+// MSP library
 #include "msp.h"
 
-int main(void)
-{
-    /* Stop Watchdog  */
-    MAP_WDT_A_holdTimer();
+// Lab01 constant definitions
 
-    while(1)
-    {
-        
-    }
+#include "hardware.h"
+#include "lab01.h"
+#include "interruptions.h"
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Global Variables
+//////////////////////////////////////////////////////////////////////////////
+uint16_t g_u16TimerCounter = 0;
+
+// Array for storing the samples of ONE A/D conversion
+uint16_t g_u16ADCResults[NUM_SAMPLES];
+
+// Array for storing the historic of A/D measures
+uint16_t g_u16SamplesArray[MAX_SAMPLES];
+
+// Index for storing in the
+uint8_t g_u8ADCIndex;
+
+//////////////////////////////////////////////////////////////////////////////
+// MAIN
+//////////////////////////////////////////////////////////////////////////////
+
+void main(void) {
+	// Call SetUp routine.
+	SetUp();
+
+    // Initial Blinking
+	InitialBlinking();
+
+	// Enable Interruptions
+	EnableInterruptions();
+
+	while(1) {
+		// Wait For Events
+		__wfe();
+	}
 }
+

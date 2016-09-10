@@ -10,6 +10,14 @@
 #ifndef LAB01_H_DEFS
 #define LAB01_H_DEFS
 
+/* Standard Includes */
+#include <stdint.h>
+#include <stdbool.h>
+
+
+// MSP library
+#include "msp.h"
+
 //////////////////////////////////////////////////////////////////////////////
 // PRODUCT TYPE DEFINITIONS
 //////////////////////////////////////////////////////////////////////////////
@@ -64,4 +72,31 @@
 // Number of samples to store in samples array (5seconds of samples)
 #define MAX_SAMPLES 5*SAMPLES_PER_SECOND
 
+//////////////////////////////////////////////////////////////////////////////
+// Declaring extern variables
+//////////////////////////////////////////////////////////////////////////////
+
+// Global counter for timer interrupt
+extern uint16_t g_u16TimerCounter;
+
+// Array for storing the samples of ONE A/D conversion
+extern uint16_t g_u16ADCResults[NUM_SAMPLES];
+
+// Array for storing the historic of A/D measures
+extern uint16_t g_u16SamplesArray[MAX_SAMPLES];
+
+// Index for storing in the
+extern uint8_t g_u8ADCIndex;
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Declaring functions
+//////////////////////////////////////////////////////////////////////////////
+
+void SetUp();
+void InitialBlinking();
+void FillSamplesArray(uint16_t last_sample);
+
 #endif /* LAB01_H_DEFS */
+
+
