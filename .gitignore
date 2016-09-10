@@ -6,3 +6,7 @@ src/dvt
 **/targetConfigs
 **/.launches
 **/Debug
+
+**/.ccsproject
+**/.cproject
+**/.project
