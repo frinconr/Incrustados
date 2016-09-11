@@ -17,15 +17,27 @@
 // Global Variables
 //////////////////////////////////////////////////////////////////////////////
 volatile uint16_t g_u16TimerCounter = 0;
+volatile uint16_t g_u16TimerCounter_ADC14 = 0;
+
 
 // Array for storing the samples of ONE A/D conversion
-volatile uint16_t g_u16ADCResults[NUM_SAMPLES];
+volatile int16_t g_i16ADCResults[NUM_SAMPLES];
 
 // Array for storing the historic of A/D measures
 volatile uint16_t g_u16SamplesArray[MAX_SAMPLES];
 
 // Index for storing in the
 volatile uint8_t g_u8ADCIndex;
+
+// Index for storing data from ADC14 conversion
+volatile uint8_t g_u8ADCMEMIndex = 0;
+
+// Index for calculating maximum on ADC14 data
+volatile uint8_t g_i8GetMaxIndex;
+
+// Most significant value of ADC14 results
+volatile int16_t g_i16MaxADCResult;
+
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -63,6 +75,42 @@ void SetUp() {
 	P2->DIR |= LED_MASK;
 	// Clean Port0
 	P2->OUT = 0;
+
+	// - - - - - - - - - - - - - -
+	// P4 Config
+	// - - - - - - - - - - - - - -
+	// This is the microphone port
+	P4->SEL1 |= BIT3;
+	P4->SEL0 |= BIT3;
+
+
+
+	// Enable ADC interrupt on the NVIC
+	NVIC_SetPriority(ADC14_IRQn,3);
+	NVIC_EnableIRQ(ADC14_IRQn);
+
+	// Turn on ADC14, extend sampling time to avoid overflow of results
+	/*
+	 * ADC14_CTL0_ON 					Turns on de ADC14
+	 * ADC14_CTL0_MSC 					Enables ADC14 multiple sample and conversion
+	 * ADC14_CTL0_SHT0__192 			Sets the ADC14 sample-and-hold time
+	 * ADC14_CTL0_SHP 					SAMPCON signal is sourced from the sampling timer
+	 * ADC14_CTL0_CONSEQ_3 				ADC14 conversion sequence mode select-> Repeat-single-channel
+	 */
+	ADC14->CTL0 = 	ADC14_CTL0_ON |
+	            	ADC14_CTL0_MSC |
+					ADC14_CTL0_SHT0__192 |
+					ADC14_CTL0_SHP |
+					ADC14_CTL0_CONSEQ_3;
+
+	ADC14->CTL1 = ADC14_CTL1_RES_3 | ADC14_CTL1_DF;
+
+	ADC14->MCTL[0] |= ADC14_MCTLN_INCH_10;    // ref+=AVcc, channel = A10
+
+
+
+	ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
+	SCB->SCR &= ~SCB_SCR_SLEEPONEXIT_Msk;   // Wake up on exit from ISR
 
 	// - - - - - - - - - - - - - -
 	// P1 Config
@@ -154,49 +202,6 @@ void InitialBlinking() {
  * Uses the last_sample argument and
  *
  */
-void FillSamplesArray(uint16_t last_sample) {
-	uint32_t l_u32AverageTotalSamples = 0;
-	uint32_t l_u32AverageLastSecond = 0;
-	int8_t l_i8LocalIndex;
-
-	// Fill g_u16ADCResults array where g_u8ADCIndex indicates
-	g_u16ADCResults[g_u8ADCIndex] = last_sample;
-
-	// Update g_u8ADCIndex
-	g_u8ADCIndex = (g_u8ADCIndex+1) % MAX_SAMPLES;
-
-	// Now we will calculate the average of the samples
-	for(l_i8LocalIndex = 0; l_i8LocalIndex < MAX_SAMPLES; l_i8LocalIndex++) {
-		l_u32AverageTotalSamples += g_u16ADCResults[l_i8LocalIndex];
-	}
-	l_u32AverageTotalSamples = l_u32AverageTotalSamples/MAX_SAMPLES;
-
-	// Now we will calculate the average of the samples of the last second
-
-	// Calculate start index
-	l_i8LocalIndex = g_u8ADCIndex - SAMPLES_PER_SECOND;
-	if (l_i8LocalIndex < 0) {
-		l_i8LocalIndex += MAX_SAMPLES;
-	}
-
-
-	int8_t l_i8Index;
-	// Loop through the last second of samples
-	for(l_i8Index = 0; l_i8Index < SAMPLES_PER_SECOND; l_i8Index++) {
-		l_u32AverageLastSecond += g_u16ADCResults[l_i8LocalIndex];
-		l_i8LocalIndex = (l_i8LocalIndex+1) % MAX_SAMPLES;
-	}
-	l_u32AverageLastSecond = l_u32AverageLastSecond/SAMPLES_PER_SECOND;
-
-	// Check if we need to turn on the LED
-	if(l_u32AverageTotalSamples*0.9 < l_u32AverageLastSecond) {
-		// Turn on the LED
-		// Preload timing for TA0_0_ISR to turn LED on
-		g_u16TimerCounter = TIMERA0_COUNT_01s;
-	}
-
-}
-
 
 //////////////////////////////////////////////////////////////////////////////
 // Interruptions
@@ -221,6 +226,13 @@ void TA0_0_ISR(void) {
 	} else {
 		P2->OUT = 0;
     }
+	// Activate ADC14 conversion each 200ms
+	g_u16TimerCounter_ADC14 = (g_u16TimerCounter_ADC14 + 1)  % 20;
+	if(g_u16TimerCounter_ADC14 == 0){
+		ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;
+	}
+
+
 	return;
 }
 
@@ -244,6 +256,40 @@ void S1_PORT1_ISR(void)
 	}
 }
 
+
+// **********************************
+// Interrupt service routine for
+// ADC14
+// **********************************
+void ADC14_IRQHandler(void)
+{
+
+
+    if (ADC14->IFGR0 & ADC14_IFGR0_IFG3)
+    {
+    	g_i16ADCResults[g_u8ADCMEMIndex] = ADC14->MEM[0]; // Move A0 results, IFG is cleared
+        g_u8ADCMEMIndex++;
+
+        if(g_u8ADCMEMIndex == NUM_SAMPLES){
+
+        	g_u8ADCMEMIndex 	= 0;
+        	g_i16MaxADCResult 	= 0;
+
+        	for(g_i8GetMaxIndex=0;g_i8GetMaxIndex<NUM_SAMPLES;g_i8GetMaxIndex++){
+        		if(g_i16MaxADCResult < abs(g_i16ADCResults[g_i8GetMaxIndex]) ){
+        			g_i16MaxADCResult = abs(g_i16ADCResults[g_i8GetMaxIndex]);
+        		}
+        	}
+        	// **** End Conversion Flag ***
+        }else{
+        	ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;
+        }
+
+        __no_operation();                   							// Set Breakpoint1 here
+        // Start conversion-software trigger
+
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
