@@ -109,7 +109,7 @@ extern uint16_t g_u16SamplesArray[MAX_SAMPLES];
 // Index for storing in the
 extern uint8_t g_u8ADCIndex;
 
-extern float g_fLUXValue;
+extern float g_fLighValue;
 
 extern bool g_bGlobalFlags[NUM_FLAGS];
 //////////////////////////////////////////////////////////////////////////////
@@ -117,6 +117,7 @@ extern bool g_bGlobalFlags[NUM_FLAGS];
 //////////////////////////////////////////////////////////////////////////////
 
 void SetUp();
+void SetInitialState();
 void TurnLightOn();
 void InitialBlinking();
 void FillSamplesArray(uint16_t last_sample);

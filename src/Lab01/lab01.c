@@ -93,6 +93,16 @@ void InitialBlinking() {
 }
 
 
+void SetInitialState() {
+	/* Obtain lux value from OPT3001 */
+	g_fLighValue = OPT3001_getLux();
+
+	if(g_fLighValue < LIGHT_THRESHOLD) {
+		TurnLightOn();
+	}
+}
+
+
 /* FillSamplesArray
  *
  * Uses the last_sample argument and

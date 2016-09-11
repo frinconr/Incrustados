@@ -84,7 +84,7 @@ uint16_t g_u16SamplesArray[MAX_SAMPLES];
 // Index for storing in the
 uint8_t g_u8ADCIndex;
 
-float g_fLUXValue;
+float g_fLighValue;
 
 bool g_bGlobalFlags[NUM_FLAGS];
 
@@ -99,6 +99,9 @@ void main(void) {
     // Initial Blinking
 	InitialBlinking();
 
+	// SetInitialState depending on light value
+	SetInitialState();
+
 	// Enable Interruptions
 	EnableInterruptions();
 
@@ -110,7 +113,7 @@ void main(void) {
 			// Delete LUX_FLAG
 			g_bGlobalFlags[LUX_FLAG] = false;
 			/* Obtain lux value from OPT3001 */
-			g_fLUXValue = OPT3001_getLux();
+			g_fLighValue = OPT3001_getLux();
 		}
 	}
 }
