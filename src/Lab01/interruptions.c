@@ -2,34 +2,52 @@
  * interruptions.c
  *
  *  Created on: Sep 10, 2016
- *      Author: Fabian Melendez
+ *      Authors: Fabian Melendez / Felipe Rincón.
  */
 
 
-// Lab01 definitions
+// Include header files
 #include "interruptions.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 // Interruptions
 //////////////////////////////////////////////////////////////////////////////
 
-// **********************************
-// Interrupt service routine for
-// Timer A0
-//
-// T = 1 ms
-// **********************************
+// ***********************************************************
+// TA0_0_ISR
+// ***********************************************************
+/*
+ * Interrupt service routine for the timer A0. It expects the
+ * subroutine to be called with a period of T=1 ms.
+ *
+ * It:
+ * 	- Turns off the TIMER A0 interrupt flag.
+ * 	- With the counter g_u16TimerCounter_LED it handles the LED
+ * 	lighting, if the counter is greater than zero, then the LED
+ * 	is turned on, and the counter decreased. If the counter is
+ * 	zero, then the led is turned off.
+ * 	- It implements a debouncing for the S2 button subroutine
+ *  using the g_u8TimerCounter_Debouncer.
+ *  - It launches a ADC14 conversion every 0.2s, using the coun-
+ *  ter g_u8TimerCounter_ADC14.
+ */
+
 void TA0_0_ISR(void) {
 	// Clear interruption flag
 	TIMER_A0->CTL ^= TIMER_A_CTL_IFG;
 
 	// Divide the clock further, to achieve human readable times.
 	if(g_u16TimerCounter_LED > 0){
-		// - Toggle P2.00
+		// - Turn on LED on P2
 		P2->OUT |= LED_MASK;
+
+		// Decrease timer
 		g_u16TimerCounter_LED--;
 
 	} else {
-		P2->OUT = 0;
+		// Turn off LED on P2
+		P2->OUT &= ~LED_MASK;
     }
 
 	// Implement debouncing for S2 button
