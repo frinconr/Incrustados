@@ -18,6 +18,11 @@
 // MSP library
 #include "msp.h"
 
+#include <stdbool.h>
+
+#include "hardware.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 // PRODUCT TYPE DEFINITIONS
 //////////////////////////////////////////////////////////////////////////////
@@ -53,6 +58,9 @@
 // CONSTANTS DEFINITIONS
 //////////////////////////////////////////////////////////////////////////////
 
+// Light threshold
+#define LIGHT_THRESHOLD 50
+
 // Number of blinking iterations
 #define BLINKING_ITERATIONS 3
 
@@ -69,15 +77,28 @@
 
 // Samples in the last second (number of A/D conversions)
 #define SAMPLES_PER_SECOND  5
+
 // Number of samples to store in samples array (5seconds of samples)
 #define MAX_SAMPLES 5*SAMPLES_PER_SECOND
+
+
+#define MISC_COUNTER_MAX 100
+
+
+// Flags definitions
+#define NUM_FLAGS 1
+
+#define LUX_FLAG 0
 
 //////////////////////////////////////////////////////////////////////////////
 // Declaring extern variables
 //////////////////////////////////////////////////////////////////////////////
 
 // Global counter for timer interrupt
-extern uint16_t g_u16TimerCounter;
+extern uint16_t g_u16TimerCounter_LED;
+
+// Global counter for timer interrupt
+extern uint16_t g_u16TimerCounter_Misc;
 
 // Array for storing the samples of ONE A/D conversion
 extern uint16_t g_u16ADCResults[NUM_SAMPLES];
@@ -88,14 +109,20 @@ extern uint16_t g_u16SamplesArray[MAX_SAMPLES];
 // Index for storing in the
 extern uint8_t g_u8ADCIndex;
 
+extern float g_fLUXValue;
 
+extern bool g_bGlobalFlags[NUM_FLAGS];
 //////////////////////////////////////////////////////////////////////////////
 // Declaring functions
 //////////////////////////////////////////////////////////////////////////////
 
 void SetUp();
+void TurnLightOn();
 void InitialBlinking();
 void FillSamplesArray(uint16_t last_sample);
+void ProcessMicData();
+
+
 
 #endif /* LAB01_H_DEFS */
 

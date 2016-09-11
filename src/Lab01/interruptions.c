@@ -22,15 +22,20 @@ void TA0_0_ISR(void) {
 	// Clear interruption flag
 	TIMER_A0->CTL ^= TIMER_A_CTL_IFG;
 
-	// - Divide the clock further, to achieve human readable times.
-	if(g_u16TimerCounter > 0){
+	// Divide the clock further, to achieve human readable times.
+	if(g_u16TimerCounter_LED > 0){
 		// - Toggle P2.00
-		P2->OUT ^= LED_MASK;
-		g_u16TimerCounter--;
+		P2->OUT |= LED_MASK;
+		g_u16TimerCounter_LED--;
 
 	} else {
 		P2->OUT = 0;
     }
+
+
+	// Change flags
+	g_bGlobalFlags[LUX_FLAG] = true;
+
 	return;
 }
 
@@ -48,9 +53,9 @@ void S1_PORT1_ISR(void)
 	P1->IFG &= ~BIT1;
 
 	// This will help with the debouncing
-	if(g_u16TimerCounter == 0) {
+	if(g_u16TimerCounter_LED == 0) {
 		// Preload timing for TA0_0_ISR to turn LED on
-		g_u16TimerCounter = TIMERA0_COUNT_01s;
+		g_u16TimerCounter_LED = TIMERA0_COUNT_01s;
 	}
 }
 

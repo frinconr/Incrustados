@@ -34,7 +34,7 @@ void SetUp() {
 	// - - - - - - - - - - - - - -
 	// P2 Config
 	// - - - - - - - - - - - - - -
-	ConfigP2LEDOutput();
+	ConfigP2LEDOutput(LED_MASK);
 
 	// - - - - - - - - - - - - - -
 	// P1 Config
@@ -47,13 +47,28 @@ void SetUp() {
 	// - Configure Timer A0 with SMCLK, Division by 8, Enable the interrupt
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-	ConfigTimerA0UpMode();
+	ConfigTimerA0UpMode(0x3A98);
+
+	// ****************************
+	//		LUX Config
+	// ****************************
+	ConfigLUXI2C();
+
 }
 
 
 //////////////////////////////////////////////////////////////////////////////
 // Function Definitions
 //////////////////////////////////////////////////////////////////////////////
+
+/** TurnLightOn
+ *
+ * Turns the light on using the g_u16TimerCounter_LED
+ */
+void TurnLightOn (void) {
+	// Preload timing for TA0_0_ISR to turn LED on
+	g_u16TimerCounter_LED = TIMERA0_COUNT_01s;
+}
 
 /** InitialBlinking
  *
@@ -84,19 +99,22 @@ void InitialBlinking() {
  *
  */
 void FillSamplesArray(uint16_t last_sample) {
+	// Fill g_u16ADCResults array where g_u8ADCIndex indicates
+	g_u16SamplesArray[g_u8ADCIndex] = last_sample;
+
+	// Update g_u8ADCIndex
+	g_u8ADCIndex = (g_u8ADCIndex+1) % MAX_SAMPLES;
+}
+
+
+void ProcessMicData() {
 	uint32_t l_u32AverageTotalSamples = 0;
 	uint32_t l_u32AverageLastSecond = 0;
 	int8_t l_i8LocalIndex;
 
-	// Fill g_u16ADCResults array where g_u8ADCIndex indicates
-	g_u16ADCResults[g_u8ADCIndex] = last_sample;
-
-	// Update g_u8ADCIndex
-	g_u8ADCIndex = (g_u8ADCIndex+1) % MAX_SAMPLES;
-
 	// Now we will calculate the average of the samples
 	for(l_i8LocalIndex = 0; l_i8LocalIndex < MAX_SAMPLES; l_i8LocalIndex++) {
-		l_u32AverageTotalSamples += g_u16ADCResults[l_i8LocalIndex];
+		l_u32AverageTotalSamples += g_u16SamplesArray[l_i8LocalIndex];
 	}
 	l_u32AverageTotalSamples = l_u32AverageTotalSamples/MAX_SAMPLES;
 
@@ -112,7 +130,7 @@ void FillSamplesArray(uint16_t last_sample) {
 	int8_t l_i8Index;
 	// Loop through the last second of samples
 	for(l_i8Index = 0; l_i8Index < SAMPLES_PER_SECOND; l_i8Index++) {
-		l_u32AverageLastSecond += g_u16ADCResults[l_i8LocalIndex];
+		l_u32AverageLastSecond += g_u16SamplesArray[l_i8LocalIndex];
 		l_i8LocalIndex = (l_i8LocalIndex+1) % MAX_SAMPLES;
 	}
 	l_u32AverageLastSecond = l_u32AverageLastSecond/SAMPLES_PER_SECOND;
@@ -120,8 +138,8 @@ void FillSamplesArray(uint16_t last_sample) {
 	// Check if we need to turn on the LED
 	if(l_u32AverageTotalSamples*0.9 < l_u32AverageLastSecond) {
 		// Turn on the LED
-		// Preload timing for TA0_0_ISR to turn LED on
-		g_u16TimerCounter = TIMERA0_COUNT_01s;
+		TurnLightOn();
 	}
-
 }
+
+

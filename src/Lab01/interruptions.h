@@ -17,9 +17,6 @@
 #include "msp.h"
 #include "lab01.h"
 
-// Global counter for timer interrupt
-extern uint16_t g_u16TimerCounter;
-
 void TA0_0_ISR(void);
 void S1_PORT1_ISR(void);
 

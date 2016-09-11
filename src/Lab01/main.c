@@ -52,7 +52,8 @@
  * Author: 
 *******************************************************************************/
 /* DriverLib Includes */
-#include "driverlib.h"
+// #include "driverlib.h"
+#include <driverlib.h>
 
 /* Standard Includes */
 #include <stdint.h>
@@ -71,7 +72,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
 //////////////////////////////////////////////////////////////////////////////
-uint16_t g_u16TimerCounter = 0;
+uint16_t g_u16TimerCounter_LED = 0;
+uint16_t g_u16TimerCounter_Misc = 0;
 
 // Array for storing the samples of ONE A/D conversion
 uint16_t g_u16ADCResults[NUM_SAMPLES];
@@ -81,6 +83,10 @@ uint16_t g_u16SamplesArray[MAX_SAMPLES];
 
 // Index for storing in the
 uint8_t g_u8ADCIndex;
+
+float g_fLUXValue;
+
+bool g_bGlobalFlags[NUM_FLAGS];
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
@@ -99,6 +105,13 @@ void main(void) {
 	while(1) {
 		// Wait For Events
 		__wfe();
+
+		if(g_bGlobalFlags[LUX_FLAG]) {
+			// Delete LUX_FLAG
+			g_bGlobalFlags[LUX_FLAG] = false;
+			/* Obtain lux value from OPT3001 */
+			g_fLUXValue = OPT3001_getLux();
+		}
 	}
 }
 

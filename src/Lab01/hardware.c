@@ -30,14 +30,14 @@ void DisableInterruptions() {
 // Ports Configs
 //////////////////////////////////////////////////////////////////////////////
 
-void ConfigP2LEDOutput() {
+void ConfigP2LEDOutput(const uint16_t LEDMask) {
 	// - - - - - - - - - - - - - -
 	// P2 Config
 	// - - - - - - - - - - - - - -
 	// This is the LED port
 
 	// - Configure P2.LED_MASK as output
-	P2->DIR |= LED_MASK;
+	P2->DIR |= LEDMask;
 	// Clean Port0
 	P2->OUT = 0;
 }
@@ -79,7 +79,7 @@ void ConfigP1ButtonInterrupt() {
 // Ports Configs
 //////////////////////////////////////////////////////////////////////////////
 
-void ConfigTimerA0UpMode () {
+void ConfigTimerA0UpMode (const uint16_t LoadValue) {
 	// ****************************
 	//       TIMER CONFIG
 	// ****************************
@@ -90,10 +90,25 @@ void ConfigTimerA0UpMode () {
 	// Set clock as SMCLK (3MHz), divider by 4, and enable interruption
 	TIMER_A0->CTL = TIMER_A_CTL_SSEL__SMCLK | TIMER_A_CTL_ID__2 | TIMER_A_CTL_IE;
 	// Load value of 15000 = (0x3A98)
-	TIMER_A0->CCR[0] = 0x3A98;
+	TIMER_A0->CCR[0] = LoadValue;
 	// Set mode as: UpMode (counts to CCR, interrupts and counter goes back to 0).
 	TIMER_A0->CTL |=  TIMER_A_CTL_MC__UP;
 	// Set interruption in NVIC
 	NVIC_SetPriority(TA0_N_IRQn,1);
 	NVIC_EnableIRQ(TA0_N_IRQn);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// I2C Configurations
+//////////////////////////////////////////////////////////////////////////////
+
+void ConfigLUXI2C () {
+	/* Initialize I2C communication */
+	Init_I2C_GPIO();
+	I2C_init();
+
+	/* Initialize OPT3001 digital ambient light sensor */
+	OPT3001_init();
+
+	__delay_cycles(100000);
 }
