@@ -4,7 +4,7 @@
  *	This file contains the definitions for the Lab01.
  *
  *  Created on: Aug 20, 2016
- *      Author: Fabian Meléndez Bolaños
+ *      Authors: Fabián Meléndez / Felipe Rincón
  */
 
 #ifndef LAB01_H_DEFS

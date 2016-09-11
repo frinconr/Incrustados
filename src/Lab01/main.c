@@ -49,7 +49,7 @@
  *            |                  |
  *            |                  |
  *            |                  |
- * Author: 
+ * Authors: Fabián Meléndez / Felipe Rincón
 *******************************************************************************/
 /* DriverLib Includes */
 // #include "driverlib.h"
