@@ -54,6 +54,20 @@ void SetUp() {
 	// ****************************
 	ConfigLUXI2C();
 
+
+	// ****************************
+	//		ADC14MIC Config
+	// ****************************
+	ConfigADC14Mic();
+
+}
+
+
+
+void InitVars(void) {
+	g_bGlobalFlags[LUX_FLAG] = false;
+	g_bGlobalFlags[ADC14_FLAG] = false;
+	g_bGlobalFlags[Five_Seconds_Reached] = false;
 }
 
 
@@ -65,9 +79,11 @@ void SetUp() {
  *
  * Turns the light on using the g_u16TimerCounter_LED
  */
-void TurnLightOn (void) {
-	// Preload timing for TA0_0_ISR to turn LED on
-	g_u16TimerCounter_LED = TIMERA0_COUNT_01s;
+void TurnLightOn () {
+	if(g_u16TimerCounter_LED == 0) {
+		// Preload timing for TA0_0_ISR to turn LED on
+		g_u16TimerCounter_LED = TIMERA0_COUNT_01s;
+	}
 }
 
 /** InitialBlinking
@@ -108,25 +124,43 @@ void SetInitialState() {
  * Uses the last_sample argument and
  *
  */
-void FillSamplesArray(uint16_t last_sample) {
+void FillSamplesArray() {
+	uint8_t l_u8GetMaxIndex = 0;
+	uint16_t l_i16MaxADCResult = 0;
+
+
+	// Get values from the ADC covnersion array
+	for(l_u8GetMaxIndex=0;l_u8GetMaxIndex<NUM_SAMPLES;l_u8GetMaxIndex++){
+		// Get the max value of the set of results
+		if(l_i16MaxADCResult < abs(g_i16ADCResults[l_u8GetMaxIndex]) ){
+			l_i16MaxADCResult = abs(g_i16ADCResults[l_u8GetMaxIndex]);
+		}
+	}
+
 	// Fill g_u16ADCResults array where g_u8ADCIndex indicates
-	g_u16SamplesArray[g_u8ADCIndex] = last_sample;
+	g_i16SamplesArray[g_u8ADCIndex] = l_i16MaxADCResult;
+	g_i16LastResult = l_i16MaxADCResult;
 
 	// Update g_u8ADCIndex
 	g_u8ADCIndex = (g_u8ADCIndex+1) % MAX_SAMPLES;
+
+	if(g_u8ADCIndex == 0 && !g_bGlobalFlags[Five_Seconds_Reached]) {
+		// Turn Flag on to indicate we have enough data for 5s
+		g_bGlobalFlags[Five_Seconds_Reached] = true;
+	}
 }
 
 
 void ProcessMicData() {
-	uint32_t l_u32AverageTotalSamples = 0;
-	uint32_t l_u32AverageLastSecond = 0;
+	int32_t l_i32AverageTotalSamples = 0;
+	int32_t l_i32AverageLastSecond = 0;
 	int8_t l_i8LocalIndex;
 
 	// Now we will calculate the average of the samples
 	for(l_i8LocalIndex = 0; l_i8LocalIndex < MAX_SAMPLES; l_i8LocalIndex++) {
-		l_u32AverageTotalSamples += g_u16SamplesArray[l_i8LocalIndex];
+		l_i32AverageTotalSamples += g_i16SamplesArray[l_i8LocalIndex];
 	}
-	l_u32AverageTotalSamples = l_u32AverageTotalSamples/MAX_SAMPLES;
+	l_i32AverageTotalSamples = l_i32AverageTotalSamples/MAX_SAMPLES;
 
 	// Now we will calculate the average of the samples of the last second
 
@@ -140,16 +174,18 @@ void ProcessMicData() {
 	int8_t l_i8Index;
 	// Loop through the last second of samples
 	for(l_i8Index = 0; l_i8Index < SAMPLES_PER_SECOND; l_i8Index++) {
-		l_u32AverageLastSecond += g_u16SamplesArray[l_i8LocalIndex];
+		l_i32AverageLastSecond += g_i16SamplesArray[l_i8LocalIndex];
 		l_i8LocalIndex = (l_i8LocalIndex+1) % MAX_SAMPLES;
 	}
-	l_u32AverageLastSecond = l_u32AverageLastSecond/SAMPLES_PER_SECOND;
+	l_i32AverageLastSecond = l_i32AverageLastSecond/SAMPLES_PER_SECOND;
 
 	// Check if we need to turn on the LED
-	if(l_u32AverageTotalSamples*0.9 < l_u32AverageLastSecond) {
+	if(l_i32AverageTotalSamples*1.1 < l_i32AverageLastSecond) {
 		// Turn on the LED
 		TurnLightOn();
 	}
 }
+
+
 
 

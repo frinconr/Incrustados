@@ -19,5 +19,6 @@
 
 void TA0_0_ISR(void);
 void S1_PORT1_ISR(void);
+void ADC14_IRQHandler(void);
 
 #endif /* INTERRUPTIONS_H_ */

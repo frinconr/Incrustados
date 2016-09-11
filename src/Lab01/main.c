@@ -72,21 +72,26 @@
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
 //////////////////////////////////////////////////////////////////////////////
-uint16_t g_u16TimerCounter_LED = 0;
-uint16_t g_u16TimerCounter_Misc = 0;
+uint8_t g_u16TimerCounter_LED = 0;
+uint8_t g_u16TimerCounter_ADC14 = 0;
 
-// Array for storing the samples of ONE A/D conversion
-uint16_t g_u16ADCResults[NUM_SAMPLES];
+// Array for storing the samples of ONE set of A/D conversion
+int16_t g_i16ADCResults[NUM_SAMPLES];
+// Index for storing data from ONE set of ADC14 conversion
+uint8_t g_u8ADCMEMIndex = 0;
 
 // Array for storing the historic of A/D measures
-uint16_t g_u16SamplesArray[MAX_SAMPLES];
-
-// Index for storing in the
-uint8_t g_u8ADCIndex;
+int16_t g_i16SamplesArray[MAX_SAMPLES];
+// Index for storing in the inde
+uint8_t g_u8ADCIndex = 0;
 
 float g_fLighValue;
 
 bool g_bGlobalFlags[NUM_FLAGS];
+
+int16_t g_i16LastResult = 2;
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
@@ -96,25 +101,42 @@ void main(void) {
 	// Call SetUp routine.
 	SetUp();
 
+	// InitVars
+	InitVars();
+
     // Initial Blinking
 	InitialBlinking();
 
-	// SetInitialState depending on light value
-	SetInitialState();
-
 	// Enable Interruptions
 	EnableInterruptions();
+
+	// SetInitialState depending on light value
+	SetInitialState();
 
 	while(1) {
 		// Wait For Events
 		__wfe();
 
-		if(g_bGlobalFlags[LUX_FLAG]) {
+		if(g_bGlobalFlags[LUX_FLAG] == true) {
 			// Delete LUX_FLAG
 			g_bGlobalFlags[LUX_FLAG] = false;
 			/* Obtain lux value from OPT3001 */
 			g_fLighValue = OPT3001_getLux();
 		}
+
+		if(g_bGlobalFlags[ADC14_FLAG] == true) {
+			// Delete ADC14_FLAG
+			g_bGlobalFlags[ADC14_FLAG] = false;
+			// Get results from ADC14
+			FillSamplesArray();
+
+			if(g_bGlobalFlags[Five_Seconds_Reached] == true) {
+				ProcessMicData();
+			}
+
+		}
+
+
 	}
 }
 

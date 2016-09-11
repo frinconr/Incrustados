@@ -28,5 +28,6 @@ void ConfigP2LEDOutput(const uint16_t LEDMask);
 void ConfigP1ButtonInterrupt();
 void ConfigTimerA0UpMode(const uint16_t LEDMask);
 void ConfigLUXI2C();
+void ConfigADC14Mic();
 
 #endif /* HARDWARE_H_ */

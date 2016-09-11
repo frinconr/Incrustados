@@ -33,8 +33,16 @@ void TA0_0_ISR(void) {
     }
 
 
-	// Change flags
-	g_bGlobalFlags[LUX_FLAG] = true;
+	// Activate ADC14 conversion each 200ms
+	g_u16TimerCounter_ADC14 = (g_u16TimerCounter_ADC14 + 1)  % 20;
+	if(g_u16TimerCounter_ADC14 == 0){
+		ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
+		ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;
+		// Change LUX_FLAG
+		g_bGlobalFlags[LUX_FLAG] = true;
+	}
+
+
 
 	return;
 }
@@ -54,9 +62,41 @@ void S1_PORT1_ISR(void)
 
 	// This will help with the debouncing
 	if(g_u16TimerCounter_LED == 0) {
-		// Preload timing for TA0_0_ISR to turn LED on
-		g_u16TimerCounter_LED = TIMERA0_COUNT_01s;
+		TurnLightOn();
 	}
+}
+
+
+// **********************************
+// Interrupt service routine for
+// ADC14
+// **********************************
+void ADC14_IRQHandler(void)
+{
+    if (ADC14->IFGR0 & ADC14_IFGR0_IFG0) {
+    	// Get lastest value of converter, insert into
+    	g_i16ADCResults[g_u8ADCMEMIndex] = ADC14->MEM[0]; // Move A0 results, IFG is cleared
+
+    	// Increment g_u8ADCMEMIndex
+    	g_u8ADCMEMIndex++;
+
+    	// Check if we have already the number of samples
+        if(g_u8ADCMEMIndex == NUM_SAMPLES){
+        	// Reset g_u8ADCMEMIndex
+        	g_u8ADCMEMIndex = 0;
+
+        	// Set ADC14_FLAG to indicate we have results
+        	g_bGlobalFlags[ADC14_FLAG] = true;
+
+        	ADC14->IER0 &= ~ADC14_IER0_IE3;           // Enable ADC14IFG.3
+        } else {
+        	ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;
+        }
+
+        __no_operation();                   							// Set Breakpoint1 here
+        // Start conversion-software trigger
+
+    }
 }
 
 
