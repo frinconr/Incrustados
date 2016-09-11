@@ -32,10 +32,15 @@ void TA0_0_ISR(void) {
 		P2->OUT = 0;
     }
 
+	// Implement debouncing for S2 button
+	if(g_u8TimerCounter_Debouncer > 0) {
+		g_u8TimerCounter_Debouncer--;
+	}
+
 
 	// Activate ADC14 conversion each 200ms
-	g_u16TimerCounter_ADC14 = (g_u16TimerCounter_ADC14 + 1)  % 20;
-	if(g_u16TimerCounter_ADC14 == 0){
+	g_u8TimerCounter_ADC14 = (g_u8TimerCounter_ADC14 + 1)  % 20;
+	if(g_u8TimerCounter_ADC14 == 0){
 		ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
 		ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;
 		// Change LUX_FLAG
@@ -49,8 +54,8 @@ void TA0_0_ISR(void) {
 
 
 // **********************************
-// Interrupt service routine for
-// Timer A0
+// PORT 1 ISR
+//
 //
 // T = 1 ms
 // **********************************
@@ -60,9 +65,16 @@ void S1_PORT1_ISR(void)
 	// Clear interrupt flag
 	P1->IFG &= ~BIT1;
 
-	// This will help with the debouncing
-	if(g_u16TimerCounter_LED == 0) {
-		TurnLightOn();
+	if (g_u8TimerCounter_Debouncer == 0) {
+		// Preload debouncing
+		g_u8TimerCounter_Debouncer = TIMERA0_COUNT_Debouncer;
+
+		// This will help with the debouncing
+		if(g_u16TimerCounter_LED == 0) {
+			TurnLightOn();
+		} else {
+			TurnLightOff();
+		}
 	}
 }
 

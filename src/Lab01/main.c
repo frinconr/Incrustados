@@ -72,8 +72,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
 //////////////////////////////////////////////////////////////////////////////
-uint8_t g_u16TimerCounter_LED = 0;
-uint8_t g_u16TimerCounter_ADC14 = 0;
+uint16_t g_u16TimerCounter_LED = 0;
+uint8_t g_u8TimerCounter_ADC14 = 0;
+uint8_t g_u8TimerCounter_Debouncer = 0;
 
 // Array for storing the samples of ONE set of A/D conversion
 int16_t g_i16ADCResults[NUM_SAMPLES];

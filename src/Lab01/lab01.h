@@ -69,8 +69,8 @@
 
 // For the toggle of the LED.
 #define TIMERA0_COUNT_01s 100
-
 #define TIMERA0_COUNT_30s 3000
+#define TIMERA0_COUNT_Debouncer 25
 
 // Number of samples for one A/D conversion
 #define NUM_SAMPLES 8
@@ -81,8 +81,10 @@
 // Number of samples to store in samples array (5seconds of samples)
 #define MAX_SAMPLES (5*SAMPLES_PER_SECOND)
 
-
 #define MISC_COUNTER_MAX 100
+
+// Sound THRESHOLD
+#define SOUND_THRESHOLD 1.5
 
 
 // Flags definitions
@@ -100,10 +102,13 @@ typedef enum {
 //////////////////////////////////////////////////////////////////////////////
 
 // Global counter for timer interrupt
-extern uint8_t g_u16TimerCounter_LED;
+extern uint16_t g_u16TimerCounter_LED;
 
-// Global counter for timer interrupt
-extern uint8_t g_u16TimerCounter_ADC14;
+// Global counter for sending
+extern uint8_t g_u8TimerCounter_ADC14;
+
+// Global counter for debouncing
+extern uint8_t g_u8TimerCounter_Debouncer;
 
 // Array for storing the samples of ONE A/D conversion
 extern int16_t g_i16ADCResults[NUM_SAMPLES];
@@ -129,6 +134,7 @@ void SetUp();
 void InitVars();
 void SetInitialState();
 void TurnLightOn();
+void TurnLightOff();
 void InitialBlinking();
 void FillSamplesArray();
 void ProcessMicData();
