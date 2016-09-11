@@ -1,0 +1,1 @@
+"./hardware.obj" "./interruptions.obj" "./lab01.obj" "./main.obj" "./startup_msp432p401r_ccs.obj" "./system_msp432p401r.obj" "./include/HAL_I2C.obj" "./include/HAL_OPT3001.obj" "../driverlib_empty_project_ccs.cmd" "/home/fabian/local/MSPWare/MSP432Ware_3_50_00_02/driverlib/driverlib/MSP432P4xx/ccs/msp432p4xx_driverlib.lib" -llibc.a 
