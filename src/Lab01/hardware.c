@@ -1,8 +1,12 @@
 /*
  * hardware.c
  *
+ *	Source file for a local hardware abstraction
+ *	layer. General configurations for the MSP432
+ *	are defined here.
+ *
  *  Created on: Sep 10, 2016
- *      Author: Fabián Meléndez
+ *      Authors: Fabián Meléndez / Felipe Rincón
  */
 
 

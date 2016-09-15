@@ -1,9 +1,13 @@
 /*
  * interruptions.h
  *
+ *	Header file for the service interruptions res-
+ *	ponse functions.
+ *
  *  Created on: Sep 10, 2016
- *      Author: fabian
+ *      Authors: Fabián Meléndez / Felipe Rincón
  */
+
 
 #ifndef INTERRUPTIONS_H_
 #define INTERRUPTIONS_H_

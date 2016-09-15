@@ -1,9 +1,13 @@
 /*
  * interruptions.c
  *
+ *	Source file for the service interruptions res-
+ *	ponse functions.
+ *
  *  Created on: Sep 10, 2016
- *      Authors: Fabian Melendez / Felipe Rincón.
+ *      Authors: Fabián Meléndez / Felipe Rincón
  */
+
 
 
 // Include header files
@@ -19,7 +23,7 @@
 // ***********************************************************
 /*
  * Interrupt service routine for the timer A0. It expects the
- * subroutine to be called with a period of T=1 ms.
+ * subroutine to be called with a period of T=10 ms.
  *
  * This subroutine:
  * 	- Turns off the TIMER A0 interrupt flag.
@@ -57,7 +61,7 @@ void TA0_0_ISR(void) {
 
 
 	// Activate ADC14 conversion each 200ms
-	g_u8TimerCounter_ADC14 = (g_u8TimerCounter_ADC14 + 1)  % 20;
+	g_u8TimerCounter_ADC14 = (g_u8TimerCounter_ADC14 + 1)  % MAX_ADC14_COUNTER;
 	if(g_u8TimerCounter_ADC14 == 0){
 		ADC14->IER0 = ADC14_IER0_IE3;           // Enable ADC14IFG.3
 		ADC14->CTL0 |= ADC14_CTL0_ENC |ADC14_CTL0_SC;

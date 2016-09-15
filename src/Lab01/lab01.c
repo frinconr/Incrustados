@@ -1,8 +1,11 @@
 /*
  * lab01.c
  *
+ *	Source file for miscelaneus functions and
+ *	processing functions for the lab 01.
+ *
  *  Created on: Sep 10, 2016
- *      Author: fabian
+ *      Authors: Fabián Meléndez / Felipe Rincón
  */
 
 #include "lab01.h"
@@ -63,7 +66,11 @@ void SetUp() {
 }
 
 
-
+/*
+ * Initialize variables.
+ *
+ * Set all flags in zero when starting
+ */
 void InitVars(void) {
 	g_bGlobalFlags[LUX_FLAG] = false;
 	g_bGlobalFlags[ADC14_FLAG] = false;
@@ -86,6 +93,11 @@ void TurnLightOn () {
 	}
 }
 
+/**
+ * TurnLightOff
+ *
+ * Turns the light off using the g_u16TimerCounter_LED
+ */
 void TurnLightOff() {
 	// Preload timing for TA0_0_ISR to turn LED on
 	g_u16TimerCounter_LED = 0;
@@ -114,7 +126,10 @@ void InitialBlinking() {
 	}
 }
 
-
+/**
+ * Set initial state of the lamp depending
+ * on the light intensity when starting.
+ */
 void SetInitialState() {
 	/* Obtain lux value from OPT3001 */
 	g_fLighValue = OPT3001_getLux();
@@ -127,7 +142,11 @@ void SetInitialState() {
 
 /* FillSamplesArray
  *
- * Uses the last_sample argument and
+ * This function process the conversion data set and
+ * obtains an average value of the amplitudes of the
+ * data. After that it pushes the data in a circular
+ * array g_i16SamplesArray that contains all the sam-
+ * ples of the last 5 seconds
  *
  */
 void FillSamplesArray() {
@@ -145,7 +164,6 @@ void FillSamplesArray() {
 
 	// Fill g_u16ADCResults array where g_u8ADCIndex indicates
 	g_i16SamplesArray[g_u8ADCIndex] = l_i16MaxADCResult;
-	g_i16LastResult = l_i16MaxADCResult;
 
 	// Update g_u8ADCIndex
 	g_u8ADCIndex = (g_u8ADCIndex+1) % MAX_SAMPLES;
@@ -156,7 +174,16 @@ void FillSamplesArray() {
 	}
 }
 
-
+/**
+ * ProcessMicData
+ *
+ * This function process the samples from the last
+ * 5s obtaining the average for the last 5s and for
+ * the last second.
+ *
+ * After that it determines if the light should be
+ * turned on.
+ * */
 void ProcessMicData() {
 	int32_t l_i32AverageTotalSamples = 0;
 	int32_t l_i32AverageLastSecond = 0;

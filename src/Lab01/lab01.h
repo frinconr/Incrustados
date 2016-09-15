@@ -2,6 +2,8 @@
  * lab01.h
  *
  *	This file contains the definitions for the Lab01.
+ *	Including constant definitions, variables and
+ *	processing methods.
  *
  *  Created on: Aug 20, 2016
  *      Authors: Fabián Meléndez / Felipe Rincón
@@ -81,10 +83,11 @@
 // Number of samples to store in samples array (5seconds of samples)
 #define MAX_SAMPLES (5*SAMPLES_PER_SECOND)
 
-#define MISC_COUNTER_MAX 100
+// Preload value for the timeout between conversion
+#define MAX_ADC14_COUNTER 20
 
 // Sound THRESHOLD
-#define SOUND_THRESHOLD 1.5
+#define SOUND_THRESHOLD 1.1
 
 
 // Flags definitions
@@ -92,9 +95,9 @@ typedef enum {
 	LUX_FLAG,
 	ADC14_FLAG,
 	Five_Seconds_Reached,
-	// Total flags
+	// Total flag count
 	NUM_FLAGS
-} GlobalFlags;
+} eGlobalFlags;
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -120,11 +123,12 @@ extern int16_t g_i16SamplesArray[MAX_SAMPLES];
 // Index for storing in the
 extern uint8_t g_u8ADCIndex;
 
+// Value of the light intensity
 extern float g_fLighValue;
 
+// An array for the global flags
 extern bool g_bGlobalFlags[NUM_FLAGS];
 
-extern int16_t g_i16LastResult;
 
 //////////////////////////////////////////////////////////////////////////////
 // Declaring functions
@@ -138,7 +142,6 @@ void TurnLightOff();
 void InitialBlinking();
 void FillSamplesArray();
 void ProcessMicData();
-
 
 
 #endif /* LAB01_H_DEFS */
