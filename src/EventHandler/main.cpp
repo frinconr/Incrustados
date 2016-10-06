@@ -4,6 +4,7 @@
 #include "Scheduler.hpp"
 #include "Task.hpp"
 #include "LED.hpp"
+#include "Definitions.hpp"
 
 uint8_t Task::m_u8NextTaskID = 0;
 volatile static uint64_t SystemTicks = 0;
@@ -11,9 +12,12 @@ volatile static uint64_t SystemTicks = 0;
 void main(void)
 {
     Scheduler MainScheduler;
-    LED BlinkLED;
+    LED BlinkLED1 = LED::LED(LED1Mask);
+    LED BlinkLED2 = LED::LED(LED2Mask);
     Setup();
-    MainScheduler.attach(&BlinkLED, 5);
+    MainScheduler.attach(&BlinkLED1, 5);
+    MainScheduler.attach(&BlinkLED2, 10);
+
     while(1){
     	__wfe();
         if(SystemTicks != MainScheduler.ticks)

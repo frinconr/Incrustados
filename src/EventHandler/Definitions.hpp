@@ -17,6 +17,7 @@
 #define Timer32_Priority      0
 
 // LED MASK
-#define LED2Mask (BIT2|BIT0)
+#define LED1Mask BIT0
+#define LED2Mask BIT2
 
 #endif /* DEFINITIONS_HPP_ */

@@ -10,7 +10,6 @@ Scheduler::Scheduler()
     mNextScheduleOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
     mNextScheduleNextSlot = 0;
 
-
     // For the recurring events
     mRecEventsOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
     mRecEventsNextSlot = 0;
