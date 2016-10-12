@@ -57,9 +57,9 @@ void ConfigP2LED(const uint16_t LEDMask) {
 
 	// - Configure P2.LED_MASK as output,
 	// Only 3 bits are allowed (RGB)
-	P2->DIR |= (LEDMask & 0x00000007);
+	P2->DIR |= (LEDMask % 8);
 	// Clean Port0
-	P2->DIR &= ~(LEDMask & 0x00000007);
+	P2->DIR &= ~(LEDMask % 8);
 }
 
 void ConfigS2ButtonInterrupt() {
@@ -89,6 +89,39 @@ void ConfigS2ButtonInterrupt() {
 	P1->IFG = 0;
 	// Enable interrupt for P1.1
 	P1->IE = BIT4;
+
+	// Enable Port 1 interrupt on the NVIC
+	NVIC_SetPriority(PORT1_IRQn,2);
+	NVIC_EnableIRQ(PORT1_IRQn);
+}
+
+void ConfigS1ButtonInterrupt() {
+	// - - - - - - - - - - - - - -
+	// P1 Config
+	// - - - - - - - - - - - - - -
+	// This is the button interrupt port
+
+	// - Configure P1.1 (S1) as input
+
+	// Configuring P1.1 (switch) as input with pull-up
+	// resistor. Rest of pins are configured as output low.
+	// Notice intentional '=' assignment since all P1 pins are being
+	// deliberately configured
+
+	// Configure P1.1 as input
+	P1->DIR &= ~(uint8_t) BIT1;
+	// Enable pull-up resistor (P1.1 output high)
+	P1->OUT = BIT1;
+	P1->REN = BIT1;
+	// Configure as a GPIO
+	P1->SEL0 = 0;
+	P1->SEL1 = 0;
+	// Interrupt on high-to-low transition
+	P1->IES = BIT1;
+	// Clear all P1 interrupt flags
+	P1->IFG = 0;
+	// Enable interrupt for P1.1
+	P1->IE = BIT1;
 
 	// Enable Port 1 interrupt on the NVIC
 	NVIC_SetPriority(PORT1_IRQn,2);

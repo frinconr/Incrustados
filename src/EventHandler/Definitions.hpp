@@ -20,4 +20,15 @@
 #define LED1Mask BIT0
 #define LED2Mask BIT2
 
+#define DebounceTime 5
+
+typedef enum {
+	Debounce_Flag,
+	// Total flag count
+	NUM_FLAGS
+} eGlobalFlags;
+
+// Global variable declarations
+extern bool g_bGlobalFlags[NUM_FLAGS];
+
 #endif /* DEFINITIONS_HPP_ */
