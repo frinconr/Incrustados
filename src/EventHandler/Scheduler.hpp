@@ -20,7 +20,7 @@ public:
     Scheduler();
     uint64_t ticks;
     uint8_t attach(Task * i_ToAttach);
-    uint8_t attach(Task * i_ToAttach, uint16_t i_u16TickInterval);
+    uint8_t attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool OneShot=false);
     uint8_t run(void);
     uint8_t AddRecurringEvents();
 
@@ -28,6 +28,7 @@ public:
     struct RepeatingTask {
 		uint16_t i_u16TickInterval;
 		uint16_t i_u16CounterToRun;
+		bool b_OneShot;
 		Task * t_Task;
 	};
 

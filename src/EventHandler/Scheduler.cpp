@@ -42,7 +42,7 @@ uint8_t Scheduler::attach(Task * i_ToAttach)
     return l_ErrorCode;
 }
 
-uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval)
+uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool OneShot)
 {
     uint8_t l_ErrorCode = NO_ERR;
     if((mRecEventsOpenSlots>0) && (mRecEventsNextSlot < NUMBER_OF_SLOTS))
@@ -50,8 +50,9 @@ uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval)
     	// Initialize Task pointer
         RecurringEvents[mRecEventsNextSlot].t_Task = i_ToAttach;
         // Initialize counters
-        RecurringEvents[mRecEventsNextSlot].i_u16TickInterval = i_u16TickInterval;
-        RecurringEvents[mRecEventsNextSlot].i_u16CounterToRun = i_u16TickInterval;
+        RecurringEvents[mRecEventsNextSlot].i_u16TickInterval = i_u16TickInterval-1;
+        RecurringEvents[mRecEventsNextSlot].i_u16CounterToRun = i_u16TickInterval-1;
+        RecurringEvents[mRecEventsNextSlot].b_OneShot = OneShot;
         // Update indexes
         mRecEventsOpenSlots--;
         mRecEventsNextSlot++;
@@ -97,10 +98,18 @@ uint8_t Scheduler::AddRecurringEvents(void) {
 			RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].i_u16TickInterval;
 			// Add task to NextSchedule
 			attach(RecurringEvents[index].t_Task);
+
+			if(RecurringEvents[index].b_OneShot) {
+				// Disable the one shot interrupt
+				RecurringEvents[index].i_u16TickInterval = 0;
+			}
 		}
 		else
 		{
-			RecurringEvents[index].i_u16CounterToRun--;
+			// This IF disables the one shot interrupt
+			if(RecurringEvents[index].i_u16TickInterval > 0) {
+				RecurringEvents[index].i_u16CounterToRun--;
+			}
 		}
 	}
 	return(NO_ERR);

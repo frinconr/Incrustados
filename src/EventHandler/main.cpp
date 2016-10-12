@@ -2,28 +2,31 @@
 #include "msp.h"
 #include "main.hpp"
 #include "Scheduler.hpp"
-#include "Task.hpp"
 #include "LED.hpp"
+#include "S1Button.hpp"
 #include "Definitions.hpp"
+
 
 uint8_t Task::m_u8NextTaskID = 0;
 volatile static uint64_t SystemTicks = 0;
+bool g_bGlobalFlags[NUM_FLAGS];
+Scheduler g_MainScheduler;
+S1Button ButtonTask;
 
 void main(void)
 {
-    Scheduler MainScheduler;
-    LED BlinkLED1 = LED::LED(LED1Mask);
-    LED BlinkLED2 = LED::LED(LED2Mask);
+    // LED BlinkLED1 = LED::LED(LED1Mask);
+    // LED BlinkLED2 = LED::LED(LED2Mask);
+
     Setup();
-    MainScheduler.attach(&BlinkLED1, 5);
-    MainScheduler.attach(&BlinkLED2, 10);
+    // g_MainScheduler.attach(&BlinkLED1, 10);
 
     while(1){
     	__wfe();
-        if(SystemTicks != MainScheduler.ticks)
+        if(SystemTicks != g_MainScheduler.ticks)
         {
-            MainScheduler.ticks = SystemTicks;
-            MainScheduler.run();
+        	g_MainScheduler.ticks = SystemTicks;
+        	g_MainScheduler.run();
         }
     };
 }
@@ -63,6 +66,10 @@ void Setup(void)
 	NVIC_SetPriority(T32_INT1_IRQn,1);
 	NVIC_EnableIRQ(T32_INT1_IRQn);
 	__enable_irq();
+
+
+	// Init flags
+	g_bGlobalFlags[Debounce_Flag] = true;
 	return;
 }
 
@@ -74,5 +81,15 @@ extern "C"
 		P1->OUT ^= BIT0;
 		SystemTicks++;
 		return;
+	}
+
+
+	void PORT1_IRQHandler(void) {
+		P1->IFG &= ~BIT1;
+
+		if(g_bGlobalFlags[Debounce_Flag]) {
+			g_bGlobalFlags[Debounce_Flag] = false;
+			g_MainScheduler.attach(&ButtonTask, DebounceTime, true);
+		}
 	}
 }
