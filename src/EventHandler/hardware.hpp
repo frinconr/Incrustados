@@ -18,8 +18,9 @@ void ConfigP1LED();
 void ConfigP2LED(const uint16_t LEDMask);
 void ConfigS2ButtonInterrupt();
 void ConfigS1ButtonInterrupt();
+void ConfigP2PWM();
 void ConfigTimer32(uint16_t MaxCount);
-void ConfigTimerA0UpMode(const uint16_t LEDMask);
+void ConfigTimerA();
 
 
 #endif /* HARDWARE_HPP_ */

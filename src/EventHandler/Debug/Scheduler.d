@@ -2,30 +2,30 @@
 
 Scheduler.obj: ../Scheduler.cpp
 Scheduler.obj: ../Scheduler.hpp
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp432p401r.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/include/stdint.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp_compatibility.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/cmsis_ccs.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp432p401r_classic.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cm4.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmInstr.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmFunc.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmSimd.h
-Scheduler.obj: /home/fabian/local/CCS/ccsv6/ccs_base/arm/include/system_msp432p401r.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/msp.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/msp432p401r.h
+Scheduler.obj: C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdint.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/msp_compatibility.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/CMSIS/cmsis_ccs.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/msp432p401r_classic.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cm4.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmInstr.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmFunc.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmSimd.h
+Scheduler.obj: C:/ti/ccsv6/ccs_base/arm/include/system_msp432p401r.h
 Scheduler.obj: ../Task.hpp
 
 ../Scheduler.cpp: 
 ../Scheduler.hpp: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp432p401r.h: 
-/home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/include/stdint.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp_compatibility.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/msp432p401r_classic.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cm4.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmInstr.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmFunc.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/CMSIS/core_cmSimd.h: 
-/home/fabian/local/CCS/ccsv6/ccs_base/arm/include/system_msp432p401r.h: 
+C:/ti/ccsv6/ccs_base/arm/include/msp.h: 
+C:/ti/ccsv6/ccs_base/arm/include/msp432p401r.h: 
+C:/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include/stdint.h: 
+C:/ti/ccsv6/ccs_base/arm/include/msp_compatibility.h: 
+C:/ti/ccsv6/ccs_base/arm/include/CMSIS/cmsis_ccs.h: 
+C:/ti/ccsv6/ccs_base/arm/include/msp432p401r_classic.h: 
+C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cm4.h: 
+C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmInstr.h: 
+C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmFunc.h: 
+C:/ti/ccsv6/ccs_base/arm/include/CMSIS/core_cmSimd.h: 
+C:/ti/ccsv6/ccs_base/arm/include/system_msp432p401r.h: 
 ../Task.hpp: 

@@ -62,6 +62,15 @@ void ConfigP2LED(const uint16_t LEDMask) {
 	P2->DIR &= ~(LEDMask % 8);
 }
 
+void ConfigP2PWM (){
+	// Port P2.5 configured as an output
+	P2->DIR |= BIT5;
+	// Select primary module function
+	P2->SEL0 |= BIT5;
+	P2->SEL1 &= ~(BIT5);
+}
+
+
 void ConfigS2ButtonInterrupt() {
 	// - - - - - - - - - - - - - -
 	// P1 Config
@@ -140,3 +149,14 @@ void ConfigTimer32 (uint32_t load) {
 	NVIC_SetPriority(T32_INT1_IRQn,1);
 	NVIC_EnableIRQ(T32_INT1_IRQn);
 }
+
+void ConfigTimerA (){
+	TIMER_A1->CCR[0] = 15000;            			// PWM Period
+    TIMER_A1->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7; 	// CCR2 reset/set
+    TIMER_A1->CCR[2] = 75000;                 		// CCR2 PWM duty cycle 50%
+    TIMER_A1->CTL = TIMER_A_CTL_SSEL__SMCLK | 		// SMCLK
+    				TIMER_A_CTL_ID__2 |				// Divide by 4
+            		TIMER_A_CTL_MC__UP |            // Up mode
+					TIMER_A_CTL_CLR;                // Clear TAR
+}
+

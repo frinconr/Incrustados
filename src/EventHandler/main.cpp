@@ -5,6 +5,7 @@
 #include "LED.hpp"
 #include "S1Button.hpp"
 #include "Definitions.hpp"
+#include "hardware.hpp"
 
 
 uint8_t Task::m_u8NextTaskID = 0;
@@ -50,6 +51,9 @@ void Setup(void)
 	// ****************************
 	// - P1.0 is connected to the Red LED
 	P1->DIR |= BIT0;
+
+	ConfigP2PWM ();
+	ConfigTimerA();
 
 	// ****************************
 	//       TIMER CONFIG
