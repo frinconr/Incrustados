@@ -22,6 +22,8 @@
 
 #define DebounceTime 5
 
+#define MAX_MSJS 20
+
 typedef enum {
 	Debounce_Flag,
 	// Total flag count

@@ -2,7 +2,7 @@
 # Automatically-generated file. Do not edit!
 ################################################################################
 
-CG_TOOL_ROOT := /home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS
+CG_TOOL_ROOT := /home/fabian/local/CCS/ti/ccsv6/tools/compiler/arm_15.12.3.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
@@ -144,13 +144,13 @@ all: EventHandler.out
 EventHandler.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP432 Linker'
-	"/home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all -g --gcc --define=__MSP432P401R__ --define=TARGET_IS_MSP432P4XX --define=ccs --diag_wrap=off --display_error_number --diag_warning=225 --abi=eabi -z -m"EventHandler.map" --stack_size=512 --heap_size=1024 -i"/home/fabian/local/CCS/ccsv6/ccs_base/arm/include" -i"/home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/lib" -i"/home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/include" --reread_libs --display_error_number --warn_sections --diag_wrap=off --xml_link_info="EventHandler_linkInfo.xml" --rom_model -o "EventHandler.out" $(ORDERED_OBJS)
+	"/home/fabian/local/CCS/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --advice:power=all -g --gcc --define=__MSP432P401R__ --define=TARGET_IS_MSP432P4XX --define=ccs --display_error_number --diag_warning=225 --diag_wrap=off --abi=eabi -z -m"EventHandler.map" --heap_size=1024 --stack_size=512 -i"/home/fabian/local/CCS/ti/ccsv6/ccs_base/arm/include" -i"/home/fabian/local/CCS/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/lib" -i"/home/fabian/local/CCS/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="EventHandler_linkInfo.xml" --rom_model -o "EventHandler.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 EventHandler.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: MSP432 Hex Utility'
-	"/home/fabian/local/CCS/ccsv6/tools/compiler/ti-cgt-arm_15.12.1.LTS/bin/armhex" --memwidth=8 --romwidth=8 -o "EventHandler.hex" $(EXE_OUTPUTS__QUOTED)
+	"/home/fabian/local/CCS/ti/ccsv6/tools/compiler/arm_15.12.3.LTS/bin/armhex" --memwidth=8 --romwidth=8 -o "EventHandler.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 

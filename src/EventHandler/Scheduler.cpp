@@ -1,7 +1,6 @@
 #include "Scheduler.hpp"
 
-Scheduler::Scheduler()
-{
+Scheduler::Scheduler() {
 	// Initialize indexes for Schedule
     mOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
     mNextSlot = 0;
@@ -14,6 +13,10 @@ Scheduler::Scheduler()
     mRecEventsOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
     mRecEventsNextSlot = 0;
 
+    // For the Message slots
+    mMessageNextSlot = 0;
+    mFirstMessageSlot = 0;
+
     for(uint8_t index = 0; index < (NUMBER_OF_SLOTS-1U); index++)
     {
     	// Init Schedule
@@ -21,7 +24,7 @@ Scheduler::Scheduler()
         NextSchedule[index] = (uintptr_t) 0;
         // Init recurring events
         RecurringEvents[index].t_Task = 0;
-        RecurringEvents[index].i_u16TickInterval = 0;
+        RecurringEvents[index].t_Task->i_u16TickInterval = 0;
     }
     return;
 }
@@ -50,7 +53,7 @@ uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool On
     	// Initialize Task pointer
         RecurringEvents[mRecEventsNextSlot].t_Task = i_ToAttach;
         // Initialize counters
-        RecurringEvents[mRecEventsNextSlot].i_u16TickInterval = i_u16TickInterval-1;
+        RecurringEvents[mRecEventsNextSlot].t_Task->i_u16TickInterval = i_u16TickInterval-1;
         RecurringEvents[mRecEventsNextSlot].i_u16CounterToRun = i_u16TickInterval-1;
         RecurringEvents[mRecEventsNextSlot].b_OneShot = OneShot;
         // Update indexes
@@ -95,19 +98,19 @@ uint8_t Scheduler::AddRecurringEvents(void) {
 		if(RecurringEvents[index].i_u16CounterToRun == 0)
 		{
 			// Reset count to execution
-			RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].i_u16TickInterval;
+			RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].t_Task->i_u16TickInterval;
 			// Add task to NextSchedule
 			attach(RecurringEvents[index].t_Task);
 
 			if(RecurringEvents[index].b_OneShot) {
 				// Disable the one shot interrupt
-				RecurringEvents[index].i_u16TickInterval = 0;
+				RecurringEvents[index].t_Task->i_u16TickInterval = 0;
 			}
 		}
 		else
 		{
 			// This IF disables the one shot interrupt
-			if(RecurringEvents[index].i_u16TickInterval > 0) {
+			if(RecurringEvents[index].t_Task->i_u16TickInterval > 0) {
 				RecurringEvents[index].i_u16CounterToRun--;
 			}
 		}
@@ -141,5 +144,32 @@ uint8_t Scheduler::CalculateNextSchedule(void)
 
 uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
 {
+    return(NO_ERR);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Messages Methods
+//////////////////////////////////////////////////////////////////////////////// i = f-
+uint8_t Scheduler::AddMessage(Task* sender, Task* receiver, int Type, int* data=0) {
+    if((mFirstMessageSlot != mMessageNextSlot+1) & (mFirstMessageSlot != mMessageNextSlot-(MAX_MSJS-1))) {
+        MessageQueue[mMessageNextSlot].Sender = sender;
+        MessageQueue[mMessageNextSlot].Receiver = receiver;
+        MessageQueue[mMessageNextSlot].Type = Type;
+
+        // Update index of next message
+        mMessageNextSlot = (mMessageNextSlot+1)% MAX_MSJS;
+    } else {
+
+    	return(RET_ERR);
+    }
+
+    return(NO_ERR);
+}
+
+uint8_t Scheduler::ProcessMessages(){
+	while(mFirstMessageSlot != mMessageNextSlot) {
+		MessageQueue[mFirstMessageSlot].Receiver->ProcessMessage(MessageQueue[mFirstMessageSlot]);
+		mFirstMessageSlot = (mFirstMessageSlot+1)%MAX_MSJS;
+	}
     return(NO_ERR);
 }

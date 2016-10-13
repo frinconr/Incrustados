@@ -2,13 +2,14 @@
  * Scheduler.hpp
  *
  *  Created on: Aug 31, 2016
- *      Author: eortiz
+ *      Author: Fabian Melendez
  */
 
 #ifndef TASKS_SCHEDULER_HPP_
 #define TASKS_SCHEDULER_HPP_
 #define __NOP __nop
 #include "msp.h"
+#include "Definitions.hpp"
 #include "Task.hpp"
 
 #define NUMBER_OF_SLOTS 256
@@ -23,6 +24,10 @@ public:
     uint8_t attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool OneShot=false);
     uint8_t run(void);
     uint8_t AddRecurringEvents();
+
+    // For the messages
+    uint8_t AddMessage(Task*, Task*, int Type, int* data);
+    uint8_t ProcessMessages();
 
     // Structure to handle repeating events
     struct RepeatingTask {
@@ -48,6 +53,11 @@ private:
 
     uint8_t CalculateNextSchedule(void);
     uint8_t SortScheduleByPriority(Task * i_pSchedule);
+
+    // For the message queue
+    Task::Message MessageQueue[MAX_MSJS];
+    uint8_t mMessageNextSlot;
+    uint8_t mFirstMessageSlot;
 };
 
 
