@@ -130,6 +130,10 @@ uint8_t Scheduler::run(void)
             NextTaskSlot++;
         }
     }
+
+    // Process message Qeue
+    ProcessMessages();
+
     return l_u8ReturnCode;
 }
 

@@ -25,7 +25,7 @@ void main(void)
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
-    g_MainScheduler.attach(&BlinkLED1, 10);
+    g_MainScheduler.attach(&BlinkLED1, 10, true);
 
     while(1){
     	__wfe();
