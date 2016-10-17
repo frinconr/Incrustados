@@ -22,6 +22,7 @@ S1Button ButtonTask;
 void main(void)
 {
     LED BlinkLED1 = LED::LED(LED1Mask);
+
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
@@ -98,7 +99,7 @@ extern "C"
 
 		if(g_bGlobalFlags[Debounce_Flag]) {
 			g_bGlobalFlags[Debounce_Flag] = false;
-			g_MainScheduler.attach(&ButtonTask, DebounceTime, true);
+			g_MainScheduler.attach(&ButtonTask, 10, true);
 		}
 	}
 }

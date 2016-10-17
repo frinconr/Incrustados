@@ -22,5 +22,7 @@ uint8_t S1Button::run(void) {
 
 	// Hacer algo
 	P2->OUT ^= BIT1;
+
+	return NO_ERR;
 }
 
