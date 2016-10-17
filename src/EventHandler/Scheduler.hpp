@@ -56,7 +56,7 @@ private:
 
     // For the message queue
     Task::Message MessageQueue[MAX_MSJS];
-    uint8_t mMessageNextSlot;
+    uint8_t mNextMessageSlot;
     uint8_t mFirstMessageSlot;
 };
 

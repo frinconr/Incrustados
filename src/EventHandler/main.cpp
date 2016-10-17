@@ -8,19 +8,24 @@
 #include "hardware.hpp"
 
 
+// Static task ID counter
 uint8_t Task::m_u8NextTaskID = 0;
+// System ticks counter
 volatile static uint64_t SystemTicks = 0;
+// Global flags
 bool g_bGlobalFlags[NUM_FLAGS];
+// Scheduler instance
 Scheduler g_MainScheduler;
+// Global button task used by scheduler
 S1Button ButtonTask;
 
 void main(void)
 {
-    // LED BlinkLED1 = LED::LED(LED1Mask);
+    LED BlinkLED1 = LED::LED(LED1Mask);
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
-    // g_MainScheduler.attach(&BlinkLED1, 10);
+    g_MainScheduler.attach(&BlinkLED1, 10);
 
     while(1){
     	__wfe();
@@ -72,7 +77,7 @@ void Setup(void)
 	__enable_irq();
 
 
-	// Init flags
+	// Initialize flags
 	g_bGlobalFlags[Debounce_Flag] = true;
 	return;
 }
