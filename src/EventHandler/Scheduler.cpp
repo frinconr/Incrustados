@@ -146,23 +146,25 @@ uint8_t Scheduler::run(void)
 uint8_t Scheduler::AddRecurringEvents(void) {
 	for(uint8_t index = 0; index < mRecEventsNextSlot; index++)
 	{
-		if(RecurringEvents[index].i_u16CounterToRun == 0)
+		// Check that Task is active
+		if(RecurringEvents[index].t_Task->m_bActive)
 		{
-			// Reset count to execution
-			RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].t_Task->i_u16TickInterval;
+			if(RecurringEvents[index].i_u16CounterToRun == 0)
+			{
+				// Reset count to execution
+				RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].t_Task->i_u16TickInterval;
 
-			// Add task to NextSchedule
-			attach(RecurringEvents[index].t_Task);
+				// Add task to NextSchedule
+				attach(RecurringEvents[index].t_Task);
 
-			if(RecurringEvents[index].b_OneShot) {
-				// Disable the one shot interrupt
-				RecurringEvents[index].t_Task->i_u16TickInterval = 0;
+				if(RecurringEvents[index].b_OneShot) {
+					// Disable the one shot interrupt
+					RecurringEvents[index].t_Task->m_bActive = false;
+				}
 			}
-		}
-		else
-		{
-			// This IF disables the one shot interrupt
-			if(!RecurringEvents[index].b_OneShot | RecurringEvents[index].t_Task->i_u16TickInterval > 0) {
+			else
+			{
+				// Reduce count-down
 				RecurringEvents[index].i_u16CounterToRun--;
 			}
 		}

@@ -23,6 +23,10 @@ void main(void)
 {
     LED BlinkLED1 = LED::LED(LED1Mask);
 
+    // Start Task Inactive, add to scheduler as a delayed task
+    g_MainScheduler.attach(&ButtonTask, 5, true);
+    ButtonTask.Kill();
+
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
@@ -99,7 +103,7 @@ extern "C"
 
 		if(g_bGlobalFlags[Debounce_Flag]) {
 			g_bGlobalFlags[Debounce_Flag] = false;
-			g_MainScheduler.attach(&ButtonTask, 10, true);
+			ButtonTask.Revive();
 		}
 	}
 }
