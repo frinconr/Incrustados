@@ -25,7 +25,8 @@
 #define MAX_MSJS 20
 
 typedef enum {
-	Debounce_Flag,
+	Debounce_Flag_S1,
+	Debounce_Flag_S2,
 	// Total flag count
 	NUM_FLAGS
 } eGlobalFlags;

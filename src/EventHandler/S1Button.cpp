@@ -1,4 +1,4 @@
-/*
+	/*
  * S1Button.cpp
  *
  *  Created on: Oct 5, 2016
@@ -18,7 +18,7 @@ S1Button::S1Button() {
 
 uint8_t S1Button::run(void) {
 	// Destructor
-	g_bGlobalFlags[Debounce_Flag] = true;
+	g_bGlobalFlags[Debounce_Flag_S1] = true;
 
 	// Hacer algo
 	P2->OUT ^= BIT1;
