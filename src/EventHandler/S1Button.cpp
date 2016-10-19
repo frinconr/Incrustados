@@ -20,7 +20,9 @@ uint8_t S1Button::run(void) {
 	// Destructor
 	g_bGlobalFlags[Debounce_Flag_S1] = true;
 
-	// Hacer algo
+	// Do Something
 	P2->OUT ^= BIT1;
+
+	return NO_ERR;
 }
 

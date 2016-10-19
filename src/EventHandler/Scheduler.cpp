@@ -1,5 +1,9 @@
 #include "Scheduler.hpp"
 
+//////////////////////////////////////////////////////////////////////////////
+// Constructor
+//////////////////////////////////////////////////////////////////////////////
+
 Scheduler::Scheduler() {
 	// Initialize indexes for Schedule
     mOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
@@ -13,22 +17,34 @@ Scheduler::Scheduler() {
     mRecEventsOpenSlots = static_cast<uint8_t>(NUMBER_OF_SLOTS-1U);
     mRecEventsNextSlot = 0;
 
-    // For the Message slots
-    mMessageNextSlot = 0;
+    // For the Message slots, initialize indexes
+    mNextMessageSlot = 0;
     mFirstMessageSlot = 0;
 
     for(uint8_t index = 0; index < (NUMBER_OF_SLOTS-1U); index++)
     {
-    	// Init Schedule
+    	// Initialize Schedule
         Schedule[index] = (uintptr_t) 0;
         NextSchedule[index] = (uintptr_t) 0;
-        // Init recurring events
+        // Initialize recurring events
         RecurringEvents[index].t_Task = 0;
         RecurringEvents[index].t_Task->i_u16TickInterval = 0;
     }
     return;
 }
 
+
+//////////////////////////////////////////////////////////////////////////////
+// Attaching methods
+//////////////////////////////////////////////////////////////////////////////
+
+
+/*! Single shot attach. This adds the task pointer to the next Scheduler to run
+ * in the next cycle.
+ *
+ * \param: i_ToAttach: A pointer to a Task (inherited class from Task class).
+ * \return: Error code NO_ERR or RET_ERR.
+ !*/
 uint8_t Scheduler::attach(Task * i_ToAttach)
 {
     uint8_t l_ErrorCode = NO_ERR;
@@ -45,9 +61,21 @@ uint8_t Scheduler::attach(Task * i_ToAttach)
     return l_ErrorCode;
 }
 
-uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool OneShot)
+
+/*!
+ * Recursive or delayed attach.
+ *
+ * This function attaches a function that either runs in a number of cycles and stops,
+ * or continuous to run recursively with the same latency.
+ *
+ * \param i_ToAttach: A pointer to a Task (inherited class from Task class).
+ * \param u_u16TickInverval: Latency or delay of task to run.
+ * \param b_OneShot: A boolen to see if task should run recursively or just one time
+ */
+uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool b_OneShot)
 {
     uint8_t l_ErrorCode = NO_ERR;
+    // Check if we have open slots
     if((mRecEventsOpenSlots>0) && (mRecEventsNextSlot < NUMBER_OF_SLOTS))
     {
     	// Initialize Task pointer
@@ -55,7 +83,7 @@ uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool On
         // Initialize counters
         RecurringEvents[mRecEventsNextSlot].t_Task->i_u16TickInterval = i_u16TickInterval-1;
         RecurringEvents[mRecEventsNextSlot].i_u16CounterToRun = i_u16TickInterval-1;
-        RecurringEvents[mRecEventsNextSlot].b_OneShot = OneShot;
+        RecurringEvents[mRecEventsNextSlot].b_OneShot = b_OneShot;
         // Update indexes
         mRecEventsOpenSlots--;
         mRecEventsNextSlot++;
@@ -67,12 +95,26 @@ uint8_t Scheduler::attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool On
     return l_ErrorCode;
 }
 
+//////////////////////////////////////////////////////////////////////////////
+// Processing methods
+//////////////////////////////////////////////////////////////////////////////
+
+/*! RUN
+ *
+ * This is the function that executes the Tasks.
+ *
+ * First, it calculates the Task Schedule to run, passing Tasks from the NextScheule
+ * to the Schedule, and cleaning the NextSchedule.
+ *
+ * Then, it takes each task on the Schedule and executes the run method.
+ */
 uint8_t Scheduler::run(void)
 {
     uint8_t NextTaskSlot = 0U;
     Task * NextTask = (uintptr_t) 0;
     uint8_t l_u8ReturnCode = NO_ERR;
 
+    // Calculate the Next Schedule
     CalculateNextSchedule();
 
     while(NextTaskSlot < (NUMBER_OF_SLOTS-1U))
@@ -88,29 +130,41 @@ uint8_t Scheduler::run(void)
             NextTaskSlot++;
         }
     }
+
+    // Process message Qeue
+    ProcessMessages();
+
     return l_u8ReturnCode;
 }
 
-
+/*!
+ * AddRecurringEvents
+ *
+ * This function passes the recursive Tasks to run each time the have to,
+ * For this the
+ */
 uint8_t Scheduler::AddRecurringEvents(void) {
 	for(uint8_t index = 0; index < mRecEventsNextSlot; index++)
 	{
-		if(RecurringEvents[index].i_u16CounterToRun == 0)
+		// Check that Task is active
+		if(RecurringEvents[index].t_Task->m_bActive)
 		{
-			// Reset count to execution
-			RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].t_Task->i_u16TickInterval;
-			// Add task to NextSchedule
-			attach(RecurringEvents[index].t_Task);
+			if(RecurringEvents[index].i_u16CounterToRun == 0)
+			{
+				// Reset count to execution
+				RecurringEvents[index].i_u16CounterToRun = RecurringEvents[index].t_Task->i_u16TickInterval;
 
-			if(RecurringEvents[index].b_OneShot) {
-				// Disable the one shot interrupt
-				RecurringEvents[index].t_Task->i_u16TickInterval = 0;
+				// Add task to NextSchedule
+				attach(RecurringEvents[index].t_Task);
+
+				if(RecurringEvents[index].b_OneShot) {
+					// Disable the one shot interrupt
+					RecurringEvents[index].t_Task->m_bActive = false;
+				}
 			}
-		}
-		else
-		{
-			// This IF disables the one shot interrupt
-			if(RecurringEvents[index].t_Task->i_u16TickInterval > 0) {
+			else
+			{
+				// Reduce count-down
 				RecurringEvents[index].i_u16CounterToRun--;
 			}
 		}
@@ -118,7 +172,11 @@ uint8_t Scheduler::AddRecurringEvents(void) {
 	return(NO_ERR);
 }
 
-
+/*! CalculateNextSchedule
+ *
+ * This function passes the functions from the NextSchedule to the Schedule,
+ * then it cleans the NextSchedule.
+ */
 uint8_t Scheduler::CalculateNextSchedule(void)
 {
 	// Add recurring events to next schedule
@@ -141,7 +199,12 @@ uint8_t Scheduler::CalculateNextSchedule(void)
     return(NO_ERR);
 }
 
-
+/*!
+ * TODO!
+ *
+ * This function takes the Schedule array and sorts the Task pointers
+ * depending on their priority.
+ */
 uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
 {
     return(NO_ERR);
@@ -149,25 +212,35 @@ uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
 
 ////////////////////////////////////////////////////////////////////////////////
 // Messages Methods
-//////////////////////////////////////////////////////////////////////////////// i = f-
+////////////////////////////////////////////////////////////////////////////////
+
+/*!
+ *  This function ads a message to the Message Queue.
+ */
 uint8_t Scheduler::AddMessage(Task* sender, Task* receiver, int Type, int* data=0) {
-    if((mFirstMessageSlot != mMessageNextSlot+1) & (mFirstMessageSlot != mMessageNextSlot-(MAX_MSJS-1))) {
-        MessageQueue[mMessageNextSlot].Sender = sender;
-        MessageQueue[mMessageNextSlot].Receiver = receiver;
-        MessageQueue[mMessageNextSlot].Type = Type;
+	// If we still have room for messages:
+    if((mFirstMessageSlot != mNextMessageSlot+1) & (mFirstMessageSlot != mNextMessageSlot-(MAX_MSJS-1))) {
+    	// Fill message information
+        MessageQueue[mNextMessageSlot].Sender = sender;
+        MessageQueue[mNextMessageSlot].Receiver = receiver;
+        MessageQueue[mNextMessageSlot].Type = Type;
 
         // Update index of next message
-        mMessageNextSlot = (mMessageNextSlot+1)% MAX_MSJS;
+        mNextMessageSlot = (mNextMessageSlot+1)% MAX_MSJS;
     } else {
-
     	return(RET_ERR);
     }
 
     return(NO_ERR);
 }
 
+/*! ProcessMessages
+ *
+ *	Loop through all messages and run the messages on each Task.
+ */
 uint8_t Scheduler::ProcessMessages(){
-	while(mFirstMessageSlot != mMessageNextSlot) {
+	// If the pointers are different, we still have messages
+	while(mFirstMessageSlot != mNextMessageSlot) {
 		MessageQueue[mFirstMessageSlot].Receiver->ProcessMessage(MessageQueue[mFirstMessageSlot]);
 		mFirstMessageSlot = (mFirstMessageSlot+1)%MAX_MSJS;
 	}
