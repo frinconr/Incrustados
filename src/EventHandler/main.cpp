@@ -16,21 +16,20 @@ volatile static uint64_t SystemTicks = 0;
 bool g_bGlobalFlags[NUM_FLAGS];
 // Scheduler instance
 Scheduler g_MainScheduler;
+
+// BlinkingLED1
+LED BlinkLED1 = LED::LED(LED2Mask);
 // Global button task used by scheduler
-S1Button ButtonTask;
+S1Button ButtonTask(&g_MainScheduler, &BlinkLED1);
 
 void main(void)
 {
-    LED BlinkLED1 = LED::LED(LED1Mask);
-
     // Start Task Inactive, add to scheduler as a delayed task
-    g_MainScheduler.attach(&ButtonTask, 5, true);
+    g_MainScheduler.attach(&ButtonTask, 10, true);
     ButtonTask.Kill();
 
-    // LED BlinkLED2 = LED::LED(LED2Mask);
-
     Setup();
-    g_MainScheduler.attach(&BlinkLED1, 10, true);
+    g_MainScheduler.attach(&BlinkLED1, 10);
 
     while(1){
     	__wfe();
