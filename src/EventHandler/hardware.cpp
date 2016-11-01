@@ -156,7 +156,7 @@ void ConfigTimer32 (uint16_t load) {
 void ConfigTimerA (){
 	TIMER_A0->CCR[0] = 30000;            			// PWM Period
     TIMER_A0->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7; 	// CCR2 reset/set
-    TIMER_A0->CCR[2] = 7500;                 		// CCR2 PWM duty cycle 50%
+    TIMER_A0->CCR[2] = 1500;                 		// CCR2 PWM duty cycle 5% for -90  initial position
     TIMER_A0->CTL = TIMER_A_CTL_SSEL__SMCLK | 		// SMCLK
     				TIMER_A_CTL_ID__2 |				// Divide by 4
             		TIMER_A_CTL_MC__UP |            // Up mode
