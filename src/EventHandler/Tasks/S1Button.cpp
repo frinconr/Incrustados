@@ -20,7 +20,7 @@ S1Button::S1Button(Scheduler* scheduler, Task* receiver) {
 
 uint8_t S1Button::run(void) {
 	// Destructor
-	g_bGlobalFlags[Debounce_Flag] = true;
+	g_bGlobalFlags[Debounce_Flag_S1] = true;
 
 	// Send message, of type 0 to the receiver
 	m_Scheduler->AddMessage(this, m_Receiver, 0, 0);

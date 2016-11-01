@@ -122,8 +122,8 @@ void Setup(void)
 	// ****************************
 	// Initialize global flags
 	// ****************************
-	g_bGlobalFlags[Debounce_Flag] = true;
-
+	g_bGlobalFlags[Debounce_Flag_S1] = true;
+	g_bGlobalFlags[Debounce_Flag_S2] = true;
 	return;
 }
 
@@ -145,8 +145,8 @@ extern "C"
 	void PORT1_IRQHandler(void) {
 		P1->IFG &= ~BIT1;
 
-		if(g_bGlobalFlags[Debounce_Flag]) {
-			g_bGlobalFlags[Debounce_Flag] = false;
+		if(g_bGlobalFlags[Debounce_Flag_S1]) {
+			g_bGlobalFlags[Debounce_Flag_S1] = false;
 			ButtonTask.Revive();
 		}
 	}
