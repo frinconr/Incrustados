@@ -26,6 +26,7 @@ class S1Button : public Task
         // Attributes
         Scheduler * m_Scheduler;
         Task * m_Receiver;
+
 };
 
 #endif /* S1BUTTON_HPP_ */

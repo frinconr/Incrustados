@@ -27,7 +27,7 @@ class Task
 		bool                IsTaskFinished(void){return m_bIsFinished;};
 		uint8_t             GetTaskPriority(void) {return m_u8Priority;};
 		void                SetTaskPriority(uint8_t i_u8NewPriority){m_u8Priority = i_u8NewPriority;};
-        virtual void        ProcessMessage(Task::Message) {//DO NOTHING};
+        virtual void        ProcessMessage(Task::Message) {/*DO NOTHING*/};
         void 				Revive(void);
         void				Kill(void);
 

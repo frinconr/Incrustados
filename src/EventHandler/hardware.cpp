@@ -5,8 +5,11 @@
  *      Author: fabian
  */
 
+#include "hardware.hpp"
 #include "Definitions.hpp"
 #include "msp.h"
+#include "Crystalfontz128x128_ST7735.h"
+
 
 /** Enable Interruptions
  *	- Enables all interruptions
@@ -142,7 +145,7 @@ void ConfigS1ButtonInterrupt() {
 // Timers Configuration
 //////////////////////////////////////////////////////////////////////////////
 
-void ConfigTimer32 (uint32_t load) {
+void ConfigTimer32 (uint16_t load) {
 	//TIMER32_1->LOAD = 0x002DC6C0; //~1s ---> a 3Mhz
 	TIMER32_1->LOAD = 0x00000BB8; //~1ms ---> a 3Mhz
 	TIMER32_1->CONTROL = TIMER32_CONTROL_SIZE | TIMER32_CONTROL_PRESCALE_0 | TIMER32_CONTROL_MODE | TIMER32_CONTROL_IE | TIMER32_CONTROL_ENABLE;
@@ -159,4 +162,3 @@ void ConfigTimerA (){
             		TIMER_A_CTL_MC__UP |            // Up mode
 					TIMER_A_CTL_CLR;                // Clear TAR
 }
-

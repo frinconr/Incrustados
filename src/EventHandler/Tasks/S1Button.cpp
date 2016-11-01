@@ -16,17 +16,11 @@ S1Button::S1Button(Scheduler* scheduler, Task* receiver) {
 
 	// Configure S1 Button
 	ConfigS1ButtonInterrupt();
-
-	// Debug
-	P2->DIR |= BIT1;
 }
 
 uint8_t S1Button::run(void) {
 	// Destructor
 	g_bGlobalFlags[Debounce_Flag] = true;
-
-	// Do Something
-	P2->OUT ^= BIT1;
 
 	// Send message, of type 0 to the receiver
 	m_Scheduler->AddMessage(this, m_Receiver, 0, 0);
