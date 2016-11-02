@@ -90,17 +90,17 @@ void ConfigS2ButtonInterrupt() {
 	// Configure P1.4 as input
 	P1->DIR &= ~(uint8_t) BIT4;
 	// Enable pull-up resistor (P1.1 output high)
-	P1->OUT = BIT4;
-	P1->REN = BIT4;
+	P1->OUT |= BIT4;
+	P1->REN |= BIT4;
 	// Configure as a GPIO
 	P1->SEL0 = 0;
 	P1->SEL1 = 0;
 	// Interrupt on high-to-low transition
-	P1->IES = BIT4;
+	P1->IES |= BIT4;
 	// Clear all P1 interrupt flags
 	P1->IFG = 0;
 	// Enable interrupt for P1.1
-	P1->IE = BIT4;
+	P1->IE |= BIT4;
 
 	// Enable Port 1 interrupt on the NVIC
 	NVIC_SetPriority(PORT1_IRQn,2);
@@ -123,17 +123,17 @@ void ConfigS1ButtonInterrupt() {
 	// Configure P1.1 as input
 	P1->DIR &= ~(uint8_t) BIT1;
 	// Enable pull-up resistor (P1.1 output high)
-	P1->OUT = BIT1;
-	P1->REN = BIT1;
+	P1->OUT |= BIT1;
+	P1->REN |= BIT1;
 	// Configure as a GPIO
 	P1->SEL0 = 0;
 	P1->SEL1 = 0;
 	// Interrupt on high-to-low transition
-	P1->IES = BIT1;
+	P1->IES |= BIT1;
 	// Clear all P1 interrupt flags
 	P1->IFG = 0;
 	// Enable interrupt for P1.1
-	P1->IE = BIT1;
+	P1->IE |= BIT1;
 
 	// Enable Port 1 interrupt on the NVIC
 	NVIC_SetPriority(PORT1_IRQn,2);
