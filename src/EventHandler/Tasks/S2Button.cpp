@@ -5,7 +5,7 @@
  *      Author: Felipe
  */
 
-#include "S2Button.hpp"
+#include <S2Button.hpp>
 
 
 S2Button::S2Button() {
@@ -22,6 +22,8 @@ uint8_t S2Button::run(void) {
 	if(TIMER_A0->CCR[2]>3000){
 		TIMER_A0->CCR[2] = 1500;
 	}
+
+	return (NO_ERR);
 }
 
 

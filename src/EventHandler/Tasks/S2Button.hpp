@@ -5,8 +5,8 @@
  *      Author: Felipe
  */
 
-#ifndef S2BUTTON_HPP_
-#define S2BUTTON_HPP_
+#ifndef TASKS_S2BUTTON_HPP_
+#define TASKS_S2BUTTON_HPP_
 
 #define __NOP __nop
 #include "msp.h"
@@ -24,4 +24,4 @@ class S2Button : public Task
 
 
 
-#endif /* S2BUTTON_HPP_ */
+#endif /* TASKS_S2BUTTON_HPP_ */

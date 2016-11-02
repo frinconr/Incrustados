@@ -16,7 +16,7 @@ class Task
 			Task * Receiver;
 			Task * Sender;
 			uint8_t Type;
-			// int * Data;
+			int  	Data;
 		};
 		Task();
 		uint8_t m_u8TaskID;
@@ -27,7 +27,7 @@ class Task
 		bool                IsTaskFinished(void){return m_bIsFinished;};
 		uint8_t             GetTaskPriority(void) {return m_u8Priority;};
 		void                SetTaskPriority(uint8_t i_u8NewPriority){m_u8Priority = i_u8NewPriority;};
-        void                ProcessMessage(Task::Message) {}
+        virtual void        ProcessMessage(Task::Message) {/*DO NOTHING*/};
         void 				Revive(void);
         void				Kill(void);
 

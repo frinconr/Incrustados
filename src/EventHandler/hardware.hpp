@@ -8,8 +8,13 @@
 #ifndef HARDWARE_HPP_
 #define HARDWARE_HPP_
 
-#include "msp.h"
 #include "Definitions.hpp"
+#include "msp.h"
+#include <driverlib.h>
+#include <grlib.h>
+#include "Crystalfontz128x128_ST7735.h"
+#include <stdio.h>
+
 
 void EnableInterruptions();
 void DisableInterruptions();
@@ -21,6 +26,7 @@ void ConfigS1ButtonInterrupt();
 void ConfigP2PWM();
 void ConfigTimer32(uint16_t MaxCount);
 void ConfigTimerA();
+void ConfigScreen();
 
 
 #endif /* HARDWARE_HPP_ */

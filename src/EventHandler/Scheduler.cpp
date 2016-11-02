@@ -131,7 +131,7 @@ uint8_t Scheduler::run(void)
         }
     }
 
-    // Process message Qeue
+    // Process message Queue
     ProcessMessages();
 
     return l_u8ReturnCode;
@@ -219,7 +219,7 @@ uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
  */
 uint8_t Scheduler::AddMessage(Task* sender, Task* receiver, int Type, int* data=0) {
 	// If we still have room for messages:
-    if((mFirstMessageSlot != mNextMessageSlot+1) & (mFirstMessageSlot != mNextMessageSlot-(MAX_MSJS-1))) {
+    if(mFirstMessageSlot != mNextMessageSlot+1) {
     	// Fill message information
         MessageQueue[mNextMessageSlot].Sender = sender;
         MessageQueue[mNextMessageSlot].Receiver = receiver;

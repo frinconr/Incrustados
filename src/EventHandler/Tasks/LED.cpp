@@ -23,13 +23,14 @@ uint8_t LED::run(void)
 }
 
 void LED::ProcessMessage(Task::Message msj) {
-	// Do something
-	switch(msj.Type) {
+
+	switch(msj.Type){
 		case GO_FASTER:
-			// Divide by two the tick interval
-			this->i_u16TickInterval = this->i_u16TickInterval >> 1;
+			// Do something
+			this->i_u16TickInterval = (this->i_u16TickInterval+1)/2 - 1;
 			break;
 		default:
 			break;
 	}
+
 }
