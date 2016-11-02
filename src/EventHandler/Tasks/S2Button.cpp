@@ -5,7 +5,7 @@
  *      Author: Felipe
  */
 
-#include "S2Button.hpp"
+#include <S2Button.hpp>
 
 
 S2Button::S2Button() {
