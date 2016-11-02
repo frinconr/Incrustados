@@ -36,8 +36,8 @@
 //
 //*****************************************************************************
 
-#include "grlib.h"
-#include "Crystalfontz128x128_ST7735.h"
+#include <Crystalfontz128x128_ST7735.h>
+#include <grlib.h>
 #include <driverlib.h>
 #include <HAL_MSP_EXP432P401R_Crystalfontz128x128_ST7735.h>
 #include <stdint.h>

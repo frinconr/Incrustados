@@ -16,7 +16,7 @@ class Task
 			Task * Receiver;
 			Task * Sender;
 			uint8_t Type;
-			// int * Data;
+			int  	Data;
 		};
 		Task();
 		uint8_t m_u8TaskID;

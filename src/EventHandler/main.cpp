@@ -6,7 +6,7 @@
 /* DriverLib Include */
 #include <driverlib.h>
 #include <grlib.h>
-#include "Crystalfontz128x128_ST7735.h"
+#include <Crystalfontz128x128_ST7735.h>
 #include <stdio.h>
 
 /* Local Includes */

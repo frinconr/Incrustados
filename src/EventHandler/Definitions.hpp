@@ -50,6 +50,8 @@ typedef enum {
 // Color Definitions
 //////////////////////////////////////////////////////////////////////////////
 
+#define BACKGROUND_COLOR 	GRAPHICS_COLOR_RED
+#define FILL_COLOR			GRAPHICS_COLOR_WHITE
 // ***************************************************************************
 // Global variable declarations
 // ***************************************************************************

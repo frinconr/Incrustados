@@ -23,7 +23,7 @@
 class ScreenPainter : public Task
 {
 public:
-	ScreenPainter();
+	ScreenPainter(Graphics_Context*);
 	virtual ~ScreenPainter();
 	virtual uint8_t run(void);
 	void ProcessMessage(Task::Message);
@@ -36,6 +36,9 @@ public:
 private:
     uint16_t a_LastValue;
     uint16_t a_CurrentValue;
+    Graphics_Context* a_GraphicsContext;
+    Graphics_Rectangle a_PaintArea;
+
 };
 
 #endif /* TASKS_SCREENPAINTER_HPP_ */
