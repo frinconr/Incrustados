@@ -13,7 +13,7 @@ S1Button::S1Button() {
 	ConfigS1ButtonInterrupt();
 
 	// Debug
-	P2->DIR |= BIT1;
+	//P2->DIR |= BIT1;
 }
 
 uint8_t S1Button::run(void) {
@@ -21,7 +21,12 @@ uint8_t S1Button::run(void) {
 	g_bGlobalFlags[Debounce_Flag_S1] = true;
 
 	// Do Something
-	P2->OUT ^= BIT1;
+	//P2->OUT ^= BIT1;
+
+	TIMER_A0->CCR[2] -= 250;
+		if(TIMER_A0->CCR[2]<1500){
+			TIMER_A0->CCR[2] = 3000;
+		}
 
 	return NO_ERR;
 }

@@ -4,6 +4,7 @@
 #include "Scheduler.hpp"
 #include "LED.hpp"
 #include "S1Button.hpp"
+#include "S2Button.hpp"
 #include "Definitions.hpp"
 #include "hardware.hpp"
 
@@ -17,15 +18,18 @@ bool g_bGlobalFlags[NUM_FLAGS];
 // Scheduler instance
 Scheduler g_MainScheduler;
 // Global button task used by scheduler
-S1Button ButtonTask;
+S1Button ButtonTaskS1;
+S2Button ButtonTaskS2;
 
 void main(void)
 {
     LED BlinkLED1 = LED::LED(LED1Mask);
 
     // Start Task Inactive, add to scheduler as a delayed task
-    g_MainScheduler.attach(&ButtonTask, 5, true);
-    ButtonTask.Kill();
+    g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
+    ButtonTaskS1.Kill();
+    g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
+    ButtonTaskS2.Kill();
 
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
@@ -83,7 +87,8 @@ void Setup(void)
 
 
 	// Initialize flags
-	g_bGlobalFlags[Debounce_Flag] = true;
+	g_bGlobalFlags[Debounce_Flag_S1] = true;
+	g_bGlobalFlags[Debounce_Flag_S2] = true;
 	return;
 }
 
@@ -99,11 +104,20 @@ extern "C"
 
 
 	void PORT1_IRQHandler(void) {
-		P1->IFG &= ~BIT1;
 
-		if(g_bGlobalFlags[Debounce_Flag]) {
-			g_bGlobalFlags[Debounce_Flag] = false;
-			ButtonTask.Revive();
+		if(P1->IFG & BIT1){
+			P1->IFG &= ~BIT1;
+				if(g_bGlobalFlags[Debounce_Flag_S1]) {
+					g_bGlobalFlags[Debounce_Flag_S1] = false;
+					ButtonTaskS1.Revive();
+				}
 		}
+		if(P1->IFG & BIT4){
+					P1->IFG &= ~BIT4;
+						if(g_bGlobalFlags[Debounce_Flag_S2]) {
+							g_bGlobalFlags[Debounce_Flag_S2] = false;
+							ButtonTaskS2.Revive();
+						}
+				}
 	}
 }
