@@ -8,6 +8,7 @@
 #ifndef TASKS_ACELEROMETER_HPP_
 #define TASKS_ACELEROMETER_HPP_
 
+#define __NOP __nop
 #include "Task.hpp"
 #include "Scheduler.hpp"
 #include "ScreenPainter.hpp"
