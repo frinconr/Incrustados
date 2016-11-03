@@ -4,22 +4,23 @@
 #include "msp.h"
 
 /* DriverLib Include */
-#include <driverlib.h>
-#include <grlib.h>
-#include <stdio.h>
+extern "C"
+{
+	#include <driverlib.h>
+	#include <grlib.h>
+	#include "Crystalfontz128x128_ST7735.h"
+	#include <stdio.h>
+}
 
 /* Local Includes */
 #include "main.hpp"
 #include "Scheduler.hpp"
 #include "LED.hpp"
-#include "./Tasks/S1Button.hpp"
-#include "./Tasks/S2Button.hpp"
+#include "S1Button.hpp"
+#include "S2Button.hpp"
 #include "Definitions.hpp"
 #include "hardware.hpp"
 
-extern "C" {
-	#include "Crystalfontz128x128_ST7735.h"
-}
 
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -105,19 +106,11 @@ void Setup(void)
 	// - Configure Timer32_1  with MCLK (3Mhz), Division by 1, Enable the interrupt, Periodic Mode
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-
-	// - Re-enable interrupts
-	__disable_irq();
-	TIMER32_1->LOAD = 0x002DC6C0; //~1s ---> a 3Mhz
-	// TIMER32_1->LOAD = 0x00000BB8; //~1ms ---> a 3Mhz
-	TIMER32_1->CONTROL = TIMER32_CONTROL_SIZE | TIMER32_CONTROL_PRESCALE_0 | TIMER32_CONTROL_MODE | TIMER32_CONTROL_IE | TIMER32_CONTROL_ENABLE;
-	NVIC_SetPriority(T32_INT1_IRQn,1);
-	NVIC_EnableIRQ(T32_INT1_IRQn);
-	__enable_irq();
-
 	ConfigTimer32(3000); // 3000 = 1ms
 	ConfigTimerA();
 
+	// ****************************
+	// Screen configure
 	// ****************************
 	/* Initializes display */
 	Crystalfontz128x128_Init();
@@ -130,6 +123,7 @@ void Setup(void)
 	Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
 	Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
 	GrContextFontSet(&g_sContext, &g_sFontFixed6x8);
+
 
 	// ****************************
 	// Re-enable interruptions

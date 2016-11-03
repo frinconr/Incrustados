@@ -8,12 +8,16 @@
 #ifndef HARDWARE_HPP_
 #define HARDWARE_HPP_
 
+extern "C"
+{
+	#include <driverlib.h>
+	#include <grlib.h>
+	#include "Crystalfontz128x128_ST7735.h"
+	#include <stdio.h>
+}
+
 #include "Definitions.hpp"
 #include "msp.h"
-#include <driverlib.h>
-#include <grlib.h>
-#include "Crystalfontz128x128_ST7735.h"
-#include <stdio.h>
 
 
 void EnableInterruptions();

@@ -6,9 +6,6 @@
  */
 
 #include "hardware.hpp"
-#include "Definitions.hpp"
-#include "msp.h"
-#include "Crystalfontz128x128_ST7735.h"
 
 
 /** Enable Interruptions
@@ -167,7 +164,7 @@ void ConfigTimerA (){
 // ADC14 Configuration
 //////////////////////////////////////////////////////////////////////////////
 
-void ConfigScreen(){
+void ConfigADC14(){
 
 	/* Configures Pin 4.0, 4.2, and 6.1 as ADC input */
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN0 | GPIO_PIN2, GPIO_TERTIARY_MODULE_FUNCTION);
@@ -210,3 +207,5 @@ void ConfigScreen(){
 	MAP_ADC14_enableConversion();
 	MAP_ADC14_toggleConversionTrigger();
 }
+
+

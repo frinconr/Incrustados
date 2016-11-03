@@ -78,7 +78,6 @@
 								</option>
 								<option id="com.ti.ccstudio.buildDefinitions.MSP432_15.12.linkerID.LIBRARY.1884642616" name="Include library file or command file as input (--library, -l)" superClass="com.ti.ccstudio.buildDefinitions.MSP432_15.12.linkerID.LIBRARY" valueType="libs">
 									<listOptionValue builtIn="false" value="&quot;libc.a&quot;"/>
-									<listOptionValue builtIn="false" value="{PROJECT_ROOT}/LcdDriver"/>
 								</option>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP432_15.12.exeLinker.inputType__CMD_SRCS.1648762699" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.MSP432_15.12.exeLinker.inputType__CMD_SRCS"/>
 								<inputType id="com.ti.ccstudio.buildDefinitions.MSP432_15.12.exeLinker.inputType__CMD2_SRCS.1847986470" name="Linker Command Files" superClass="com.ti.ccstudio.buildDefinitions.MSP432_15.12.exeLinker.inputType__CMD2_SRCS"/>
