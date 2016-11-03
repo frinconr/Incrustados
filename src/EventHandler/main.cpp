@@ -6,7 +6,6 @@
 /* DriverLib Include */
 #include <driverlib.h>
 #include <grlib.h>
-#include "Crystalfontz128x128_ST7735.h"
 #include <stdio.h>
 
 /* Local Includes */
@@ -18,6 +17,9 @@
 #include "Definitions.hpp"
 #include "hardware.hpp"
 
+extern "C" {
+	#include "Crystalfontz128x128_ST7735.h"
+}
 
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
