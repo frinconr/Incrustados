@@ -5,7 +5,7 @@
  *      Author: fabian
  */
 
-#include <Acelerometer.hpp>
+#include <Accelerometer.hpp>
 
 Accelerometer::Accelerometer(Scheduler * , Task*) {
 	// TODO Auto-generated constructor stub
