@@ -8,6 +8,11 @@
 
 /* Local Defintions */
 
+
+#ifndef TASKS_SCREENPAINTER_HPP_
+#define TASKS_SCREENPAINTER_HPP_
+#define __NOP __nop
+
 #include "Definitions.hpp"
 #include "msp.h"
 #include "Task.hpp"
@@ -15,13 +20,9 @@
 #include "Scheduler.hpp"
 
 
-#ifndef TASKS_SCREENPAINTER_HPP_
-#define TASKS_SCREENPAINTER_HPP_
-#define __NOP __nop
-
-
 class ScreenPainter : public Task
 {
+
 public:
 	ScreenPainter(Graphics_Context*);
 	virtual ~ScreenPainter();
