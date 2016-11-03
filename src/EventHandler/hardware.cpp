@@ -166,6 +166,13 @@ void ConfigTimerA (){
 
 void ConfigADC14(){
 
+	/* Set the core voltage level to VCORE1 */
+	MAP_PCM_setCoreVoltageLevel(PCM_VCORE1);
+
+	/* Set 2 flash wait states for Flash bank 0 and 1*/
+	MAP_FlashCtl_setWaitState(FLASH_BANK0, 2);
+	MAP_FlashCtl_setWaitState(FLASH_BANK1, 2);
+
 	/* Configures Pin 4.0, 4.2, and 6.1 as ADC input */
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P4, GPIO_PIN0 | GPIO_PIN2, GPIO_TERTIARY_MODULE_FUNCTION);
 	MAP_GPIO_setAsPeripheralModuleFunctionInputPin(GPIO_PORT_P6, GPIO_PIN1, GPIO_TERTIARY_MODULE_FUNCTION);

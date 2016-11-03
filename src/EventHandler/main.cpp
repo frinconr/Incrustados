@@ -44,6 +44,9 @@ LED BlinkLED1 = LED::LED(LED2Mask);
 S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
 S2Button ButtonTaskS2;
 
+/* ADC results buffer */
+static uint16_t resultsBuffer[3];
+
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
@@ -172,5 +175,22 @@ extern "C"
 							ButtonTaskS2.Revive();
 						}
 				}
+	}
+
+	void ADC14_IRQHandler(void)
+	{
+	    uint64_t status;
+
+	    status = MAP_ADC14_getEnabledInterruptStatus();
+	    MAP_ADC14_clearInterruptFlag(status);
+
+	    /* ADC_MEM2 conversion completed */
+	    if(status & ADC_INT2)
+	    {
+	        /* Store ADC14 conversion results */
+	        resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
+	        resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
+	        resultsBuffer[2] = ADC14_getResult(ADC_MEM2);
+	    }
 	}
 }

@@ -57,7 +57,7 @@ uint16_t Lcd_TouchTrim;
 //! \return None.
 //
 //*****************************************************************************
-void Crystalfontz128x128_Init(void)
+extern void Crystalfontz128x128_Init(void)
 {
     HAL_LCD_PortInit();
     HAL_LCD_SpiInit();
