@@ -27,6 +27,7 @@ void ConfigP2PWM();
 void ConfigTimer32(uint16_t MaxCount);
 void ConfigTimerA();
 void ConfigScreen();
+void ConfigADC14();
 
 
 #endif /* HARDWARE_HPP_ */
