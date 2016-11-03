@@ -12,8 +12,8 @@
 #include "main.hpp"
 #include "Scheduler.hpp"
 #include "LED.hpp"
-#include "S1Button.hpp"
-#include "S2Button.hpp"
+#include "./Tasks/S1Button.hpp"
+#include "./Tasks/S2Button.hpp"
 #include "Definitions.hpp"
 #include "hardware.hpp"
 
@@ -34,24 +34,19 @@ bool g_bGlobalFlags[NUM_FLAGS];
 /* Scheduler instance */
 Scheduler g_MainScheduler;
 
-// Global button task used by scheduler
-S1Button ButtonTaskS1;
-S2Button ButtonTaskS2;
-
 /* Graphics Context */
 Graphics_Context g_sContext;
 
 /* BlinkingLED1 Task */
 LED BlinkLED1 = LED::LED(LED2Mask);
 /* Button Task */
-S1Button ButtonTask(&g_MainScheduler, &BlinkLED1);
-
+S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
+S2Button ButtonTaskS2;
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
 
->>>>>>> 3d25f86de88fcaff7fbbe99dd3ca171f76447566
 
 void main(void)
 {
@@ -166,6 +161,7 @@ extern "C"
 
 
 	void PORT1_IRQHandler(void) {
+
 
 		if(P1->IFG & BIT1){
 			P1->IFG &= ~BIT1;
