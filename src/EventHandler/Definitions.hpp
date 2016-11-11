@@ -51,8 +51,11 @@ typedef enum {
 // Color Definitions
 //////////////////////////////////////////////////////////////////////////////
 
-#define BACKGROUND_COLOR 	GRAPHICS_COLOR_RED
-#define FILL_COLOR			GRAPHICS_COLOR_WHITE
+#define FILL_COLOR 				0x00FF
+#define BACKGROUND_COLOR		0x8A22
+
+// THRESHOLDS
+#define ORIENTATION_THRESHOLD   7500
 // ***************************************************************************
 // Global variable declarations
 // ***************************************************************************

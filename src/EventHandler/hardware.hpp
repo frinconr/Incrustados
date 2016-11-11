@@ -30,8 +30,9 @@ void ConfigS1ButtonInterrupt();
 void ConfigP2PWM();
 void ConfigTimer32(uint16_t MaxCount);
 void ConfigTimerA();
-void ConfigScreen();
+void ConfigScreen(Graphics_Context*);
 void ConfigADC14();
+void ChangeScreenOrientation(bool);
 
 
 #endif /* HARDWARE_HPP_ */

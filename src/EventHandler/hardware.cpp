@@ -4,7 +4,14 @@
  *  Created on: Oct 5, 2016
  *      Author: fabian
  */
-
+/* DriverLib Include */
+extern "C"
+{
+	#include <driverlib.h>
+	#include <grlib.h>
+	#include "Crystalfontz128x128_ST7735.h"
+	#include <stdio.h>
+}
 #include "hardware.hpp"
 
 
@@ -213,6 +220,33 @@ void ConfigADC14(){
 	/* Triggering the start of the sample */
 	MAP_ADC14_enableConversion();
 	MAP_ADC14_toggleConversionTrigger();
+}
+
+
+void ConfigScreen(Graphics_Context* Context) {
+	// ****************************
+	// Screen configure
+	// ****************************
+	/* Initializes display */
+	Crystalfontz128x128_Init();
+
+	/* Set default screen orientation */
+	Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
+
+	/* Initializes graphics context */
+	Graphics_initContext(Context, &g_sCrystalfontz128x128);
+	Graphics_setForegroundColor(Context, FILL_COLOR);
+	Graphics_setBackgroundColor(Context, BACKGROUND_COLOR);
+	GrContextFontSet(Context, &g_sFontFixed6x8);
+}
+
+void ChangeScreenOrientation(bool UpPosition) {
+	// Change the screen orientation
+	if(UpPosition) {
+		Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
+	} else {
+		Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_DOWN);
+	}
 }
 
 

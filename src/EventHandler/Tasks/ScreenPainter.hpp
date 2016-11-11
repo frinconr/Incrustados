@@ -34,11 +34,16 @@ public:
 		NUM_TYPES
 	};
 
+    void SetValue(uint16_t Value, uint16_t Orientation);
+
 private:
     uint16_t a_LastValue;
     uint16_t a_CurrentValue;
+    uint16_t a_Measure;
     Graphics_Context* a_GraphicsContext;
     Graphics_Rectangle a_PaintArea;
+    bool a_PositionUp;
+    bool ValueChanged;
 
 };
 

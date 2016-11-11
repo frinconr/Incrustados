@@ -8,11 +8,35 @@
 #include <ScreenPainter.hpp>
 
 ScreenPainter::ScreenPainter(Graphics_Context* Context) {
+	// Save Context object pointer
 	this->a_GraphicsContext = Context;
+
+	// Configure the painting
+	ConfigScreen(a_GraphicsContext);
+
 	// Make the painting area width the maximum
 	a_PaintArea.xMin = 0;
 	a_PaintArea.xMax = 127;
 
+	ValueChanged = false;
+
+	// Set painting values to half the screen
+	a_CurrentValue=64;
+	a_LastValue=64;
+
+	// Paint the lower part of the screen
+	a_PaintArea.yMax = 64;
+	a_PaintArea.yMin = 0;
+
+	// Paint the lowert part of the screen.
+	Graphics_fillRectangleOnDisplay(a_GraphicsContext->display, &a_PaintArea, FILL_COLOR);
+
+	// Paint the upper part of the screen
+	a_PaintArea.yMax = 127;
+	a_PaintArea.yMin = 64;
+
+	// Paint the lowert part of the screen.
+	Graphics_fillRectangleOnDisplay(a_GraphicsContext->display, &a_PaintArea, BACKGROUND_COLOR);
 }
 
 ScreenPainter::~ScreenPainter() {
@@ -37,25 +61,49 @@ void ScreenPainter::ProcessMessage(Task::Message msj) {
 }
 
 uint8_t  ScreenPainter::run(void) {
+	// Check
+	if(ValueChanged) {
+		// Clean flag
+		a_LastValue = a_CurrentValue;
+		this->ValueChanged = false;
+
+		if(a_Measure > 11000) {
+			a_CurrentValue = 0;
+		} else if (a_Measure < 5000) {
+			a_CurrentValue = 127;
+		} else {
+			a_CurrentValue = (int) -1*(a_Measure)*127/6000+232;
+		}
+
+		// Change orientation
+		ChangeScreenOrientation(a_PositionUp);
+	}
 	// Check is we have to do something
-	if(this->a_LastValue != this->a_CurrentValue) {
-		if(this->a_LastValue < this->a_CurrentValue) {
+	if(a_LastValue != a_CurrentValue) {
+		if(a_LastValue < a_CurrentValue) {
 			// Rectangle should be filled
 			// Overwrite the painting
-			a_PaintArea.yMin = this->a_LastValue;
-			a_PaintArea.yMax = this->a_CurrentValue;
+			a_PaintArea.yMin = a_LastValue;
+			a_PaintArea.yMax = a_CurrentValue;
 
 			// Paint
 			Graphics_fillRectangleOnDisplay(a_GraphicsContext->display, &a_PaintArea, FILL_COLOR);
 		} else {
 			// Rectangle should be erased
 			// Overwrite the painting
-			a_PaintArea.yMax = this->a_LastValue;
-			a_PaintArea.yMin = this->a_CurrentValue;
+			a_PaintArea.yMin = a_CurrentValue;
+			a_PaintArea.yMax = a_LastValue;
 
 			// Paint
 			Graphics_fillRectangleOnDisplay(a_GraphicsContext->display, &a_PaintArea, BACKGROUND_COLOR);
 		}
 	}
 	return (NO_ERR);
+}
+
+void ScreenPainter::SetValue(uint16_t Value, uint16_t orientation) {
+
+	a_Measure = Value;
+	ValueChanged = true;
+	a_PositionUp = (orientation < ORIENTATION_THRESHOLD);
 }

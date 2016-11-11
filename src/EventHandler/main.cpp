@@ -20,6 +20,7 @@ extern "C"
 #include "S2Button.hpp"
 #include "Definitions.hpp"
 #include "hardware.hpp"
+#include "ScreenPainter.hpp"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -47,6 +48,7 @@ S2Button ButtonTaskS2;
 /* ADC results buffer */
 static uint16_t resultsBuffer[3];
 
+ScreenPainter g_sPainter = ScreenPainter::ScreenPainter(&g_sContext);
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
@@ -57,6 +59,7 @@ void main(void)
     // Start Task Inactive, add to scheduler as a delayed task
 
     g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
+    g_MainScheduler.attach(&g_sPainter, 1);
     ButtonTaskS1.Kill();
     g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
     ButtonTaskS2.Kill();
@@ -113,20 +116,7 @@ void Setup(void)
 	ConfigTimerA();
 
 	// ****************************
-	// Screen configure
-	// ****************************
-	/* Initializes display */
-	Crystalfontz128x128_Init();
-
-	/* Set default screen orientation */
-	Crystalfontz128x128_SetOrientation(LCD_ORIENTATION_UP);
-
-	/* Initializes graphics context */
-	Graphics_initContext(&g_sContext, &g_sCrystalfontz128x128);
-	Graphics_setForegroundColor(&g_sContext, GRAPHICS_COLOR_RED);
-	Graphics_setBackgroundColor(&g_sContext, GRAPHICS_COLOR_WHITE);
-	GrContextFontSet(&g_sContext, &g_sFontFixed6x8);
-
+	ConfigADC14();
 
 	// ****************************
 	// Re-enable interruptions
@@ -191,6 +181,8 @@ extern "C"
 	        resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
 	        resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
 	        resultsBuffer[2] = ADC14_getResult(ADC_MEM2);
+
+	        g_sPainter.SetValue(resultsBuffer[2], resultsBuffer[1]);
 	    }
 	}
 }
