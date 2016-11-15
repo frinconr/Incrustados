@@ -24,7 +24,7 @@ class ScreenPainter : public Task
 {
 
 public:
-	ScreenPainter(Graphics_Context*);
+	ScreenPainter(Graphics_Context*,Scheduler* scheduler, Task* receiver);
 	virtual ~ScreenPainter();
 	virtual uint8_t run(void);
 	void ProcessMessage(Task::Message);
@@ -35,6 +35,9 @@ public:
 	};
 
     void SetValue(uint16_t Value, uint16_t Orientation);
+
+    Scheduler * m_Scheduler;
+    Task * m_Receiver;
 
 private:
     uint16_t a_LastValue;

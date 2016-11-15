@@ -7,9 +7,13 @@
 
 #include <ScreenPainter.hpp>
 
-ScreenPainter::ScreenPainter(Graphics_Context* Context) {
+ScreenPainter::ScreenPainter(Graphics_Context* Context, Scheduler* scheduler, Task* receiver) {
 	// Save Context object pointer
 	this->a_GraphicsContext = Context;
+
+	// Add attributes
+	m_Scheduler = scheduler;
+	m_Receiver = receiver;
 
 	// Configure the painting
 	ConfigScreen(a_GraphicsContext);
@@ -77,8 +81,9 @@ uint8_t  ScreenPainter::run(void) {
 
 		// Change orientation
 		ChangeScreenOrientation(a_PositionUp);
+		m_Scheduler->AddMessage(this, m_Receiver, 0, a_Measure);
 	}
-	// Check is we have to do something
+	// Check if we have to do something
 	if(a_LastValue != a_CurrentValue) {
 		if(a_LastValue < a_CurrentValue) {
 			// Rectangle should be filled

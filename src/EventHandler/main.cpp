@@ -21,7 +21,7 @@ extern "C"
 #include "Definitions.hpp"
 #include "hardware.hpp"
 #include "ScreenPainter.hpp"
-
+#include "Servo.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 // Global Variables
@@ -40,15 +40,17 @@ Scheduler g_MainScheduler;
 Graphics_Context g_sContext;
 
 /* BlinkingLED1 Task */
-LED BlinkLED1 = LED::LED(LED2Mask);
+//LED BlinkLED1 = LED::LED(LED2Mask);
 /* Button Task */
-S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
-S2Button ButtonTaskS2;
+//S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
+//S2Button ButtonTaskS2;
 
 /* ADC results buffer */
 static uint16_t resultsBuffer[3];
 
-ScreenPainter g_sPainter = ScreenPainter::ScreenPainter(&g_sContext);
+
+Servo g_sServo = Servo::Servo();
+ScreenPainter g_sPainter = ScreenPainter::ScreenPainter(&g_sContext,&g_MainScheduler, &g_sServo);
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
@@ -58,17 +60,18 @@ void main(void)
 {
     // Start Task Inactive, add to scheduler as a delayed task
 
-    g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
+    //g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
     g_MainScheduler.attach(&g_sPainter, 1);
-    ButtonTaskS1.Kill();
-    g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
-    ButtonTaskS2.Kill();
+    g_MainScheduler.attach(&g_sServo, DebounceTime, true);
+    //ButtonTaskS1.Kill();
+    //g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
+    //ButtonTaskS2.Kill();
 
 
     // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
-    g_MainScheduler.attach(&BlinkLED1, LED1Latency);
+    //g_MainScheduler.attach(&BlinkLED1, LED1Latency);
 
     while(1){
     	__wfe();
@@ -99,7 +102,7 @@ void Setup(void)
 	//         PORT CONFIG
 	// ****************************
 	// - P1.0 is connected to the Red LED
-	ConfigP1LED();
+	//ConfigP1LED();
 
 	// ****************************
 	// Configure PWM
@@ -154,7 +157,7 @@ extern "C"
 			P1->IFG &= ~BIT1;
 				if(g_bGlobalFlags[Debounce_Flag_S1]) {
 					g_bGlobalFlags[Debounce_Flag_S1] = false;
-					ButtonTaskS1.Revive();
+					//ButtonTaskS1.Revive();
 				}
 
 		}
@@ -162,7 +165,7 @@ extern "C"
 					P1->IFG &= ~BIT4;
 						if(g_bGlobalFlags[Debounce_Flag_S2]) {
 							g_bGlobalFlags[Debounce_Flag_S2] = false;
-							ButtonTaskS2.Revive();
+							//ButtonTaskS2.Revive();
 						}
 				}
 	}

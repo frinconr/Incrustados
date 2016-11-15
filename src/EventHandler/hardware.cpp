@@ -66,7 +66,7 @@ void ConfigP2LED(const uint16_t LEDMask) {
 	// Only 3 bits are allowed (RGB)
 	P2->DIR |= (LEDMask % 8);
 	// Clean Port0
-	P2->DIR &= ~(LEDMask % 8);
+	P2->OUT &= ~(LEDMask % 8);
 }
 
 void ConfigP2PWM (){
@@ -160,7 +160,7 @@ void ConfigTimer32 (uint16_t load) {
 void ConfigTimerA (){
 	TIMER_A0->CCR[0] = 30000;            			// PWM Period
     TIMER_A0->CCTL[2] = TIMER_A_CCTLN_OUTMOD_7; 	// CCR2 reset/set
-    TIMER_A0->CCR[2] = 1500;                 		// CCR2 PWM duty cycle 5% for -90  initial position
+    TIMER_A0->CCR[2] = 2000;                 		// CCR2 PWM duty cycle 5% for -90  initial position
     TIMER_A0->CTL = TIMER_A_CTL_SSEL__SMCLK | 		// SMCLK
     				TIMER_A_CTL_ID__2 |				// Divide by 4
             		TIMER_A_CTL_MC__UP |            // Up mode
@@ -186,8 +186,7 @@ void ConfigADC14(){
 
 	/* Initializing ADC (ADCOSC/64/8) */
 	MAP_ADC14_enableModule();
-	MAP_ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_64, ADC_DIVIDER_8,
-			0);
+	MAP_ADC14_initModule(ADC_CLOCKSOURCE_ADCOSC, ADC_PREDIVIDER_32, ADC_DIVIDER_8,0);
 
 	/* Configuring ADC Memory (ADC_MEM0 - ADC_MEM2 (A11, A13, A14)  with no repeat)
 		 * with internal 2.5v reference */
