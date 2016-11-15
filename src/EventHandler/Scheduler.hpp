@@ -26,7 +26,7 @@ public:
     uint8_t AddRecurringEvents();
 
     // For the messages
-    uint8_t AddMessage(Task*, Task*, int Type, int* data);
+    uint8_t AddMessage(Task*, Task*, int Type, int data);
     uint8_t ProcessMessages();
 
     // Structure to handle repeating events

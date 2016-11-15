@@ -217,13 +217,14 @@ uint8_t Scheduler::SortScheduleByPriority(Task * i_pSchedule)
 /*!
  *  This function ads a message to the Message Queue.
  */
-uint8_t Scheduler::AddMessage(Task* sender, Task* receiver, int Type, int* data=0) {
+uint8_t Scheduler::AddMessage(Task* sender, Task* receiver, int Type, int data=0) {
 	// If we still have room for messages:
     if(mFirstMessageSlot != mNextMessageSlot+1) {
     	// Fill message information
         MessageQueue[mNextMessageSlot].Sender = sender;
         MessageQueue[mNextMessageSlot].Receiver = receiver;
         MessageQueue[mNextMessageSlot].Type = Type;
+        MessageQueue[mNextMessageSlot].Data = data;
 
         // Update index of next message
         mNextMessageSlot = (mNextMessageSlot+1)% MAX_MSJS;
