@@ -56,6 +56,10 @@ typedef enum {
 
 // THRESHOLDS
 #define ORIENTATION_THRESHOLD   7500
+
+#define MAX_ACC_VALUE 	11000
+#define MIN_ACC_VALUE	5000
+
 // ***************************************************************************
 // Global variable declarations
 // ***************************************************************************

@@ -30,7 +30,7 @@ extern "C"
 /* Static task ID counter */
 uint8_t Task::m_u8NextTaskID = 0;
 /* System ticks counter */
-volatile static uint64_t SystemTicks = 0;
+volatile static uint64_t g_u64SystemTicks = 0;
 /* Global flags */
 bool g_bGlobalFlags[NUM_FLAGS];
 /* Scheduler instance */
@@ -46,23 +46,22 @@ Graphics_Context g_sContext;
 //S2Button ButtonTaskS2;
 
 /* ADC results buffer */
-static uint16_t resultsBuffer[3];
+static uint16_t g_u8ResultsBuffer[3];
 
-
+/* Global Servo task */
 Servo g_sServo = Servo::Servo();
 ScreenPainter g_sPainter = ScreenPainter::ScreenPainter(&g_sContext,&g_MainScheduler, &g_sServo);
+
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
-
-
 void main(void)
 {
     // Start Task Inactive, add to scheduler as a delayed task
 
     //g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
-    g_MainScheduler.attach(&g_sPainter, 1);
-    g_MainScheduler.attach(&g_sServo, DebounceTime, true);
+    g_MainScheduler.Attach(&g_sPainter, 1);
+    g_MainScheduler.Attach(&g_sServo, DebounceTime, true);
     //ButtonTaskS1.Kill();
     //g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
     //ButtonTaskS2.Kill();
@@ -75,10 +74,10 @@ void main(void)
 
     while(1){
     	__wfe();
-        if(SystemTicks != g_MainScheduler.ticks)
+        if(g_u64SystemTicks != g_MainScheduler.ticks)
         {
-        	g_MainScheduler.ticks = SystemTicks;
-        	g_MainScheduler.run();
+        	g_MainScheduler.ticks = g_u64SystemTicks;
+        	g_MainScheduler.Run();
         }
     };
 }
@@ -145,7 +144,7 @@ extern "C"
 	{
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
-		SystemTicks++;
+		g_u64SystemTicks++;
 		return;
 	}
 
@@ -172,20 +171,20 @@ extern "C"
 
 	void ADC14_IRQHandler(void)
 	{
-	    uint64_t status;
+	    uint64_t l_u64Status;
 
-	    status = MAP_ADC14_getEnabledInterruptStatus();
-	    MAP_ADC14_clearInterruptFlag(status);
+	    l_u64Status = MAP_ADC14_getEnabledInterruptStatus();
+	    MAP_ADC14_clearInterruptFlag(l_u64Status);
 
 	    /* ADC_MEM2 conversion completed */
-	    if(status & ADC_INT2)
+	    if(l_u64Status & ADC_INT2)
 	    {
 	        /* Store ADC14 conversion results */
-	        resultsBuffer[0] = ADC14_getResult(ADC_MEM0);
-	        resultsBuffer[1] = ADC14_getResult(ADC_MEM1);
-	        resultsBuffer[2] = ADC14_getResult(ADC_MEM2);
+	        g_u8ResultsBuffer[0] = ADC14_getResult(ADC_MEM0);
+	        g_u8ResultsBuffer[1] = ADC14_getResult(ADC_MEM1);
+	        g_u8ResultsBuffer[2] = ADC14_getResult(ADC_MEM2);
 
-	        g_sPainter.SetValue(resultsBuffer[2], resultsBuffer[1]);
+	        g_sPainter.SetValue(g_u8ResultsBuffer[2], g_u8ResultsBuffer[1]);
 	    }
 	}
 }

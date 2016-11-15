@@ -17,7 +17,7 @@ class LED : public Task
 {
     public:
         LED(uint16_t LEDMask);
-        virtual uint8_t run(void);
+        virtual uint8_t Run(void);
         uint16_t mLEDMask;
 
         // Process Message

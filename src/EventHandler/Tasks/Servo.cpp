@@ -26,7 +26,7 @@ void Servo::ProcessMessage(Task::Message msj) {
 
 }
 
-uint8_t Servo::run(void) {
+uint8_t Servo::Run(void) {
 
 
 	if(a_CurrentValue > 11000) {

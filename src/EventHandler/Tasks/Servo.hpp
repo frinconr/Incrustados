@@ -21,7 +21,7 @@ class Servo : public Task
 public:
 	Servo();
 	virtual ~Servo();
-	virtual uint8_t run(void);
+	virtual uint8_t Run(void);
 	void ProcessMessage(Task::Message);
 
 	enum MessageTypes {

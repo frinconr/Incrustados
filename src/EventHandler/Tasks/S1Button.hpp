@@ -21,7 +21,7 @@ class S1Button : public Task
 {
     public:
 		S1Button(Scheduler * scheduler, Task * Receiver);
-        virtual uint8_t run(void);
+        virtual uint8_t Run(void);
 
         // Attributes
         Scheduler * m_Scheduler;

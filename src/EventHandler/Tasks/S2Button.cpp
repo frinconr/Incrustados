@@ -16,7 +16,7 @@ S2Button::S2Button() {
 
 }
 
-uint8_t S2Button::run(void) {
+uint8_t S2Button::Run(void) {
 
 	g_bGlobalFlags[Debounce_Flag_S2] = true;
 	TIMER_A0->CCR[2] += 250;

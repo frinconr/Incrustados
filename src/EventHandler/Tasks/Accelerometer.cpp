@@ -18,7 +18,7 @@ Accelerometer::~Accelerometer() {
 	// TODO Auto-generated destructor stub
 }
 
-uint8_t  Accelerometer::run(void) {
+uint8_t  Accelerometer::Run(void) {
 	// Send message to receiver task
 
 	return (NO_ERR);
