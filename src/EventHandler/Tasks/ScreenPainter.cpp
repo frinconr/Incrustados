@@ -1,13 +1,18 @@
 /*
- * ScreenPainter.cpp
+ * 		This file contains the source code for the ScreenPainter Task. Its in
+ * 		charge of painting the LCD screen, with the value received from the
+ * 		accelerometer. Also it sends the latest value to the Servo Task.
  *
  *  Created on: Nov 1, 2016
- *      Author: fabian
+ *      Author: Fabian Meléndez
+ *      		Felipe Rincón
  */
 
 #include <ScreenPainter.hpp>
 
-ScreenPainter::ScreenPainter(Graphics_Context* Context, Scheduler* scheduler, Task* receiver) {
+ScreenPainter::ScreenPainter(Graphics_Context* Context,
+		                     Scheduler* scheduler,
+		                     Task* receiver) {
 	// Save Context object pointer
 	this->a_GraphicsContext = Context;
 
@@ -64,24 +69,32 @@ void ScreenPainter::ProcessMessage(Task::Message msj) {
 
 }
 
-uint8_t  ScreenPainter::run(void) {
+/*
+ * This function executes the painting. First it checks if we have a new value if so,
+ * it calculates the height at which the screen must be painted (mapping the ADC14
+ * measure to a screen pixel height (0-127).
+ */
+uint8_t  ScreenPainter::Run(void) {
 	// Check
 	if(ValueChanged) {
 		// Clean flag
 		a_LastValue = a_CurrentValue;
 		this->ValueChanged = false;
 
-		if(a_Measure > 11000) {
+		// Saturate the height option
+		if(m_Measure > MAX_ACC_VALUE) {
 			a_CurrentValue = 0;
-		} else if (a_Measure < 5000) {
+		} else if (m_Measure < MIN_ACC_VALUE) {
 			a_CurrentValue = 127;
 		} else {
-			a_CurrentValue = (int) -1*(a_Measure)*127/6000+232;
+			a_CurrentValue = (int) -1*(m_Measure)*127/6000+232;
 		}
 
 		// Change orientation
 		ChangeScreenOrientation(a_PositionUp);
-		m_Scheduler->AddMessage(this, m_Receiver, 0, a_Measure);
+
+		// Send reciever a message with the measure.
+		m_Scheduler->AddMessage(this, m_Receiver, 0, m_Measure);
 	}
 	// Check if we have to do something
 	if(a_LastValue != a_CurrentValue) {
@@ -106,9 +119,14 @@ uint8_t  ScreenPainter::run(void) {
 	return (NO_ERR);
 }
 
-void ScreenPainter::SetValue(uint16_t Value, uint16_t orientation) {
-
-	a_Measure = Value;
+/*
+ * This function is used to get the value from the ADC14. It receives a value with the Z axis
+ * measure and a value with the Y axis measure. With this, we get the measure and the orien-
+ * tation of the screen.
+ */
+void ScreenPainter::SetValue(uint16_t Value, uint16_t Orientation) {
+	//
+	m_Measure = Value;
 	ValueChanged = true;
-	a_PositionUp = (orientation < ORIENTATION_THRESHOLD);
+	a_PositionUp = (Orientation < ORIENTATION_THRESHOLD);
 }

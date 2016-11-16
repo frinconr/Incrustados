@@ -17,7 +17,7 @@ class Accelerometer: public Task {
 public:
 	Accelerometer(Scheduler * , Task*);
 	virtual ~Accelerometer();
-	virtual uint8_t run(void);
+	virtual uint8_t Run(void);
 
 
 };

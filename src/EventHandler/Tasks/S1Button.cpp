@@ -18,7 +18,7 @@ S1Button::S1Button(Scheduler* scheduler, Task* receiver) {
 	ConfigS1ButtonInterrupt();
 }
 
-uint8_t S1Button::run(void) {
+uint8_t S1Button::Run(void) {
 	// Destructor
 	g_bGlobalFlags[Debounce_Flag_S1] = true;
 

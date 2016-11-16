@@ -19,7 +19,7 @@ class S2Button : public Task
 {
     public:
 		S2Button();
-        virtual uint8_t run(void);
+        virtual uint8_t Run(void);
 };
 
 

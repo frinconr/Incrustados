@@ -12,7 +12,7 @@ LED::LED(const uint16_t LEDMask)
 	mLEDMask = (LEDMask % 8);
 }
 
-uint8_t LED::run(void)
+uint8_t LED::Run(void)
 {
     //#########################
     // Toggle LED2
