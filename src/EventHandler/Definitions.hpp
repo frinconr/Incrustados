@@ -1,8 +1,13 @@
 /*
  * Definitions.hpp
  *
+ *	Global definitions file. Contains interruptions priorities,
+ *	LED Masks, timing and constant values.
+ *	Also contains the global flags definitions.
+ *
  *  Created on: Oct 5, 2016
- *      Author: fabian
+ *      Author: Fabian Melendez
+ *      		Felipe Rincon
  */
 
 #ifndef DEFINITIONS_HPP_
@@ -65,7 +70,5 @@ typedef enum {
 // ***************************************************************************
 
 extern bool g_bGlobalFlags[NUM_FLAGS];
-
-
 
 #endif /* DEFINITIONS_HPP_ */

@@ -1,3 +1,14 @@
+/*
+ * Task.cpp
+ *
+ *	Source file for the Task class. This class is a virtual class, and sets the parent object
+ *	of all tasks objects.
+ *
+ *  Created on: Aug 31, 2016
+ *      Author: Fabian Melendez
+ *      		Felipe Rincon
+ */
+
 #include "Task.hpp"
 
 /*

@@ -1,3 +1,15 @@
+/*
+ * main.cpp
+ *
+ * 	This is the main file for the proyect. Contains the global variable
+ * 	functions and the Scheduler and Task objects.
+ *
+ *  Created on: Nov 14, 2016
+ *      Author: Felipe Rincon
+ *      		Fabian Melendez
+ */
+
+
 #define __NOP __nop
 
 /* MSPWare definitions */
@@ -39,12 +51,6 @@ Scheduler g_MainScheduler;
 /* Graphics Context */
 Graphics_Context g_sContext;
 
-/* BlinkingLED1 Task */
-//LED BlinkLED1 = LED::LED(LED2Mask);
-/* Button Task */
-//S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
-//S2Button ButtonTaskS2;
-
 /* ADC results buffer */
 static uint16_t g_u8ResultsBuffer[3];
 
@@ -62,21 +68,15 @@ void main(void)
     //g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
     g_MainScheduler.Attach(&g_sPainter, 1);
     g_MainScheduler.Attach(&g_sServo, DebounceTime, true);
-    //ButtonTaskS1.Kill();
-    //g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
-    //ButtonTaskS2.Kill();
-
-
-    // LED BlinkLED2 = LED::LED(LED2Mask);
 
     Setup();
     //g_MainScheduler.attach(&BlinkLED1, LED1Latency);
 
     while(1){
     	__wfe();
-        if(g_u64SystemTicks != g_MainScheduler.ticks)
+        if(g_u64SystemTicks != g_MainScheduler.m_u64Ticks)
         {
-        	g_MainScheduler.ticks = g_u64SystemTicks;
+        	g_MainScheduler.m_u64Ticks = g_u64SystemTicks;
         	g_MainScheduler.Run();
         }
     };

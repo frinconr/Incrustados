@@ -1,4 +1,6 @@
 /*
+ * ScreenPainter.hpp
+ *
  * 		This file contains the header for the ScreenPainter Task. Its in
  * 		charge of painting the LCD screen, with the value received from the
  * 		accelerometer.
