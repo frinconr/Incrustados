@@ -51,6 +51,12 @@ Scheduler g_MainScheduler;
 /* Graphics Context */
 Graphics_Context g_sContext;
 
+/* BlinkingLED1 Task */
+LED BlinkLED1 = LED::LED(LED2Mask);
+/* Button Task */
+S1Button ButtonTaskS1(&g_MainScheduler, &BlinkLED1);
+//S2Button ButtonTaskS2;
+
 /* ADC results buffer */
 static uint16_t g_u8ResultsBuffer[3];
 
@@ -65,12 +71,21 @@ void main(void)
 {
     // Start Task Inactive, add to scheduler as a delayed task
 
+
     //g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
     g_MainScheduler.Attach(&g_sPainter, 1);
     g_MainScheduler.Attach(&g_sServo, DebounceTime, true);
 
+    //ButtonTaskS1.Kill();
+
+    //g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
+    //ButtonTaskS2.Kill();
+
+
+    //LED BlinkLED2 = LED::LED(LED2Mask);
+
     Setup();
-    //g_MainScheduler.attach(&BlinkLED1, LED1Latency);
+    g_MainScheduler.Attach(&BlinkLED1, LED1Latency);
 
     while(1){
     	__wfe();
@@ -101,7 +116,7 @@ void Setup(void)
 	//         PORT CONFIG
 	// ****************************
 	// - P1.0 is connected to the Red LED
-	//ConfigP1LED();
+	ConfigP1LED();
 
 	// ****************************
 	// Configure PWM
@@ -156,7 +171,7 @@ extern "C"
 			P1->IFG &= ~BIT1;
 				if(g_bGlobalFlags[Debounce_Flag_S1]) {
 					g_bGlobalFlags[Debounce_Flag_S1] = false;
-					//ButtonTaskS1.Revive();
+					ButtonTaskS1.Revive();
 				}
 
 		}
