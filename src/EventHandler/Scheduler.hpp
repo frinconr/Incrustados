@@ -27,16 +27,16 @@ class Scheduler
 public:
 	// Constructor
     Scheduler();
-    uint64_t ticks;
+    uint64_t m_u64Ticks;
 
     // Method to attach tasks
-    uint8_t Attach(Task * i_ToAttach);
+    uint8_t Attach(Task * i_tToAttach);
     // Method to attach periodic tasks
-    uint8_t Attach(Task * i_ToAttach, uint16_t i_u16TickInterval, bool OneShot=false);
+    uint8_t Attach(Task * i_tToAttach, uint16_t i_u16TickInterval, bool OneShot=false);
     // Method to execute tasks
     uint8_t Run(void);
     // For the messages
-    uint8_t AddMessage(Task*, Task*, int Type, int data);
+    uint8_t AddMessage(Task* i_tSender, Task* i_tReceiver, int i_iType, int i_iData);
 
     // Structure to handle repeating events
     struct RepeatingTask {

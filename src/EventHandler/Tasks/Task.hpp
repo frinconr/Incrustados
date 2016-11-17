@@ -1,4 +1,13 @@
-
+/*
+ * Task.hpp
+ *
+ *	Header file for the Task class. This class is a virtual class, and sets the parent object
+ *	of all tasks objects.
+ *
+ *  Created on: Aug 31, 2016
+ *      Author: Fabian Melendez
+ *      		Felipe Rincon
+ */
 
 #ifndef TASK_HPP_
 #define TASK_HPP_

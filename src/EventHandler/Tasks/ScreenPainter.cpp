@@ -1,4 +1,6 @@
 /*
+ * ScreenPainter.cpp
+ *
  * 		This file contains the source code for the ScreenPainter Task. Its in
  * 		charge of painting the LCD screen, with the value received from the
  * 		accelerometer. Also it sends the latest value to the Servo Task.
@@ -10,15 +12,15 @@
 
 #include <ScreenPainter.hpp>
 
-ScreenPainter::ScreenPainter(Graphics_Context* Context,
-		                     Scheduler* scheduler,
-		                     Task* receiver) {
+ScreenPainter::ScreenPainter(Graphics_Context* I_Context,
+		                     Scheduler* i_Scheduler,
+		                     Task* i_tRreceiver) {
 	// Save Context object pointer
-	this->a_GraphicsContext = Context;
+	this->a_GraphicsContext = I_Context;
 
 	// Add attributes
-	m_Scheduler = scheduler;
-	m_Receiver = receiver;
+	m_Scheduler = i_Scheduler;
+	m_Receiver = i_tRreceiver;
 
 	// Configure the painting
 	ConfigScreen(a_GraphicsContext);

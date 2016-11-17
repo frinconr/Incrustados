@@ -2,7 +2,8 @@
  * Servo.cpp
  *
  *  Created on: Nov 14, 2016
- *      Author: Felipe
+ *      Author: Felipe Rincon
+ *      		Fabian Melendez
  */
 
 #include <Servo.hpp>
