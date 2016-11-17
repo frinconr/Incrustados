@@ -62,7 +62,7 @@ void main(void)
 
     //g_MainScheduler.attach(&ButtonTaskS1, DebounceTime, true);
     g_MainScheduler.Attach(&g_sPainter, 1);
-    g_MainScheduler.Attach(&g_sServo, DebounceTime, true);
+    g_MainScheduler.Attach(&g_sServo, 1, true);
     //ButtonTaskS1.Kill();
 
     //g_MainScheduler.attach(&ButtonTaskS2, DebounceTime, true);
