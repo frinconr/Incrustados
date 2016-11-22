@@ -31,12 +31,13 @@ extern "C"
 class Sprite {
 public:
 	// Static Graphic Context
-	static Graphics_Context a_GraphicsContext;
+	static Graphics_Context m_GraphicsContext;
 
-	// Point Coordinate Structure
+	// Point Coordinate Structure, represents the position of a segment,
+	// by indicating the down-left corner
 	struct Point {
-	   uint8_t Horizontal; 	// FROM 0 to 100 (Discrete 10 levels)
-	   uint8_t Vertical;	// FROM 0 to 120 (Continous, in jumps of velocity).
+	   uint8_t Horizontal; 	// FROM 0 to 99 (Discrete 10 levels)
+	   uint8_t Vertical;	// FROM 0 to 119 (Continous, in jumps of velocity).
 	};
 
 	// ENUM For the types of blocks
@@ -62,15 +63,24 @@ public:
 	// Default constructor
 	Sprite();
 	// Typed constructor (selects which sprite to create
-	Sprite(uint8_t i_u8Type);
+	Sprite(eSpriteTypes i_Type);
 	// Destructor
 	virtual ~Sprite();
 
+	// Paint Sprite
 	void Paint();
+	// Delete Sprite
 	void Delete();
+
+	// Place Sprite
+	void SetInitialPosition();
+
+	// Move Sprite
 	void MoveDown();
 	void MoveRight();
 	void MoveLeft();
+
+	// Rotate Sprite
 	void RotateLeft();
 	void RotateRight();
 
@@ -81,8 +91,10 @@ private:
 	void SetColor();
 	// Member blocks, all figures are represented by 4 squares.
 	Point m_Blocks[4];
+
 	// Type of Sprite
 	eSpriteTypes m_Type;
+	// Color of Sprite
 	eSpriteColors m_Color;
 };
 

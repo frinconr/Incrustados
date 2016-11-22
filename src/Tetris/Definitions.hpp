@@ -32,16 +32,21 @@
 #define 	MIN_HEIGHT		128
 
 #define 	MIN_ARENA_X		28
-#define 	MAX_ARENA_X		127
+#define 	MAX_ARENA_X		128
 
-#define 	MIN_ARENA_Y		5
-#define 	MAX_ARENA_Y		123
+#define 	ARENA_WIDTH		100
+#define 	ARENA_HEIGHT	120
+
+#define 	MIN_ARENA_Y		4
+#define 	MAX_ARENA_Y		124
 
 #define 	SEGMENT_WIDTH	10
 #define		SEGMENT_HEIGHT	10
 
 #define 	NUM_X_SQUARES 	10
 #define		NUM_Y_SQUARES	12
+
+#define 	VERTICAL_JUMP	2
 //////////////////////////////////////////////////////////////////////////////
 // Global Flags
 //////////////////////////////////////////////////////////////////////////////
