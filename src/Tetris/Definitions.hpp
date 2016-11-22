@@ -37,8 +37,8 @@
 #define 	MIN_ARENA_Y		5
 #define 	MAX_ARENA_Y		123
 
-#define 	X_SQUARE_SIZE	10
-#define		Y_SQUARE_SIZE	10
+#define 	SEGMENT_WIDTH	10
+#define		SEGMENT_HEIGHT	10
 
 #define 	NUM_X_SQUARES 	10
 #define		NUM_Y_SQUARES	12
@@ -56,8 +56,8 @@ typedef enum {
 // Color Definitions
 //////////////////////////////////////////////////////////////////////////////
 
-#define FILL_COLOR 				0x00FF
-#define BACKGROUND_COLOR		0x8A22
+#define BACKGROUND_COLOR	0x0000
+#define FILL_COLOR			0xFFFF
 
 // THRESHOLDS
 

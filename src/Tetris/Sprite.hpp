@@ -8,13 +8,56 @@
 #ifndef SPRITE_HPP_
 #define SPRITE_HPP_
 
+/* C++ Standard libs */
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
+/* MSPWare definitions */
+#include "msp.h"
+
+extern "C"
+{
+	#include <driverlib.h>
+	#include <grlib.h>
+	#include "Crystalfontz128x128_ST7735.h"
+	#include <stdio.h>
+}
+/* Local Definitions */
+#include "Definitions.hpp"
+
+#define NUM_BLOCKS 4
+
 class Sprite {
 public:
+	// Static Graphic Context
+	static Graphics_Context a_GraphicsContext;
+
 	// Point Coordinate Structure
 	struct Point {
-	   uint8_t Horizontal;
-	   uint8_t Vertical;
+	   uint8_t Horizontal; 	// FROM 0 to 100 (Discrete 10 levels)
+	   uint8_t Vertical;	// FROM 0 to 120 (Continous, in jumps of velocity).
 	};
+
+	// ENUM For the types of blocks
+	typedef enum {
+		oBlock,
+		iBlock,
+		sBlock,
+		tBlock,
+		lBlock,
+		// Total type count
+		NUM_SPRITE_TYPES
+	} eSpriteTypes;
+
+	// ENUM with the sprite colors
+	typedef enum {
+		COLOR_GREEN = 	0x07E0,
+		COLOR_BLUE = 	0x001F,
+		COLOR_RED =		0xF800,
+		COLOR_YELLOW = 	0xFFE0,
+		COLOR_GRAY = 	0xC618
+	} eSpriteColors;
 
 	// Default constructor
 	Sprite();
@@ -25,18 +68,22 @@ public:
 
 	void Paint();
 	void Delete();
-	void Move();
+	void MoveDown();
+	void MoveRight();
+	void MoveLeft();
 	void RotateLeft();
 	void RotateRight();
-	uint8_t GetLowestYCoordinate();
-
-	static Arena
 
 private:
+	// Function to paint a segment
+	void PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color);
+	// Define Color
+	void SetColor();
 	// Member blocks, all figures are represented by 4 squares.
 	Point m_Blocks[4];
 	// Type of Sprite
-	uint8_t m_Type;
+	eSpriteTypes m_Type;
+	eSpriteColors m_Color;
 };
 
 #endif /* SPRITE_HPP_ */

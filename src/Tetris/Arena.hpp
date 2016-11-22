@@ -8,6 +8,12 @@
 #ifndef ARENA_HPP_
 #define ARENA_HPP_
 
+/* MSPWare definitions */
+#include "msp.h"
+
+/* Local Definitions */
+#include "Definitions.hpp"
+
 class Arena {
 
 public:

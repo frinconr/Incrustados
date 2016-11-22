@@ -12,6 +12,11 @@
 
 #define __NOP __nop
 
+/* C++ Standard libs */
+#include <stdio.h>      /* printf, scanf, puts, NULL */
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 /* MSPWare definitions */
 #include "msp.h"
 
@@ -26,7 +31,11 @@ extern "C"
 
 /* Local Includes */
 #include "main.hpp"
+#include "hardware.hpp"
 
+
+/* Global Variables */
+uint32_t g_u64GlobalTicks = 0;
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
@@ -37,11 +46,6 @@ void main(void)
 
     while(1){
     	__wfe();
-        if()
-        {
-        	g_MainScheduler.m_u64Ticks = g_u64SystemTicks;
-        	g_MainScheduler.Run();
-        }
     };
 }
 
@@ -52,6 +56,9 @@ void main(void)
 // **********************************
 void Setup(void)
 {
+	// Seed random number generator
+	srand (time(NULL));
+
 	// ****************************
 	//         DEVICE CONFIG
 	// ****************************
@@ -65,11 +72,6 @@ void Setup(void)
 	// ****************************
 	// - P1.0 is connected to the Red LED
 	ConfigP1LED();
-
-	// ****************************
-	// Configure PWM
-	// ****************************
-	ConfigP2PWM();
 
 	// ****************************
 	//       TIMER CONFIG
@@ -101,7 +103,7 @@ extern "C"
 	{
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
-		g_u64SystemTicks++;
+		g_u64GlobalTicks++;
 		return;
 	}
 }
