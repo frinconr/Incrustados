@@ -20,6 +20,8 @@ uint32_t g_u64GlobalTicks = 0;
 
 // Graphics Context
 Graphics_Context g_GraphicsContext;
+// Initialize static variable of sprite class
+Graphics_Context* Sprite::m_GraphicsContext = &g_GraphicsContext;
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN

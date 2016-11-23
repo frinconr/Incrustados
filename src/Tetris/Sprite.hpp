@@ -31,7 +31,7 @@ extern "C"
 class Sprite {
 public:
 	// Static Graphic Context
-	Graphics_Context* m_GraphicsContext;
+	static Graphics_Context* m_GraphicsContext;
 
 	// Point Coordinate Structure, represents the position of a segment,
 	// by indicating the down-left corner
