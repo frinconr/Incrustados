@@ -85,7 +85,7 @@ void Sprite::SetColor() {
 void Sprite::Paint() {
 	// Iterate through all segments and paint as fill color
 	for(uint8_t i=0; i<NUM_BLOCKS; i++){
-		// Call the paint segment method with the bacground color
+		// Call the paint segment method with the background color
 		this->PaintSegment(i,this->m_Color);
 	}
 }
@@ -114,15 +114,15 @@ void Sprite::Delete() {
  *
  */
 void Sprite::PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color){
-	Graphics_Rectangle l_PaintArea;
+
 	// Define square to paint:
-	l_PaintArea.xMin = MIN_ARENA_X + m_Blocks[i_SegmentNum].Horizontal;
-	l_PaintArea.xMax = MIN_ARENA_X + m_Blocks[i_SegmentNum].Horizontal + (SEGMENT_WIDTH-1);
-	l_PaintArea.yMin = MIN_ARENA_Y + m_Blocks[i_SegmentNum].Vertical - (SEGMENT_HEIGHT-1);
-	l_PaintArea.yMax = MIN_ARENA_Y + m_Blocks[i_SegmentNum].Vertical;
+	m_PaintArea.xMin = MIN_ARENA_X + m_Blocks[i_SegmentNum].Horizontal;
+	m_PaintArea.xMax = MIN_ARENA_X + m_Blocks[i_SegmentNum].Horizontal + (SEGMENT_WIDTH-1);
+	m_PaintArea.yMin = MIN_ARENA_Y + m_Blocks[i_SegmentNum].Vertical - (SEGMENT_HEIGHT-1);
+	m_PaintArea.yMax = MIN_ARENA_Y + m_Blocks[i_SegmentNum].Vertical;
 
 	// Paint the rectangle
-	Graphics_fillRectangleOnDisplay(Sprite::m_GraphicsContext->display, &l_PaintArea, i_Color);
+	Graphics_fillRectangleOnDisplay(Sprite::m_GraphicsContext->display, &m_PaintArea, i_Color);
 }
 
 /* SetInitialPosition

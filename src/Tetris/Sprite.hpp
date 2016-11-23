@@ -100,6 +100,8 @@ private:
 	eSpriteOrientation m_Orientation;
 	// Member blocks, all figures are represented by 4 squares.
 	Point m_Blocks[4];
+	// Painting area
+	Graphics_Rectangle m_PaintArea;
 
 	// Function to paint a segment
 	void PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color);
