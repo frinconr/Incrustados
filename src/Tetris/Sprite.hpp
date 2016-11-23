@@ -89,9 +89,10 @@ public:
 	void MoveLeft();
 
 	// Rotate Sprite
+	/*
 	void RotateLeft();
 	void RotateRight();
-
+	*/
 private:
 	// Type of Sprite
 	eSpriteTypes m_Type;
@@ -107,10 +108,12 @@ private:
 	// Define Color
 	void SetColor();
 	// Set Sprite Position
+	/*
 	void SetSpritePositionNorth(Point i_Center);
 	void SetSpritePositionEast(Point i_Center);
 	void SetSpritePositionSouth(Point i_Center);
 	void SetSpritePositionWest(Point i_Center);
+	*/
 
 
 };
