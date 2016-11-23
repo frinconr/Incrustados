@@ -31,7 +31,7 @@ extern "C"
 class Sprite {
 public:
 	// Static Graphic Context
-	static Graphics_Context* m_GraphicsContext;
+	Graphics_Context* m_GraphicsContext;
 
 	// Point Coordinate Structure, represents the position of a segment,
 	// by indicating the down-left corner
@@ -72,8 +72,6 @@ public:
 	Sprite();
 	// Typed constructor (selects which sprite to create
 	Sprite(eSpriteTypes i_Type);
-	// Destructor
-	virtual ~Sprite();
 
 	// Paint Sprite
 	void Paint();
@@ -114,8 +112,6 @@ private:
 	void SetSpritePositionSouth(Point i_Center);
 	void SetSpritePositionWest(Point i_Center);
 	*/
-
-
 };
 
 #endif /* SPRITE_HPP_ */

@@ -45,9 +45,6 @@ Sprite::Sprite(eSpriteTypes i_Type){
 	this->SetInitialPosition();
 }
 
-Sprite::~Sprite() {
-	// TODO Auto-generated destructor stub
-}
 
 /* Define Color.
  *
