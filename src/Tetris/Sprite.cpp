@@ -478,8 +478,8 @@ void Sprite::SetOrientationEast(Point i_Point) {
  * creates the figure that should be represented
 */
 void Sprite::SetOrientationWest(Point i_Point) {
-	// Set orientation as East.
-	this->m_Orientation = EAST;
+	// Set orientation as West.
+	this->m_Orientation = WEST;
 
 	// Set Position
 	switch(this->m_Type) {
@@ -685,6 +685,504 @@ void Sprite::SetOrientationWest(Point i_Point) {
 			// Fourth block, right-most segment
 			m_Blocks[3].Horizontal = i_Point.Horizontal + SEGMENT_WIDTH;
 			m_Blocks[3].Vertical = i_Point.Vertical;
+
+			break;
+		default:
+			/* Not needed */
+			break;
+	}
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+// ORIENTATION NORTH
+///////////////////////////////////////////////////////////////////////////////////////
+
+/* SetOrientationWest
+ *
+ * This method places the Sprite in an horizontal initial position, it places the blocks and
+ * creates the figure that should be represented
+*/
+void Sprite::SetOrientationNorth(Point i_Point) {
+	// Set orientation as North.
+	this->m_Orientation = NORTH;
+
+	// Set Position
+	switch(this->m_Type) {
+		/////////////////////////////////////////////////////////////////////////////////////// O BLOCK - NORTH
+		case oBlock:
+			/////////////////////////////
+			// Square Block
+			/////////////////////////////
+			/*
+			 *  	+ - +  + - +
+			 *  	| 0 |  | 1 |
+			 *  	+ - +  * - +
+			 *  	+ - +  + - +
+			 *  	| 2 |  | 3 |
+			 *  	+ - +  + - +
+			 * Nothing to be done. Only east is required initial, then it behaves the same.
+			 * */
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// I BLOCK - NORTH
+		case iBlock:
+			/////////////////////////////
+			// I Block
+			/////////////////////////////
+			/*
+			 *		+ - +	(NORTH/SOUTH)
+			 *		| 0 |
+			 *		+ - +
+			 *		+ - +
+			 *		| 1 |
+			 *		* - +
+			 *		+ - +
+			 *		| 2 |
+			 *		+ - +
+			 *		+ - +
+			 *		| 3 |
+			 *		+ - +
+			 *
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + 2*SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// S BLOCK - NORTH
+		case sBlock:
+			/////////////////////////////
+			// s Block
+			/////////////////////////////
+			/*
+			 *             + - +			(NORTH/SOUTH)
+			 *  	       | 0 |
+			 *  	       + - +
+			 *  	       + - +  + - +
+			 *             | 1 |  | 2 |
+			 *             + - +  * - +
+			 *                    + - +
+			 *                    | 3 |
+			 *                    + - +
+			 *
+			 *  Same as East
+			 */
+			// First block, upper left segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, upper center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// Z BLOCK - NORTH
+		case zBlock:
+			/////////////////////////////
+			// S Block
+			/////////////////////////////
+			/*
+			 *
+			 *  	      		  + - +		(NORTH/SOUTH)
+			 *  	      		  | 0 |
+			 *                    + - +
+			 *  	       + - +  + - +
+			 *             | 1 |  | 2 |
+			 *             + - +  * - +
+			 *             + - +
+			 *             | 3 |
+			 *             + - +
+			 */
+			// First block, upper left segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, upper center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// T BLOCK - NORTH
+		case tBlock:
+			/////////////////////////////
+			// T Block
+			/////////////////////////////
+			/*
+			 *             + - +		(NORTH)
+			 *             | 0 |
+			 *             + - +
+			 *      + - +  + - +
+			 *	    | 1 |  | 2 |
+			 *      + - +  * - +
+			 *             + - +
+			 *             | 3 |
+			 *             + - +
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		///////////////////////////////////////////////////////////////////////////////////////// L BLOCK - NORTH
+		case lBlock:
+			/////////////////////////////
+			// L Block
+			/////////////////////////////
+			/*
+			 *      + - +				(NORTH)
+			 *	    | 0 |
+			 *      + - +
+			 *      + - +
+			 *      | 1 |
+			 *      * - +
+			 *      + - +  + - +
+			 *      | 2 |  | 3 |
+			 *      + - +  + - +
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal + SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// J BLOCK - NORTH
+		case jBlock:
+			/////////////////////////////
+			// J Block
+			/////////////////////////////
+			/*
+			 *      + - +  + - +		(NORTH)
+			 *      | 0 |  | 1 |
+			 *      + - +  + - +
+			 *      + - +
+			 *	    | 2 |
+			 *      * - +
+			 *      + - +
+			 *      | 3 |
+			 *      + - +
+			 *
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal + SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+		default:
+			/* Not needed */
+			break;
+	}
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+// ORIENTATION SOUTH
+///////////////////////////////////////////////////////////////////////////////////////
+
+/* SetOrientationSouth
+ *
+ * This method places the Sprite in a South orientation, it places the blocks and
+ * creates the figure that should be represented, based on the Point given as a reference.
+*/
+void Sprite::SetOrientationSouth(Point i_Point) {
+	// Set orientation as South.
+	this->m_Orientation = SOUTH;
+
+	// Set Position
+	switch(this->m_Type) {
+		/////////////////////////////////////////////////////////////////////////////////////// O BLOCK - SOUTH
+		case oBlock:
+			/////////////////////////////
+			// Square Block
+			/////////////////////////////
+			/*
+			 *  	+ - +  + - +
+			 *  	| 0 |  | 1 |
+			 *  	+ - +  * - +
+			 *  	+ - +  + - +
+			 *  	| 2 |  | 3 |
+			 *  	+ - +  + - +
+			 * Nothing to be done. Only east is required initial, then it behaves the same.
+			 * */
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// I BLOCK - SOUTH
+		case iBlock:
+			/////////////////////////////
+			// I Block
+			/////////////////////////////
+			/*
+			 *		+ - +	(NORTH/SOUTH)
+			 *		| 0 |
+			 *		+ - +
+			 *		+ - +
+			 *		| 1 |
+			 *		* - +
+			 *		+ - +
+			 *		| 2 |
+			 *		+ - +
+			 *		+ - +
+			 *		| 3 |
+			 *		+ - +
+			 *
+			 */
+			// First block, upper most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, upper center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, down center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			// Fourth block, down-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + 2*SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// S BLOCK - SOUTH
+		case sBlock:
+			/////////////////////////////
+			// s Block
+			/////////////////////////////
+			/*
+			 *             + - +			(NORTH/SOUTH)
+			 *  	       | 0 |
+			 *  	       + - +
+			 *  	       + - +  + - +
+			 *             | 1 |  | 2 |
+			 *             + - +  * - +
+			 *                    + - +
+			 *                    | 3 |
+			 *                    + - +
+			 *
+			 *  Same as East
+			 */
+			// First block, upper left segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right down segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// Z BLOCK - SOUTH
+		case zBlock:
+			/////////////////////////////
+			// S Block
+			/////////////////////////////
+			/*
+			 *
+			 *  	      		  + - +		(NORTH/SOUTH)
+			 *  	      		  | 0 |
+			 *                    + - +
+			 *  	       + - +  + - +
+			 *             | 1 |  | 2 |
+			 *             + - +  * - +
+			 *             + - +
+			 *             | 3 |
+			 *             + - +
+			 */
+			// First block, upper right segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, right middle segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, left center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, left down segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// T BLOCK - SOUTH
+		case tBlock:
+			/////////////////////////////
+			// T Block
+			/////////////////////////////
+			/*
+			 *      + - +			(SOUTH)
+			 *      | 0 |
+			 *      + - +
+			 *      + - +  + - +
+			 *	    | 1 |  | 2 |
+			 *      * - +  + - +
+			 *      + - +
+			 *      | 3 |
+			 *      + - +
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal + SEGMENT_WIDTH;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		///////////////////////////////////////////////////////////////////////////////////////// L BLOCK - SOUTH
+		case lBlock:
+			/////////////////////////////
+			// L Block
+			/////////////////////////////
+			/*
+			 *      + - + + - +			(SOUTH)
+			 *	    | 0 | | 1 |
+			 *      + - + + - +
+			 *            + - +
+			 *            | 2 |
+			 *            * - +
+			 *            + - +
+			 *            | 3 |
+			 *            + - +
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal;
+			m_Blocks[2].Vertical = i_Point.Vertical;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			break;
+
+		/////////////////////////////////////////////////////////////////////////////////////// J BLOCK - SOUTH
+		case jBlock:
+			/////////////////////////////
+			// J Block
+			/////////////////////////////
+			/*
+			 *     		  + - +		(SOUTH)
+			 *            | 0 |
+			 *            + - +
+			 *            + - +
+			 *	          | 1 |
+			 *            * - +
+			 *      + - + + - +
+			 *      | 2 | | 3 |
+			 *      + - + + - +
+			 *
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = i_Point.Horizontal;
+			m_Blocks[0].Vertical = i_Point.Vertical - SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = i_Point.Horizontal;
+			m_Blocks[1].Vertical = i_Point.Vertical;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = i_Point.Horizontal - SEGMENT_WIDTH;
+			m_Blocks[2].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = i_Point.Horizontal;
+			m_Blocks[3].Vertical = i_Point.Vertical + SEGMENT_HEIGHT;
 
 			break;
 		default:
