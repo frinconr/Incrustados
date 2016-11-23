@@ -137,7 +137,14 @@ void Sprite::SetInitialPosition() {
 			/////////////////////////////
 			// Square Block
 			/////////////////////////////
-
+			/* Will start centered
+			 *
+			 * Layout:
+			 *  	[0][1]
+			 *  	[2][3]
+			 *
+			 *  	   |
+			 */
 			// First block, upper left
 			m_Blocks[0].Horizontal = (ARENA_WIDTH/2)- SEGMENT_WIDTH;
 			m_Blocks[0].Vertical = SEGMENT_HEIGHT;
@@ -159,21 +166,117 @@ void Sprite::SetInitialPosition() {
 			/////////////////////////////
 			// I Block
 			/////////////////////////////
+			/* Will start horizontal
+			 *
+			 *  [0][1][2][3]
+			 *
+			 *  	  |
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = (ARENA_WIDTH/2)- 2*SEGMENT_WIDTH;
+			m_Blocks[0].Vertical = SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = (ARENA_WIDTH/2)- SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = SEGMENT_HEIGHT;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[2].Vertical = SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = (ARENA_WIDTH/2)+ SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = SEGMENT_HEIGHT;
+
 			break;
+
 		case sBlock:
 			/////////////////////////////
 			// S Block
 			/////////////////////////////
-			this->m_Color = COLOR_RED;
+			/* Will start horizontal
+			 *
+			 *  	[0][1]
+			 *  	   [2][3]
+			 *
+			 *  	   |
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = (ARENA_WIDTH/2)- SEGMENT_WIDTH;
+			m_Blocks[0].Vertical = SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[1].Vertical = SEGMENT_HEIGHT;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[2].Vertical = 2*SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = (ARENA_WIDTH/2) + SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = 2*SEGMENT_HEIGHT;
+
 			break;
+
 		case tBlock:
-			this->m_Color = COLOR_YELLOW;
+			/////////////////////////////
+			// T Block
+			/////////////////////////////
+			/* Will start horizontal
+			 *
+			 *  	 [0]
+			 *    [1][2][3]
+			 *
+			 *    	 |
+			 */
+			// First block, left most segment
+			m_Blocks[0].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[0].Vertical = SEGMENT_HEIGHT;
+
+			// Second segment, left center segment
+			m_Blocks[1].Horizontal = (ARENA_WIDTH/2) - SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = 2*SEGMENT_HEIGHT;
+
+			// Third block, right center segment
+			m_Blocks[2].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[2].Vertical = 2*SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = (ARENA_WIDTH/2) + SEGMENT_WIDTH;
+			m_Blocks[3].Vertical = 2*SEGMENT_HEIGHT;
+
 			break;
 		case lBlock:
-			this->m_Color = COLOR_GRAY;
+			/////////////////////////////
+			// L Block
+			/////////////////////////////
+			/* Will start horizontal
+			 *
+			 *          [0]
+			 *    [1][2][3]
+			 *
+			 *    	    |
+			 */
+			// First block, upper segment
+			m_Blocks[0].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[0].Vertical = SEGMENT_HEIGHT;
+
+			// Second segment, left-most segment
+			m_Blocks[1].Horizontal = (ARENA_WIDTH/2) - 2*SEGMENT_WIDTH;
+			m_Blocks[1].Vertical = 2*SEGMENT_HEIGHT;
+
+			// Third block, down center segment
+			m_Blocks[2].Horizontal = (ARENA_WIDTH/2) - SEGMENT_WIDTH;
+			m_Blocks[2].Vertical = 2*SEGMENT_HEIGHT;
+
+			// Fourth block, right-most segment
+			m_Blocks[3].Horizontal = (ARENA_WIDTH/2);
+			m_Blocks[3].Vertical = 2*SEGMENT_HEIGHT;
+
 			break;
 		default:
-			this->m_Color = COLOR_GRAY;
+			/* Not needed */
 			break;
 	}
 }

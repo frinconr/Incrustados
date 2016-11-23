@@ -60,6 +60,14 @@ public:
 		COLOR_GRAY = 	0xC618
 	} eSpriteColors;
 
+	// ENUM with the sprite positions
+	typedef enum {
+		VerticalUp,
+		VerticalDown,
+		HorizontalUp,
+		HorizontalDown
+	} eSpritePositions;
+
 	// Default constructor
 	Sprite();
 	// Typed constructor (selects which sprite to create
