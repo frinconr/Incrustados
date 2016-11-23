@@ -43,6 +43,9 @@ Sprite::Sprite(eSpriteTypes i_Type){
 
 	// Set the initial position
 	this->SetInitialPosition();
+
+	// Paint current Sprite
+	this->Paint();
 }
 
 
