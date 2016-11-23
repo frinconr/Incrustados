@@ -12,21 +12,23 @@
 
 #define __NOP __nop
 
-
-
 /* Local Includes */
 #include "main.hpp"
-#include "hardware.hpp"
-
 
 /* Global Variables */
 uint32_t g_u64GlobalTicks = 0;
+
+// Graphics Context
+Graphics_Context g_GraphicsContext;
 
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
+	Sprite::eSpriteTypes SpriteType = Sprite::oBlock;
+	// Create Sprite
+	Sprite CurrentSprite = Sprite::Sprite(SpriteType);
     Setup();
 
     while(1){
@@ -64,8 +66,12 @@ void Setup(void)
 	// - Configure Timer32_1  with MCLK (3Mhz), Division by 1, Enable the interrupt, Periodic Mode
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-	ConfigTimer32(3000); // 3000 = 1ms
+	ConfigTimer32(3000); // 3000 = 1
 
+	// ****************************
+	//       CONFIG SCREEN
+	// ****************************
+    ConfigScreen(&g_GraphicsContext);
 
 	// ****************************
 	// Re-enable interruptions

@@ -23,6 +23,9 @@ Sprite::Sprite() {
 
 	// Set the initial position
 	this->SetInitialPosition();
+
+	// Paint current Sprite
+	this->Paint();
 }
 
 /* Sprite Constructor
@@ -122,7 +125,7 @@ void Sprite::PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color){
 	l_PaintArea.yMax = MIN_ARENA_Y + m_Blocks[i_SegmentNum].Vertical;
 
 	// Paint the rectangle
-	Graphics_fillRectangleOnDisplay(this->m_GraphicsContext.display, &l_PaintArea, i_Color);
+	Graphics_fillRectangleOnDisplay(Sprite::m_GraphicsContext->display, &l_PaintArea, i_Color);
 }
 
 /* SetInitialPosition
@@ -131,7 +134,10 @@ void Sprite::PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color){
  * creates the figure that should be represented
 */
 void Sprite::SetInitialPosition() {
-	//
+	// Set orientation as East.
+	this->m_Orientation = EAST;
+
+	// Set Position
 	switch(this->m_Type) {
 		case oBlock:
 			/////////////////////////////
