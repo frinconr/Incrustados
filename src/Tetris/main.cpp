@@ -28,10 +28,20 @@ Graphics_Context* Sprite::m_GraphicsContext = &g_GraphicsContext;
 //////////////////////////////////////////////////////////////////////////////
 void main(void)
 {
+	// **********************************
+	// SetUp
+	// **********************************
+	Setup();
+	// **********************************
+
+
+	// **********************************
+	// Create Sprite
+	// **********************************
 	Sprite::eSpriteTypes SpriteType = Sprite::oBlock;
 	// Create Sprite
 	Sprite CurrentSprite = Sprite::Sprite(SpriteType);
-    Setup();
+	// **********************************
 
     while(1){
     	__wfe();
