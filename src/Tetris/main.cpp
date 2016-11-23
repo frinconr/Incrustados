@@ -40,7 +40,7 @@ void main(void)
 	// **********************************
 	Sprite::eSpriteTypes SpriteType = Sprite::oBlock;
 	// Create Sprite
-	Sprite CurrentSprite = Sprite::Sprite(SpriteType);
+	Sprite CurrentSprite (SpriteType);
 	// **********************************
 
     while(1){
@@ -83,7 +83,7 @@ void Setup(void)
 	// ****************************
 	//       CONFIG SCREEN
 	// ****************************
-    ConfigScreen(&g_GraphicsContext);
+    ConfigScreen(Sprite::m_GraphicsContext);
 
 	// ****************************
 	// Re-enable interruptions
