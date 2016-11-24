@@ -53,6 +53,8 @@
 
 typedef enum {
 	NEXT_MOVE,
+	MOVE_RIGHT,
+	MOVE_LEFT,
 	// Total flag count
 	NUM_FLAGS
 } eGlobalFlags;

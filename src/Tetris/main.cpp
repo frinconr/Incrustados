@@ -18,6 +18,9 @@
 /* Global Variables */
 uint32_t g_u64GlobalTicks = 0;
 
+/* ADC results buffer */
+static uint16_t g_u16ResultsBuffer[2];
+
 // Graphics Context
 Graphics_Context g_GraphicsContext;
 // Initialize static variable of sprite class
@@ -86,6 +89,11 @@ void Setup(void)
     ConfigScreen(Sprite::m_GraphicsContext);
 
 	// ****************************
+	//       CONFIG ADC14
+	// ****************************
+    ConfigADC14();
+
+	// ****************************
 	// Re-enable interruptions
 	EnableInterruptions();
 	// ****************************
@@ -122,6 +130,9 @@ extern "C"
 	    /* ADC_MEM1 conversion completed */
 	    if(status & ADC_INT1)
 	    {
+	        /* Store ADC14 conversion results */
+	    	g_u16ResultsBuffer[0] = ADC14_getResult(ADC_MEM0);
+	    	g_u16ResultsBuffer[1] = ADC14_getResult(ADC_MEM1);
 
 	    }
 	}
