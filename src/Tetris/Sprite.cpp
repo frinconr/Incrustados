@@ -80,14 +80,20 @@ void Sprite::SetColor() {
 		case sBlock:
 			this->m_Color = COLOR_RED;
 			break;
-		case tBlock:
+		case zBlock:
 			this->m_Color = COLOR_YELLOW;
 			break;
+		case tBlock:
+			this->m_Color = COLOR_PURPLE;
+			break;
 		case lBlock:
-			this->m_Color = COLOR_GRAY;
+			this->m_Color = COLOR_CYAN;
+			break;
+		case jBlock:
+			this->m_Color = COLOR_ORANGE;
 			break;
 		default:
-			this->m_Color = COLOR_GRAY;
+			this->m_Color = COLOR_WHITE;
 			break;
 	}
 }
@@ -226,7 +232,126 @@ void Sprite::MoveLeft(){
 		}
 	}
 }
+///////////////////////////////////////////////////////////////////////////////////////
+// ROTATE Clockwise
+///////////////////////////////////////////////////////////////////////////////////////
+void Sprite::RotateClockwise() {
+	// Center point for next orientation
+	Point l_NextOrientationCenter;
 
+	// boolean to see if it can rotate
+	bool l_CanRotateRight = true;
+
+	switch(this->m_Type) {
+		case oBlock:
+			/////////////////////////////
+			// oBlock
+			/////////////////////////////
+			l_NextOrientationCenter = this->m_Blocks[1];
+			break;
+
+		case iBlock:
+			/////////////////////////////
+			// iBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			}
+			break;
+		case sBlock:
+			/////////////////////////////
+			// sBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case zBlock:
+			/////////////////////////////
+			// zBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case tBlock:
+			/////////////////////////////
+			// tBlock
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[0];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			}
+			break;
+		case lBlock:
+			/////////////////////////////
+			// lBlock
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter.Horizontal = this->m_Blocks[1].Horizontal;
+				l_NextOrientationCenter.Vertical = this->m_Blocks[1].Vertical+SEGMENT_HEIGHT;
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case jBlock:
+			/////////////////////////////
+			// j Block
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter= this->m_Blocks[1];
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter.Horizontal = this->m_Blocks[1].Horizontal;
+				l_NextOrientationCenter.Vertical = this->m_Blocks[1].Vertical+SEGMENT_HEIGHT;
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		default:
+			break;
+	}
+
+	// Call the SetOrientatin, depending on current orientation
+	switch(this->m_Orientation) {
+		case NORTH:
+			// Rotate to East orientation
+			this->SetOrientationEast(l_NextOrientationCenter);
+			break;
+		case EAST:
+			// Rotate to South orientation
+			this->SetOrientationSouth(l_NextOrientationCenter);
+			break;
+		case SOUTH:
+			// Rotate to West orientation
+			this->SetOrientationWest(l_NextOrientationCenter);
+			break;
+		case WEST:
+			// Rotate to North orientation
+			this->SetOrientationNorth(l_NextOrientationCenter);
+			break;
+
+	}
+}
+///////////////////////////////////////////////////////////////////////////////////////
+// ROTATE LEFT
+///////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////
 // ORIENTATION EAST

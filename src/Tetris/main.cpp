@@ -26,6 +26,9 @@ Graphics_Context g_GraphicsContext;
 // Initialize static variable of sprite class
 Graphics_Context* Sprite::m_GraphicsContext = &g_GraphicsContext;
 
+// Global Flags
+bool g_bGlobalFlags[NUM_FLAGS];
+
 //////////////////////////////////////////////////////////////////////////////
 // MAIN
 //////////////////////////////////////////////////////////////////////////////
@@ -40,14 +43,20 @@ void main(void)
 
 	// **********************************
 	// Create Sprite
-	// **********************************
-	Sprite::eSpriteTypes SpriteType = Sprite::oBlock;
-	// Create Sprite
-	Sprite CurrentSprite (SpriteType);
-	// **********************************
+	Sprite CurrentSprite;
+
 
     while(1){
     	__wfe();
+
+    	if(g_bGlobalFlags[CHANGE_SPRITE]) {
+    		g_bGlobalFlags[CHANGE_SPRITE] = false;
+    		// **********************************
+			// Create Sprite
+			CurrentSprite.Delete();
+			// **********************************
+			CurrentSprite = Sprite::Sprite();
+    	}
     };
 }
 
@@ -81,7 +90,7 @@ void Setup(void)
 	// - Configure Timer32_1  with MCLK (3Mhz), Division by 1, Enable the interrupt, Periodic Mode
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-	ConfigTimer32(3000); // 3000 = 1
+	ConfigTimer32(65530); // 30000 = 1ms
 
 	// ****************************
 	//       CONFIG SCREEN
@@ -98,6 +107,7 @@ void Setup(void)
 	EnableInterruptions();
 	// ****************************
 
+	g_bGlobalFlags[NUM_FLAGS] = true;
 	// ****************************
 	// Initialize global flags
 	// ****************************
@@ -114,7 +124,7 @@ extern "C"
 	{
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
-		g_u64GlobalTicks++;
+		g_bGlobalFlags[CHANGE_SPRITE] = true;
 		return;
 	}
 	/* This interrupt is fired whenever a conversion is completed and placed in

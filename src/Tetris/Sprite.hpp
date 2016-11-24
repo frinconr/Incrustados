@@ -255,7 +255,10 @@ public:
 		COLOR_BLUE = 	0x001F,
 		COLOR_RED =		0xF800,
 		COLOR_YELLOW = 	0xFFE0,
-		COLOR_GRAY = 	0xC618
+		COLOR_PURPLE = 	0x780F,
+		COLOR_CYAN = 	0x07FF,
+		COLOR_ORANGE =  0xFD20,
+		COLOR_WHITE = 	0xFFFF
 	} eSpriteColors;
 
 	// ENUM with the sprite positions
@@ -286,9 +289,9 @@ public:
 
 	// Rotate Sprite
 	/*
-	void RotateLeft();
-	void RotateRight();
-	*/
+	void RotateLeft();*/
+	void RotateClockwise();
+
 private:
 	// Type of Sprite
 	eSpriteTypes m_Type;
@@ -305,14 +308,8 @@ private:
 	void PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color);
 	// Define Color
 	void SetColor();
-	// Set Sprite Position
 
-	/*
-	void SetSpritePositionNorth(Point i_Center);
-	void SetSpritePositionSouth(Point i_Center);
-	void SetSpritePositionWest(Point i_Center);
-	*/
-
+	// Set Sprite Orientation
 	void SetOrientationEast(Point i_Center);
 	void SetOrientationWest(Point i_Center);
 	void SetOrientationNorth(Point i_Center);
