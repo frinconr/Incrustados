@@ -103,6 +103,12 @@ void Setup(void)
     ConfigADC14();
 
 	// ****************************
+	//       CONFIG BUTTONS
+	// ****************************
+    ConfigS1ButtonInterrupt();
+    ConfigS2ButtonInterrupt();
+
+	// ****************************
 	// Re-enable interruptions
 	EnableInterruptions();
 	// ****************************
@@ -144,6 +150,19 @@ extern "C"
 	    	g_u16ResultsBuffer[0] = ADC14_getResult(ADC_MEM0);
 	    	g_u16ResultsBuffer[1] = ADC14_getResult(ADC_MEM1);
 
+	    	g_bGlobalFlags[MOVE_LEFT] = (g_u16ResultsBuffer[0]<LEFT_TH);
+	    	g_bGlobalFlags[MOVE_RIGHT] = (g_u16ResultsBuffer[0]>RIGHT_TH);
+
 	    }
+	}
+
+	void PORT5_IRQHandler(void){
+
+			g_bGlobalFlags[ROTATE_RIGHT] = true;
+	}
+
+	void PORT3_IRQHandler(void){
+
+			g_bGlobalFlags[ROTATE_LEFT] = true;
 	}
 }

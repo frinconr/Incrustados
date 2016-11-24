@@ -80,31 +80,31 @@ void ConfigP2PWM (){
 
 void ConfigS2ButtonInterrupt() {
 	// - - - - - - - - - - - - - -
-	// P1 Config
+	// P3 Config
 	// - - - - - - - - - - - - - -
 	// This is the button interrupt port
 
-	// - Configure P1.4 (S2) as input
+	// - Configure P3.5 (S2) as input
 
-	// Configuring P1.4 (switch) as input with pull-up
+	// Configuring P3.5 (switch) as input with pull-up
 	// resistor. Rest of pins are configured as output low.
-	// Notice intentional '=' assignment since all P1 pins are being
+	// Notice intentional '=' assignment since all P3 pins are being
 	// deliberately configured
 
 	// Configure P1.4 as input
-	P1->DIR &= ~(uint8_t) BIT4;
-	// Enable pull-up resistor (P1.1 output high)
-	P1->OUT |= BIT4;
-	P1->REN |= BIT4;
+	P3->DIR &= ~(uint8_t) BIT5;
+	// Enable pull-up resistor (P5.1 output high)
+	P3->OUT |= BIT5;
+	P3->REN |= BIT5;
 	// Configure as a GPIO
-	P1->SEL0 = 0;
-	P1->SEL1 = 0;
+	P3->SEL0 = 0;
+	P3->SEL1 = 0;
 	// Interrupt on high-to-low transition
-	P1->IES |= BIT4;
+	P3->IES |= BIT5;
 	// Clear all P1 interrupt flags
-	P1->IFG = 0;
+	P3->IFG = 0;
 	// Enable interrupt for P1.1
-	P1->IE |= BIT4;
+	P3->IE |= BIT5;
 
 	// Enable Port 1 interrupt on the NVIC
 	NVIC_SetPriority(PORT1_IRQn,2);
@@ -117,31 +117,31 @@ void ConfigS1ButtonInterrupt() {
 	// - - - - - - - - - - - - - -
 	// This is the button interrupt port
 
-	// - Configure P1.1 (S1) as input
+	// - Configure P5.1 (S1) as input
 
-	// Configuring P1.1 (switch) as input with pull-up
+	// Configuring P5.1 (switch) as input with pull-up
 	// resistor. Rest of pins are configured as output low.
-	// Notice intentional '=' assignment since all P1 pins are being
+	// Notice intentional '=' assignment since all P5 pins are being
 	// deliberately configured
 
 	// Configure P1.1 as input
-	P1->DIR &= ~(uint8_t) BIT1;
+	P5->DIR &= ~(uint8_t) BIT1;
 	// Enable pull-up resistor (P1.1 output high)
-	P1->OUT |= BIT1;
-	P1->REN |= BIT1;
+	P5->OUT |= BIT1;
+	P5->REN |= BIT1;
 	// Configure as a GPIO
-	P1->SEL0 = 0;
-	P1->SEL1 = 0;
+	P5->SEL0 = 0;
+	P5->SEL1 = 0;
 	// Interrupt on high-to-low transition
-	P1->IES |= BIT1;
+	P5->IES |= BIT1;
 	// Clear all P1 interrupt flags
-	P1->IFG = 0;
+	P5->IFG = 0;
 	// Enable interrupt for P1.1
-	P1->IE |= BIT1;
+	P5->IE |= BIT1;
 
 	// Enable Port 1 interrupt on the NVIC
-	NVIC_SetPriority(PORT1_IRQn,2);
-	NVIC_EnableIRQ(PORT1_IRQn);
+	NVIC_SetPriority(PORT5_IRQn,2);
+	NVIC_EnableIRQ(PORT5_IRQn);
 }
 
 
