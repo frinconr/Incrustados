@@ -109,4 +109,20 @@ extern "C"
 		g_u64GlobalTicks++;
 		return;
 	}
+	/* This interrupt is fired whenever a conversion is completed and placed in
+	 * ADC_MEM1. This signals the end of conversion and the results array is
+	 * grabbed and placed in resultsBuffer */
+	void ADC14_IRQHandler(void)
+	{
+	    uint64_t status;
+
+	    status = MAP_ADC14_getEnabledInterruptStatus();
+	    MAP_ADC14_clearInterruptFlag(status);
+
+	    /* ADC_MEM1 conversion completed */
+	    if(status & ADC_INT1)
+	    {
+
+	    }
+	}
 }
