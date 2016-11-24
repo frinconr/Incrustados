@@ -49,13 +49,41 @@ void main(void)
     while(1){
     	__wfe();
 
-    	if(g_bGlobalFlags[CHANGE_SPRITE]) {
-    		g_bGlobalFlags[CHANGE_SPRITE] = false;
+    	if(g_bGlobalFlags[MOVE_RIGHT]) {
+    		g_bGlobalFlags[MOVE_RIGHT] = false;
     		// **********************************
 			// Create Sprite
 			CurrentSprite.Delete();
 			// **********************************
-			CurrentSprite = Sprite::Sprite();
+			CurrentSprite.MoveRight();
+			CurrentSprite.Paint();
+    	}
+    	if(g_bGlobalFlags[MOVE_LEFT]) {
+    	    		g_bGlobalFlags[MOVE_LEFT] = false;
+    	    		// **********************************
+    				// Create Sprite
+    				CurrentSprite.Delete();
+    				// **********************************
+    				CurrentSprite.MoveLeft();
+    				CurrentSprite.Paint();
+    	}
+    	if(g_bGlobalFlags[MOVE_DOWN]) {
+    	    		g_bGlobalFlags[MOVE_DOWN] = false;
+    	    		// **********************************
+    				// Create Sprite
+    				CurrentSprite.Delete();
+    				// **********************************
+    				CurrentSprite.MoveDown();
+    				CurrentSprite.Paint();
+    	}
+    	if(g_bGlobalFlags[MOVE_LEFT]) {
+    	    		g_bGlobalFlags[MOVE_LEFT] = false;
+    	    		// **********************************
+    				// Create Sprite
+    				CurrentSprite.Delete();
+    				// **********************************
+    				CurrentSprite.MoveLeft();
+    				CurrentSprite.Paint();
     	}
     };
 }
@@ -113,7 +141,11 @@ void Setup(void)
 	EnableInterruptions();
 	// ****************************
 
-	g_bGlobalFlags[NUM_FLAGS] = true;
+	for(uint8_t i=0; i<NUM_FLAGS; i++){
+
+		g_bGlobalFlags[i] = false;
+	}
+
 	// ****************************
 	// Initialize global flags
 	// ****************************
@@ -159,12 +191,12 @@ extern "C"
 	void PORT5_IRQHandler(void){
 
 			P5->IFG &= ~BIT1;
-			g_bGlobalFlags[ROTATE_RIGHT] = true;
+			g_bGlobalFlags[ROTATE_CLOCKWISE] = true;
 	}
 
 	void PORT3_IRQHandler(void){
 
 			P3->IFG &= ~BIT5;
-			g_bGlobalFlags[ROTATE_LEFT] = true;
+			g_bGlobalFlags[ROTATE_CONTERCLOCKWISE] = true;
 	}
 }
