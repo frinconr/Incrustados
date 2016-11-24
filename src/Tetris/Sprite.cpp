@@ -162,7 +162,7 @@ void Sprite::MoveDown(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 127) {
+		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 120) {
 			l_bCanBeMoved = false;
 			break;
 		}
@@ -171,7 +171,7 @@ void Sprite::MoveDown(){
 	if(l_bCanBeMoved){
 		// Iterate through all segments and change position
 		for(int i=0; i<NUM_BLOCKS; i++){
-			m_Blocks[i].Horizontal = m_Blocks[i].Horizontal + VERTICAL_JUMP;
+			m_Blocks[i].Vertical = m_Blocks[i].Vertical + VERTICAL_JUMP;
 		}
 	}
 }
@@ -190,7 +190,7 @@ void Sprite::MoveRight(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 127) {
+		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 100) {
 			l_bCanBeMoved = false;
 			break;
 		}
@@ -301,8 +301,7 @@ void Sprite::RotateClockwise() {
 			if(this->m_Orientation == NORTH){
 				l_NextOrientationCenter = this->m_Blocks[1];
 			} else if(this->m_Orientation == EAST) {
-				l_NextOrientationCenter.Horizontal = this->m_Blocks[1].Horizontal;
-				l_NextOrientationCenter.Vertical = this->m_Blocks[1].Vertical+SEGMENT_HEIGHT;
+				l_NextOrientationCenter = this->m_Blocks[1];
 			} else if(this->m_Orientation == SOUTH) {
 				l_NextOrientationCenter = this->m_Blocks[2];
 			} else if(this->m_Orientation == WEST) {

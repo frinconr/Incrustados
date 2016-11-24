@@ -279,9 +279,6 @@ public:
 	// Delete Sprite
 	void Delete();
 
-	// Place Sprite
-	void SetInitialPosition();
-
 	// Move Sprite
 	void MoveDown();
 	void MoveRight();
@@ -292,18 +289,22 @@ public:
 	void RotateLeft();*/
 	void RotateClockwise();
 
-private:
+	// Member blocks, all figures are represented by 4 squares.
+	Point m_Blocks[4];
 	// Type of Sprite
 	eSpriteTypes m_Type;
 	// Color of Sprite
 	eSpriteColors m_Color;
 	// Sprite current orientation
 	eSpriteOrientation m_Orientation;
-	// Member blocks, all figures are represented by 4 squares.
-	Point m_Blocks[4];
+private:
+
+
 	// Painting area
 	Graphics_Rectangle m_PaintArea;
 
+	// Place Sprite
+	void SetInitialPosition();
 	// Function to paint a segment
 	void PaintSegment(uint8_t i_SegmentNum, uint16_t i_Color);
 	// Define Color

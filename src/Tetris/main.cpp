@@ -43,7 +43,7 @@ void main(void)
 
 	// **********************************
 	// Create Sprite
-	Sprite CurrentSprite;
+	Sprite CurrentSprite (Sprite::lBlock);
 
 
     while(1){
@@ -51,11 +51,20 @@ void main(void)
 
     	if(g_bGlobalFlags[CHANGE_SPRITE]) {
     		g_bGlobalFlags[CHANGE_SPRITE] = false;
+
     		// **********************************
 			// Create Sprite
 			CurrentSprite.Delete();
 			// **********************************
-			CurrentSprite = Sprite::Sprite();
+
+    		if(g_u64GlobalTicks < 20) {
+    			CurrentSprite.MoveDown();
+    		} else {
+    			CurrentSprite.RotateClockwise();
+    		}
+
+    		CurrentSprite.Paint();
+    		g_u64GlobalTicks++;
     	}
     };
 }
@@ -143,6 +152,7 @@ extern "C"
 	        /* Store ADC14 conversion results */
 	    	g_u16ResultsBuffer[0] = ADC14_getResult(ADC_MEM0);
 	    	g_u16ResultsBuffer[1] = ADC14_getResult(ADC_MEM1);
+
 
 	    }
 	}
