@@ -158,11 +158,13 @@ extern "C"
 
 	void PORT5_IRQHandler(void){
 
+			P5->IFG &= ~BIT1;
 			g_bGlobalFlags[ROTATE_RIGHT] = true;
 	}
 
 	void PORT3_IRQHandler(void){
 
+			P3->IFG &= ~BIT5;
 			g_bGlobalFlags[ROTATE_LEFT] = true;
 	}
 }
