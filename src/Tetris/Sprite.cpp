@@ -84,16 +84,16 @@ void Sprite::SetColor() {
 			this->m_Color = COLOR_YELLOW;
 			break;
 		case tBlock:
-			this->m_Color = COLOR_GRAY;
+			this->m_Color = COLOR_PURPLE;
 			break;
 		case lBlock:
 			this->m_Color = COLOR_CYAN;
 			break;
 		case jBlock:
-			this->m_Color = COLOR_WHITE;
+			this->m_Color = COLOR_ORANGE;
 			break;
 		default:
-			this->m_Color = COLOR_GRAY;
+			this->m_Color = COLOR_WHITE;
 			break;
 	}
 }

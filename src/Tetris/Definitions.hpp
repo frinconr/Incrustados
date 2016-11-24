@@ -52,7 +52,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 typedef enum {
-	NEXT_MOVE,
+	CHANGE_SPRITE,
 	// Total flag count
 	NUM_FLAGS
 } eGlobalFlags;
@@ -61,8 +61,8 @@ typedef enum {
 // Color Definitions
 //////////////////////////////////////////////////////////////////////////////
 
-#define BACKGROUND_COLOR	0x0000
-#define FILL_COLOR			0xFFFF
+#define BACKGROUND_COLOR	0xFFFF
+#define FILL_COLOR			0x0000
 
 // THRESHOLDS
 

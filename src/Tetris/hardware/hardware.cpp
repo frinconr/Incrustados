@@ -150,8 +150,8 @@ void ConfigS1ButtonInterrupt() {
 //////////////////////////////////////////////////////////////////////////////
 
 void ConfigTimer32 (uint16_t load) {
-	//TIMER32_1->LOAD = 0x002DC6C0; //~1s ---> a 3Mhz
-	TIMER32_1->LOAD = 0x00000BB8; //~1ms ---> a 3Mhz
+	TIMER32_1->LOAD = 0x002DC6C0; //~1s ---> a 3Mhz
+	//TIMER32_1->LOAD = 0x00000BB8; //~1ms ---> a 3Mhz
 	TIMER32_1->CONTROL = TIMER32_CONTROL_SIZE | TIMER32_CONTROL_PRESCALE_0 | TIMER32_CONTROL_MODE | TIMER32_CONTROL_IE | TIMER32_CONTROL_ENABLE;
 	NVIC_SetPriority(T32_INT1_IRQn,1);
 	NVIC_EnableIRQ(T32_INT1_IRQn);
