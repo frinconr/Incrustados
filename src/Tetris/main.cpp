@@ -49,22 +49,29 @@ void main(void)
     while(1){
     	__wfe();
 
-    	if(g_bGlobalFlags[CHANGE_SPRITE]) {
-    		g_bGlobalFlags[CHANGE_SPRITE] = false;
 
-    		// **********************************
-			// Create Sprite
+    	if(g_bGlobalFlags[MOVE_RIGHT]) {
+    		g_bGlobalFlags[MOVE_RIGHT] = false;
+
+    		CurrentSprite.Delete();
+			CurrentSprite.MoveRight();
+			CurrentSprite.Paint();
+    	}
+
+    	if(g_bGlobalFlags[MOVE_LEFT]) {
+			g_bGlobalFlags[MOVE_LEFT] = false;
+
 			CurrentSprite.Delete();
-			// **********************************
+			CurrentSprite.MoveLeft();
+			CurrentSprite.Paint();
+    	}
 
-    		if(g_u64GlobalTicks < 20) {
-    			CurrentSprite.MoveDown();
-    		} else {
-    			CurrentSprite.RotateClockwise();
-    		}
+    	if(g_bGlobalFlags[MOVE_DOWN]) {
+			g_bGlobalFlags[MOVE_DOWN] = false;
 
-    		CurrentSprite.Paint();
-    		g_u64GlobalTicks++;
+			CurrentSprite.Delete();
+			CurrentSprite.MoveDown();
+			CurrentSprite.Paint();
     	}
     };
 }
@@ -112,11 +119,20 @@ void Setup(void)
     ConfigADC14();
 
 	// ****************************
+	//       CONFIG BUTTONS
+	// ****************************
+    ConfigS1ButtonInterrupt();
+    ConfigS2ButtonInterrupt();
+
+	// ****************************
 	// Re-enable interruptions
 	EnableInterruptions();
 	// ****************************
 
-	g_bGlobalFlags[NUM_FLAGS] = true;
+	for(uint8_t i=0; i<NUM_FLAGS; i++){
+		g_bGlobalFlags[i] = false;
+	}
+
 	// ****************************
 	// Initialize global flags
 	// ****************************
@@ -129,11 +145,16 @@ void Setup(void)
 
 extern "C"
 {
+	/* Timer32 Interruption
+	 *
+	 * Sets the MOVE_DOWN FLAG
+	 *
+	 */
 	void T32_INT1_IRQHandler(void)
 	{
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
-		g_bGlobalFlags[CHANGE_SPRITE] = true;
+		g_bGlobalFlags[MOVE_DOWN] = true;
 		return;
 	}
 	/* This interrupt is fired whenever a conversion is completed and placed in
@@ -153,7 +174,21 @@ extern "C"
 	    	g_u16ResultsBuffer[0] = ADC14_getResult(ADC_MEM0);
 	    	g_u16ResultsBuffer[1] = ADC14_getResult(ADC_MEM1);
 
+	    	g_bGlobalFlags[MOVE_LEFT] = (g_u16ResultsBuffer[0]<LEFT_TH);
+	    	g_bGlobalFlags[MOVE_RIGHT] = (g_u16ResultsBuffer[0]>RIGHT_TH);
 
 	    }
+	}
+
+	void PORT5_IRQHandler(void){
+
+			P5->IFG &= ~BIT1;
+			g_bGlobalFlags[ROTATE_CLOCKWISE] = true;
+	}
+
+	void PORT3_IRQHandler(void){
+
+			P3->IFG &= ~BIT5;
+			g_bGlobalFlags[ROTATE_CONTERCLOCKWISE] = true;
 	}
 }

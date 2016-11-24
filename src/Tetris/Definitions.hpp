@@ -47,6 +47,10 @@
 #define		NUM_Y_SQUARES	12
 
 #define 	VERTICAL_JUMP	2
+
+#define		LEFT_TH			4000
+#define		RIGHT_TH	   	12000
+
 //////////////////////////////////////////////////////////////////////////////
 // Global Flags
 //////////////////////////////////////////////////////////////////////////////
@@ -55,6 +59,9 @@ typedef enum {
 
 	MOVE_RIGHT,
 	MOVE_LEFT,
+	MOVE_DOWN,
+	ROTATE_CLOCKWISE,
+	ROTATE_CONTERCLOCKWISE,
 	CHANGE_SPRITE,
 	// Total flag count
 	NUM_FLAGS
