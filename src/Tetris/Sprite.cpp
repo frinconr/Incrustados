@@ -162,7 +162,7 @@ void Sprite::MoveDown(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 120) {
+		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 119) {
 			l_bCanBeMoved = false;
 			break;
 		}
@@ -190,7 +190,7 @@ void Sprite::MoveRight(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 100) {
+		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 99) {
 			l_bCanBeMoved = false;
 			break;
 		}
@@ -232,15 +232,13 @@ void Sprite::MoveLeft(){
 		}
 	}
 }
+
 ///////////////////////////////////////////////////////////////////////////////////////
 // ROTATE Clockwise
 ///////////////////////////////////////////////////////////////////////////////////////
 void Sprite::RotateClockwise() {
 	// Center point for next orientation
 	Point l_NextOrientationCenter;
-
-	// boolean to see if it can rotate
-	bool l_CanRotateRight = true;
 
 	switch(this->m_Type) {
 		case oBlock:
@@ -348,10 +346,120 @@ void Sprite::RotateClockwise() {
 
 	}
 }
-///////////////////////////////////////////////////////////////////////////////////////
-// ROTATE LEFT
-///////////////////////////////////////////////////////////////////////////////////////
 
+
+///////////////////////////////////////////////////////////////////////////////////////
+// ROTATE Counterclockwise
+///////////////////////////////////////////////////////////////////////////////////////
+void Sprite::RotateCounterClockwise() {
+	// Center point for next orientation
+	Point l_NextOrientationCenter;
+
+	switch(this->m_Type) {
+		case oBlock:
+			/////////////////////////////
+			// oBlock
+			/////////////////////////////
+			l_NextOrientationCenter = this->m_Blocks[1];
+			break;
+
+		case iBlock:
+			/////////////////////////////
+			// iBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			}
+			break;
+		case sBlock:
+			/////////////////////////////
+			// sBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case zBlock:
+			/////////////////////////////
+			// zBlock
+			/////////////////////////////
+			if(this->m_Orientation == EAST || this->m_Orientation == WEST){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case tBlock:
+			/////////////////////////////
+			// tBlock
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			}
+			break;
+		case lBlock:
+			/////////////////////////////
+			// lBlock
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter = this->m_Blocks[1];
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		case jBlock:
+			/////////////////////////////
+			// j Block
+			/////////////////////////////
+			if(this->m_Orientation == NORTH){
+				l_NextOrientationCenter = this->m_Blocks[2];
+			} else if(this->m_Orientation == EAST) {
+				l_NextOrientationCenter= this->m_Blocks[1];
+			} else if(this->m_Orientation == SOUTH) {
+				l_NextOrientationCenter= this->m_Blocks[1];
+			} else if(this->m_Orientation == WEST) {
+				l_NextOrientationCenter = this->m_Blocks[2];
+			}
+			break;
+		default:
+			break;
+	}
+
+	// Call the SetOrientatin, depending on current orientation
+	switch(this->m_Orientation) {
+		case NORTH:
+			// Rotate to West orientation
+			this->SetOrientationWest(l_NextOrientationCenter);
+			break;
+		case EAST:
+			// Rotate to North orientation
+			this->SetOrientationNorth(l_NextOrientationCenter);
+			break;
+		case SOUTH:
+			// Rotate to East orientation
+			this->SetOrientationEast(l_NextOrientationCenter);
+			break;
+		case WEST:
+			// Rotate to South orientation
+			this->SetOrientationSouth(l_NextOrientationCenter);
+			break;
+
+	}
+}
 ///////////////////////////////////////////////////////////////////////////////////////
 // ORIENTATION EAST
 ///////////////////////////////////////////////////////////////////////////////////////
