@@ -107,8 +107,8 @@ void ConfigS2ButtonInterrupt() {
 	P3->IE |= BIT5;
 
 	// Enable Port 1 interrupt on the NVIC
-	NVIC_SetPriority(PORT1_IRQn,2);
-	NVIC_EnableIRQ(PORT1_IRQn);
+	NVIC_SetPriority(PORT3_IRQn,2);
+	NVIC_EnableIRQ(PORT3_IRQn);
 }
 
 void ConfigS1ButtonInterrupt() {

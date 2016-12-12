@@ -288,6 +288,7 @@ public:
 	/*
 	void RotateLeft();*/
 	void RotateClockwise();
+	void RotateCounterClockwise();
 
 	// Member blocks, all figures are represented by 4 squares.
 	Point m_Blocks[4];

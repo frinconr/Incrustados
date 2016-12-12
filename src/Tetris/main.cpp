@@ -52,7 +52,6 @@ void main(void)
 
 	Sprite CurrentSprite (Sprite::sBlock);
 
-
     while(1){
     	__wfe();
 
@@ -77,8 +76,9 @@ void main(void)
 			}
     	}
 
-    	if(g_bGlobalFlags[MOVE_DOWN]) {
+    	if(g_bGlobalFlags[MOVE_DOWN] && g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]) {
 			g_bGlobalFlags[MOVE_DOWN] = false;
+			g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]  = false;
 
 			if(TetrisArena.CheckCollision(&CurrentSprite)){
 				CurrentSprite.Delete();
@@ -89,6 +89,15 @@ void main(void)
 				CurrentSprite.MoveDown();
 				CurrentSprite.Paint();
 			}
+    	}
+
+    	if(g_bGlobalFlags[ROTATE_CLOCKWISE] && g_bGlobalFlags[MOVE_DOWN]) {
+    		g_bGlobalFlags[ROTATE_CLOCKWISE] = false;
+    		g_bGlobalFlags[MOVE_DOWN] = false;
+
+			CurrentSprite.Delete();
+			CurrentSprite.RotateClockwise();
+			CurrentSprite.Paint();
     	}
     };
 }
@@ -174,6 +183,7 @@ extern "C"
 		g_bGlobalFlags[MOVE_DOWN] = true;
 		return;
 	}
+
 	/* This interrupt is fired whenever a conversion is completed and placed in
 	 * ADC_MEM1. This signals the end of conversion and the results array is
 	 * grabbed and placed in resultsBuffer */
@@ -198,14 +208,12 @@ extern "C"
 	}
 
 	void PORT5_IRQHandler(void){
-
 			P5->IFG &= ~BIT1;
 			g_bGlobalFlags[ROTATE_CLOCKWISE] = true;
 	}
 
 	void PORT3_IRQHandler(void){
-
 			P3->IFG &= ~BIT5;
-			g_bGlobalFlags[ROTATE_CONTERCLOCKWISE] = true;
+			g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE] = true;
 	}
 }
