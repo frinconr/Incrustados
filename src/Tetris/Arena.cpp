@@ -8,7 +8,20 @@
 #include <Arena.hpp>
 
 Arena::Arena() {
-	// TODO Auto-generated constructor stub
+
+	this->m_ArenaArea.xMin = MIN_ARENA_X;
+	this->m_ArenaArea.xMax = MAX_ARENA_X;
+	this->m_ArenaArea.yMin = MIN_ARENA_Y;
+	this->m_ArenaArea.yMax = MAX_ARENA_Y;
+
+	this->m_ScoreArea.xMin = MIN_SCORE_X;
+	this->m_ScoreArea.xMax = MAX_SCORE_X;
+	this->m_ScoreArea.yMin = 0;
+	this->m_ScoreArea.yMax = MAX_HEIGHT;
+
+	this->m_u8Score = 0;
+
+	this->PaintArena();
 
 }
 
@@ -16,4 +29,123 @@ Arena::~Arena() {
 	// TODO Auto-generated destructor stub
 }
 
-/* namespace std */
+void Arena::PaintArena(){
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ArenaArea, BACKGROUND_COLOR);
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, ARENA_COLOR);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, OPAQUE_TEXT);
+	this->UpdateScore();
+	this->ClearMatrix();
+}
+
+void Arena::UpdateScore(){
+	char string[8];
+	sprintf(string, "%d", m_u8Score);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
+}
+
+void Arena::ClearMatrix(){
+	for(int i=0;i<NUM_X_SQUARES;i++){
+		for(int j=0;j<NUM_Y_SQUARES;j++){
+				this->m_u16GameMatrix[i][j]= BACKGROUND_COLOR;
+		}
+	}
+}
+
+bool Arena::CheckCollision(Sprite* i_CurrentSprite){
+
+	if(i_CurrentSprite->m_Blocks[0].Vertical%SEGMENT_HEIGHT == 0 ){
+
+		uint8_t i_u8Vertical = 0;
+		uint8_t i_u8Horizontal = 0;
+
+		for(int i=0; i<NUM_BLOCKS; i++){
+			i_u8Vertical = (i_CurrentSprite->m_Blocks[i].Vertical)/10;
+			i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
+			if(i_u8Vertical == NUM_Y_SQUARES){
+				this->UpdateMatrix(i_CurrentSprite);
+				return true;
+			}else if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
+				this->UpdateMatrix(i_CurrentSprite);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, bool i_Right){
+
+	uint8_t i_u8Vertical = 0;
+	uint8_t i_u8Horizontal = 0;
+
+	for(int i=0; i<NUM_BLOCKS; i++){
+
+		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical)/10;
+		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
+
+		if(i_u8Vertical == NUM_Y_SQUARES){
+			return true;
+		}
+
+		if(i_u8Horizontal == 0 && !i_Right){
+			return false;
+		}
+
+		if(i_u8Horizontal == NUM_X_SQUARES-1  && i_Right){
+			return false;
+		}
+
+		if(i_Right){
+			i_u8Horizontal = i_u8Horizontal + 1;
+		}else{
+			i_u8Horizontal = i_u8Horizontal - 1;
+		}
+
+		if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+
+uint16_t Arena::GetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical){
+	return this->m_u16GameMatrix[i_Horizontal][i_Vertical];
+}
+
+void Arena::SetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical, uint16_t i_Value){
+	this->m_u16GameMatrix[i_Horizontal][i_Vertical] = i_Value;
+}
+
+void Arena::PaintMatrix(){
+	Graphics_Rectangle m_PaintArea;
+
+	for(int i=0;i<NUM_X_SQUARES;i++){
+			for(int j=0;j<NUM_Y_SQUARES;j++){
+				if(GetMatrixValue(i,j)!= BACKGROUND_COLOR){
+					// Define square to paint:
+					m_PaintArea.xMin = MIN_ARENA_X + i*SEGMENT_WIDTH;
+					m_PaintArea.xMax = MIN_ARENA_X + i*SEGMENT_WIDTH + (SEGMENT_WIDTH-1);
+					m_PaintArea.yMin = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT - (SEGMENT_HEIGHT-1);
+					m_PaintArea.yMax = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT;
+
+					// Paint the rectangle
+					Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, GetMatrixValue(i,j));
+				}
+			}
+		}
+}
+
+void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
+
+	uint8_t i_u8Vertical = 0;
+	uint8_t i_u8Horizontal = 0;
+
+	for(int i=0; i<NUM_BLOCKS; i++){
+		i_u8Vertical = (i_CurrentSprite->m_Blocks[i].Vertical + VERTICAL_JUMP)/10 - 1;
+		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
+		SetMatrixValue(i_u8Horizontal,i_u8Vertical,i_CurrentSprite->m_Color);
+	}
+}

@@ -51,6 +51,10 @@
 #define		LEFT_TH			4000
 #define		RIGHT_TH	   	12000
 
+#define 	MIN_SCORE_X		0
+#define 	MAX_SCORE_X		27
+
+
 //////////////////////////////////////////////////////////////////////////////
 // Global Flags
 //////////////////////////////////////////////////////////////////////////////
@@ -73,6 +77,7 @@ typedef enum {
 
 #define BACKGROUND_COLOR	0xFFFF
 #define FILL_COLOR			0x0000
+#define ARENA_COLOR			0xFD20
 
 // THRESHOLDS
 

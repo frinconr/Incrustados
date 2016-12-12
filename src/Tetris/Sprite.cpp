@@ -190,7 +190,7 @@ void Sprite::MoveRight(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 100) {
+		if(m_Blocks[i].Horizontal + SEGMENT_WIDTH > 90) {
 			l_bCanBeMoved = false;
 			break;
 		}
