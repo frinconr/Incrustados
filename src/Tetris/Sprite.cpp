@@ -162,7 +162,7 @@ void Sprite::MoveDown(){
 
 	// Loop through segments to see if we can move
 	for(int i=0; i<NUM_BLOCKS; i++){
-		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 119) {
+		if(m_Blocks[i].Vertical + VERTICAL_JUMP > 120) {
 			l_bCanBeMoved = false;
 			break;
 		}

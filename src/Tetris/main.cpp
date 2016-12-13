@@ -50,7 +50,7 @@ void main(void)
 	// **********************************
 	// Create Sprite
 
-	Sprite CurrentSprite (Sprite::sBlock);
+	Sprite CurrentSprite;
 
     while(1){
     	__wfe();
@@ -59,7 +59,7 @@ void main(void)
     	if(g_bGlobalFlags[MOVE_RIGHT]) {
     		g_bGlobalFlags[MOVE_RIGHT] = false;
 
-    		if(!TetrisArena.CheckHorizontalCollision(&CurrentSprite,true)){
+    		if(!TetrisArena.CheckHorizontalCollision(&CurrentSprite,MOVE_RIGHT)){
     			CurrentSprite.Delete();
     			CurrentSprite.MoveRight();
     			CurrentSprite.Paint();
@@ -69,7 +69,7 @@ void main(void)
     	if(g_bGlobalFlags[MOVE_LEFT]) {
 			g_bGlobalFlags[MOVE_LEFT] = false;
 
-			if(!TetrisArena.CheckHorizontalCollision(&CurrentSprite,false)){
+			if(!TetrisArena.CheckHorizontalCollision(&CurrentSprite,MOVE_LEFT)){
 				CurrentSprite.Delete();
 				CurrentSprite.MoveLeft();
 				CurrentSprite.Paint();
@@ -77,27 +77,44 @@ void main(void)
     	}
 
     	if(g_bGlobalFlags[MOVE_DOWN] && g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]) {
-			g_bGlobalFlags[MOVE_DOWN] = false;
 			g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]  = false;
 
-			if(TetrisArena.CheckCollision(&CurrentSprite)){
-				CurrentSprite.Delete();
-				TetrisArena.PaintMatrix();
-				CurrentSprite = Sprite(Sprite::lBlock);
-			}else{
-				CurrentSprite.Delete();
-				CurrentSprite.MoveDown();
-				CurrentSprite.Paint();
+			CurrentSprite.Delete();
+			CurrentSprite.RotateCounterClockwise();
+
+			if(TetrisArena.CheckHorizontalCollision(&CurrentSprite,ROTATE_COUNTERCLOCKWISE)){
+				CurrentSprite.RotateClockwise();
 			}
+
+			CurrentSprite.Paint();
+
     	}
 
     	if(g_bGlobalFlags[ROTATE_CLOCKWISE] && g_bGlobalFlags[MOVE_DOWN]) {
     		g_bGlobalFlags[ROTATE_CLOCKWISE] = false;
+
+    		CurrentSprite.Delete();
+			CurrentSprite.RotateClockwise();
+
+			if(TetrisArena.CheckHorizontalCollision(&CurrentSprite,ROTATE_CLOCKWISE)){
+				CurrentSprite.RotateCounterClockwise();
+			}
+
+			CurrentSprite.Paint();
+    	}
+
+    	if(g_bGlobalFlags[MOVE_DOWN]){
     		g_bGlobalFlags[MOVE_DOWN] = false;
 
-			CurrentSprite.Delete();
-			CurrentSprite.RotateClockwise();
-			CurrentSprite.Paint();
+    		CurrentSprite.Delete();
+
+    		if(TetrisArena.CheckCollision(&CurrentSprite)){
+    			TetrisArena.PaintMatrix();
+    			CurrentSprite = Sprite::Sprite();
+    		}else{
+    			CurrentSprite.MoveDown();
+    			CurrentSprite.Paint();
+    		}
     	}
     };
 }
@@ -203,6 +220,7 @@ extern "C"
 
 	    	g_bGlobalFlags[MOVE_LEFT] = (g_u16ResultsBuffer[0]<LEFT_TH);
 	    	g_bGlobalFlags[MOVE_RIGHT] = (g_u16ResultsBuffer[0]>RIGHT_TH);
+	    	g_bGlobalFlags[MOVE_DOWN] = (g_u16ResultsBuffer[1]==0);
 
 	    }
 	}
