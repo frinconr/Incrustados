@@ -57,6 +57,9 @@ void main(void)
     while(1){
     	__wfe();
 
+    	if(g_bGlobalFlags[CHANGE_NOTE]){
+			ChangeNote();
+		}
 
     	if(g_bGlobalFlags[MOVE_RIGHT]) {
     		g_bGlobalFlags[MOVE_RIGHT] = false;
@@ -105,8 +108,9 @@ void main(void)
 			CurrentSprite.Paint();
     	}
 
-    	if(g_bGlobalFlags[MOVE_DOWN]){
+    	if(g_bGlobalFlags[MOVE_DOWN]|| g_bGlobalFlags[MOVE_ALLDOWN]){
     		g_bGlobalFlags[MOVE_DOWN] = false;
+    		g_bGlobalFlags[MOVE_ALLDOWN] = false;
 
     		CurrentSprite.Delete();
 
@@ -180,7 +184,7 @@ void Setup(void)
 	}
 
 	// Start Music
-	//InitMusicArray();
+	InitMusicArray();
 
 	g_u16LatenceSpeed = 150;
 
@@ -207,12 +211,13 @@ extern "C"
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
 
+		// Check if we have to move down
 		g_u16GlobalTicks = (g_u16GlobalTicks+1) % g_u16LatenceSpeed;
 		if(g_u16GlobalTicks == 0)
 			g_bGlobalFlags[MOVE_DOWN] = true;
 
 		// Change Note
-		//ChangeNote();
+		g_bGlobalFlags[CHANGE_NOTE] = true;
 
 		return;
 	}
@@ -236,7 +241,7 @@ extern "C"
 
 	    	g_bGlobalFlags[MOVE_LEFT] = (g_u16ResultsBuffer[0]<LEFT_TH);
 	    	g_bGlobalFlags[MOVE_RIGHT] = (g_u16ResultsBuffer[0]>RIGHT_TH);
-	    	g_bGlobalFlags[MOVE_DOWN] = (g_u16ResultsBuffer[1]==0);
+	    	g_bGlobalFlags[MOVE_ALLDOWN] = (g_u16ResultsBuffer[1]==0);
 
 	    }
 	}
