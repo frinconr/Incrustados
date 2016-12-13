@@ -177,7 +177,7 @@ void Setup(void)
 	}
 
 	// Start Music
-	InitMusicArray();
+	//InitMusicArray();
 
 	// ****************************
 	// Initialize global flags

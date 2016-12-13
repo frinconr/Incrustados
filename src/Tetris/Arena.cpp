@@ -83,32 +83,35 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical)/10;
 		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
 
-		if(i_u8Vertical == NUM_Y_SQUARES){
-			return true;
-		}
+		if(i_u8Horizontal>=0 && i_u8Horizontal<10){
 
-		if(i_u8Horizontal == 0 && i_Direction == MOVE_LEFT){
-			return false;
-		}
+			if(i_u8Vertical >= NUM_Y_SQUARES){
+				return true;
+			}
 
-		if(i_u8Horizontal == NUM_X_SQUARES-1  && i_Direction == MOVE_RIGHT){
-			return false;
-		}
+			if(i_u8Horizontal == 0 && i_Direction == MOVE_LEFT){
+				return false;
+			}
 
-		switch(i_Direction){
-			case MOVE_RIGHT:
-				i_u8Horizontal = i_u8Horizontal + 1;
-				break;
-			case MOVE_LEFT:
-				i_u8Horizontal = i_u8Horizontal - 1;
-				break;
-			default:
-				break;
-		}
+			if(i_u8Horizontal == NUM_X_SQUARES-1  && i_Direction == MOVE_RIGHT){
+				return false;
+			}
 
-		if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
-			return true;
-		}
+			switch(i_Direction){
+				case MOVE_RIGHT:
+					i_u8Horizontal = i_u8Horizontal + 1;
+					break;
+				case MOVE_LEFT:
+					i_u8Horizontal = i_u8Horizontal - 1;
+					break;
+				default:
+					break;
+			}
+
+			if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
+				return true;
+			}
+		}else{return true;}
 	}
 
 	return false;
