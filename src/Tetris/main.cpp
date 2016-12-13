@@ -182,7 +182,7 @@ void Setup(void)
 	// Start Music
 	//InitMusicArray();
 
-	g_u16LatenceSpeed = 1200;
+	g_u16LatenceSpeed = 150;
 
 
 	// ****************************

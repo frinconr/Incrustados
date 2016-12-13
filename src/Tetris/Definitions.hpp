@@ -77,7 +77,7 @@ typedef enum {
 
 #define BACKGROUND_COLOR	0xFFFF
 #define FILL_COLOR			0x0000
-#define ARENA_COLOR			0xFD20
+#define SCORE_COLOR			0xFD20
 
 // THRESHOLDS
 
