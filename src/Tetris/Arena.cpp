@@ -19,7 +19,7 @@ Arena::Arena() {
 	this->m_ScoreArea.yMin = 0;
 	this->m_ScoreArea.yMax = MAX_HEIGHT;
 
-	this->m_u8Score = 0;
+	this->m_u16Score = 0;
 	this->m_bLost = false;
 
 	this->PaintArena();
@@ -32,7 +32,7 @@ Arena::~Arena() {
 
 void Arena::PaintArena(){
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ArenaArea, BACKGROUND_COLOR);
-	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, SCORE_COLOR);
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, ARENA_COLOR);
 
 	Graphics_Rectangle l_ArenaBase;
 	l_ArenaBase.xMin = 0;
@@ -57,14 +57,21 @@ void Arena::LostScreen(){
 	m_PaintArea.yMax = 127;
 
 	// Paint the rectangle
-	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, FILL_COLOR);
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, LOST_COLOR);
+
+	char l_ScoreString [8];
+	sprintf(l_ScoreString, "%d", m_u16Score);
+
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"YOU LOST!", AUTO_STRING_LENGTH, SCREEN_SIZE/2, SCREEN_SIZE/2-16, TRANSPARENT_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE: ", AUTO_STRING_LENGTH, SCREEN_SIZE/2, SCREEN_SIZE/2, TRANSPARENT_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) l_ScoreString, AUTO_STRING_LENGTH, SCREEN_SIZE/2, SCREEN_SIZE/2+16, TRANSPARENT_TEXT);
 }
 
 
 void Arena::UpdateScore(){
 	char string[8];
-	sprintf(string, "%d", m_u8Score);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, TRANSPARENT_TEXT);
+	sprintf(string, "%d", m_u16Score);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
 }
 
 void Arena::ClearMatrix(){
@@ -213,6 +220,7 @@ void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
 uint8_t Arena::CheckRows(){
 
 	uint8_t i_u8FirstLineFound=NUM_Y_SQUARES;
+	uint8_t l_u8NumberOfLinesDeleted = 0;
 	bool	b_FirstLineFound = true;
 
 	for(int i=NUM_Y_SQUARES-1; i>=0; i--){
@@ -222,11 +230,19 @@ uint8_t Arena::CheckRows(){
 			i_u8FirstLineFound = i;
 			this->DownARow(i);
 			i++;
+			// Update Score
+			l_u8NumberOfLinesDeleted++;
+			m_u16Score += ONE_ROW_DELETED;
 		}else if(this->LineComplete(i)){
 			this->DownARow(i);
 			i++;
+			l_u8NumberOfLinesDeleted++;
+			m_u16Score += ONE_ROW_DELETED + l_u8NumberOfLinesDeleted*MULTIPLE_ROWS_BONUS;
 		}
 	}
+
+	if(i_u8FirstLineFound)
+		UpdateScore();
 	return i_u8FirstLineFound;
 }
 

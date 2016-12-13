@@ -156,7 +156,7 @@ void Setup(void)
 	// - Configure Timer32_1  with MCLK (3Mhz), Division by 1, Enable the interrupt, Periodic Mode
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-	ConfigTimer32(65530); // 30000 = 1ms
+	ConfigTimer32(3000); // 30000 = 1ms
 
 	// ****************************
 	//       CONFIG SCREEN
@@ -205,7 +205,7 @@ extern "C"
 {
 	/* Timer32 Interruption
 	 *
-	 * Sets the MOVE_DOWN FLAG
+	 * Sets the MOVE_DOWN FLAG depending on the LatenceSpeed.
 	 *
 	 */
 	void T32_INT1_IRQHandler(void)

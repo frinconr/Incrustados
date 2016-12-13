@@ -54,6 +54,15 @@
 #define 	MIN_SCORE_X		0
 #define 	MAX_SCORE_X		27
 
+#define 	SCREEN_SIZE		127
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Scoring System
+//////////////////////////////////////////////////////////////////////////////
+
+#define 	ONE_ROW_DELETED 		10
+#define 	MULTIPLE_ROWS_BONUS 	10
 
 //////////////////////////////////////////////////////////////////////////////
 // Global Flags
@@ -79,7 +88,8 @@ typedef enum {
 
 #define BACKGROUND_COLOR	0xFFFF
 #define FILL_COLOR			0x0000
-#define SCORE_COLOR			0xFD20
+#define ARENA_COLOR			0xFEA0
+#define LOST_COLOR			0xC618
 
 // THRESHOLDS
 
