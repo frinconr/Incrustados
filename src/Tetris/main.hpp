@@ -31,6 +31,7 @@ extern "C"
 #include "hardware.hpp"
 #include "Sprite.hpp"
 #include "Arena.hpp"
+#include "Music.hpp"
 
 void Setup(void);
 

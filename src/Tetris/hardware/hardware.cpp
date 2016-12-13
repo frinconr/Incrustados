@@ -248,3 +248,24 @@ void ChangeScreenOrientation(bool UpPosition) {
 }
 
 
+extern "C" {
+	void ConfigBuzzer(uint16_t i_u16Period) {
+
+	// Initial PWM config.
+	Timer_A_PWMConfig pwmConfig = {
+											TIMER_A_CLOCKSOURCE_SMCLK,
+											TIMER_A_CLOCKSOURCE_DIVIDER_16,
+											i_u16Period,
+											TIMER_A_CAPTURECOMPARE_REGISTER_4,
+											TIMER_A_OUTPUTMODE_RESET_SET,
+											i_u16Period/2
+										  };
+
+	// Se configura el puerto del servo como PWM.
+	MAP_GPIO_setAsPeripheralModuleFunctionOutputPin(GPIO_PORT_P2, GPIO_PIN7, GPIO_PRIMARY_MODULE_FUNCTION);
+
+	// Se configura el PWM para tener una configuración inicial.
+	MAP_Timer_A_generatePWM(TIMER_A0_BASE, &pwmConfig);
+	}
+}
+
