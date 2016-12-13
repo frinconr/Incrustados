@@ -31,8 +31,8 @@ Arena::~Arena() {
 
 void Arena::PaintArena(){
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ArenaArea, BACKGROUND_COLOR);
-	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, ARENA_COLOR);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, OPAQUE_TEXT);
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, SCORE_COLOR);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, TRANSPARENT_TEXT);
 	this->UpdateScore();
 	this->ClearMatrix();
 }
@@ -40,7 +40,7 @@ void Arena::PaintArena(){
 void Arena::UpdateScore(){
 	char string[8];
 	sprintf(string, "%d", m_u8Score);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, TRANSPARENT_TEXT);
 }
 
 void Arena::ClearMatrix(){
@@ -77,13 +77,15 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 
 	uint8_t i_u8Vertical = 0;
 	uint8_t i_u8Horizontal = 0;
+	uint8_t i_u8UpperVertical = 0;
 
 	for(int i=0; i<NUM_BLOCKS; i++){
 
-		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical)/10;
-		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
+		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical)/SEGMENT_HEIGHT;
+		i_u8UpperVertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical-SEGMENT_HEIGHT+1)/SEGMENT_HEIGHT;
+		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/SEGMENT_WIDTH;
 
-		if(i_u8Horizontal>=0 && i_u8Horizontal<10){
+		if(i_u8Horizontal<NUM_X_SQUARES){
 
 			if(i_u8Vertical >= NUM_Y_SQUARES){
 				return true;
@@ -99,10 +101,11 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 
 			switch(i_Direction){
 				case MOVE_RIGHT:
-					i_u8Horizontal = i_u8Horizontal + 1;
+					i_u8Horizontal++;
+
 					break;
 				case MOVE_LEFT:
-					i_u8Horizontal = i_u8Horizontal - 1;
+					i_u8Horizontal--;
 					break;
 				default:
 					break;
@@ -111,6 +114,9 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 			if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
 				return true;
 			}
+
+			if(i_u8UpperVertical && GetMatrixValue(i_u8Horizontal, i_u8UpperVertical) != BACKGROUND_COLOR){return true;}
+
 		}else{return true;}
 	}
 
