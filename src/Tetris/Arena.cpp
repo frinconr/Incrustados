@@ -39,6 +39,11 @@ Arena::~Arena() {
 	// TODO Auto-generated destructor stub
 }
 
+/* PaintArena
+ *
+ *	Paints at the screen all the arena and score area.
+ */
+
 void Arena::PaintArena(){
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ArenaArea, BACKGROUND_COLOR);
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, ARENA_COLOR);
@@ -55,6 +60,12 @@ void Arena::PaintArena(){
 	this->UpdateScore();
 	this->ClearMatrix();
 }
+
+/* LostScreen
+ *
+ *	Display the final score and a message to the player who lost.
+ *
+ */
 
 void Arena::LostScreen(){
 	Graphics_Rectangle m_PaintArea;
@@ -76,12 +87,23 @@ void Arena::LostScreen(){
 	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) l_ScoreString, AUTO_STRING_LENGTH, SCREEN_SIZE/2, SCREEN_SIZE/2+16, TRANSPARENT_TEXT);
 }
 
+/* UpdateScore
+ *
+ *	Update the score at the screen.
+ */
+
 
 void Arena::UpdateScore(){
 	char string[8];
 	sprintf(string, "%d", m_u16Score);
 	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
 }
+
+/* ClearMatrix
+ *
+ * Resets all matrix values to background color. It meas they are free to occupy.
+ *
+ */
 
 void Arena::ClearMatrix(){
 	for(int i=0;i<NUM_X_SQUARES;i++){
@@ -90,6 +112,18 @@ void Arena::ClearMatrix(){
 		}
 	}
 }
+
+/* CheckCollision
+ *
+ *	Checks collision of a Sprite at descending movement.
+ *	Basically uses the coordinates of the sprite in the screen to check
+ *	if its corresponding index at matrix are occupied. Returns true if
+ *	finds a collision else false.
+ *
+ *	Also sets lost boolean if the screen is complete.
+ *
+ *	@param i_CurrentSprite: Sprite object to check coordinates.
+ */
 
 bool Arena::CheckCollision(Sprite* i_CurrentSprite){
 
@@ -116,6 +150,18 @@ bool Arena::CheckCollision(Sprite* i_CurrentSprite){
 	}
 	return false;
 }
+
+/* CheckHorizontal Collision
+ *
+ *	Checks collision of a Sprite depending on the movement direction:
+ *	Left,Right, rotate clockwise or counterclockwise.
+ *	Basically uses the coordinates of the sprite in the screen to check
+ *	id its corresponding index at matrix are occupied. Returns true if
+ *	finds a collision else false.
+ *
+ *	@param i_CurrentSprite: Sprite object to check coordinates.
+ *	@param i_Direction: Kind of movement that will perform the sprite.
+ */
 
 bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Direction){
 
@@ -173,15 +219,43 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 	return false;
 }
 
-
+/* GetMatrixValue
+ *
+ *	Gets a value from the matrix. It takes the horizontal
+ *	and vertical index.
+ *
+ *	@param i_Horizontal: Horizontal index from matrix.
+ *	@param i_Vertical: Vertical index from matrix.
+ */
 
 uint16_t Arena::GetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical){
 	return this->m_u16GameMatrix[i_Horizontal][i_Vertical];
 }
 
+/* SetMatrixValue
+ *
+ *	Sets a value into the matrix.
+ *
+ *	@param i_Horizontal: Horizontal index from matrix.
+ *	@param i_Vertical: Vertical index from matrix.
+ *	@param i_Value: Value to save into matrix.
+ */
+
+
 void Arena::SetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical, uint16_t i_Value){
 	this->m_u16GameMatrix[i_Horizontal][i_Vertical] = i_Value;
 }
+
+/* PaintFromLine
+ *
+ * Paints all the segments from the game matrix,
+ * staring from an specific row. The index row will be determined
+ * by function CheckRows.
+ *
+ *
+ * @param i_Row: Row index from which start painting the matrix at the screen
+ *
+ */
 
 void Arena::PaintFromLine(uint8_t i_Row){
 
@@ -205,6 +279,16 @@ void Arena::PaintFromLine(uint8_t i_Row){
 		}
 }
 
+/* PaintSegment
+ *
+ * This function paints one segment depending on its
+ * vertical and horizontal position at the Game Matrix.
+ *
+ * @param i_Horizontal: Horizontal index in Game Matrix.
+ * @param i_Vertical: Horizontal index in Game Matrix.
+ *
+ */
+
 void Arena::PaintSegment(uint8_t i_Horizontal, uint8_t i_Vertical){
 	Graphics_Rectangle m_PaintArea;
 
@@ -217,6 +301,18 @@ void Arena::PaintSegment(uint8_t i_Horizontal, uint8_t i_Vertical){
 	// Paint the rectangle
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, GetMatrixValue(i_Horizontal,i_Vertical));
 }
+
+/* UpdateMatrix
+ *
+ * This function updates the values at the matrix
+ * when some collision happens. It checks all the blocks
+ * of the sprite and saves the color at relative position
+ * in the game matrix.
+ *
+ * @param i_CurrentSprite: Sprite to add to the game matrix.
+ *
+ *
+ */
 
 
 void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
@@ -231,6 +327,16 @@ void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
 		PaintSegment(i_u8Horizontal,i_u8Vertical);
 	}
 }
+
+/* CheckRows
+ *
+ * This function checks which row of the matrix is complete.
+ * If it finds filled lines it will down the matrix one row
+ * for each line found.
+ * The method returns the index of first completed line found from
+ * bottom to top.
+ * Also updates the score value.
+ */
 
 uint8_t Arena::CheckRows(){
 
@@ -261,6 +367,15 @@ uint8_t Arena::CheckRows(){
 	return i_u8FirstLineFound;
 }
 
+/* LineComplete
+ *
+ * Returns true if all the line is complete.
+ * Otherwise returns false.
+ *
+ * @param i_Row: Row index to check in matrix.
+ *
+ */
+
 bool Arena::LineComplete(uint8_t i_Row){
 	bool b_LineComplete = true;
 	for(int x=0; x<NUM_X_SQUARES; x++){
@@ -271,6 +386,16 @@ bool Arena::LineComplete(uint8_t i_Row){
 	return b_LineComplete;
 }
 
+/* CopyUpperRow
+ *
+ * Copies the row above. If is the top line it fills
+ * the line with empty spaces(background color).
+ *
+ * @param i_RefRow: Row index to copy the row above.
+ *
+ *
+ */
+
 void Arena::CopyUpperRow(uint8_t i_RefRow){
 	for(int x=0; x<NUM_X_SQUARES; x++){
 		if(i_RefRow == 0){
@@ -280,19 +405,49 @@ void Arena::CopyUpperRow(uint8_t i_RefRow){
 		}
 	}
 }
+
+/* DownARow
+ *
+ * Copies the row above. If is the top line it fills
+ * the line with empty spaces(background color).
+ *
+ * @param i_RefRow: Row index from which start bringing
+ * 					down the game matrix.
+ *
+ */
 void Arena::DownARow(uint8_t i_RefRow){
 	for(int i=i_RefRow; i>=0; i--){
 		this->CopyUpperRow(i);
 	}
 }
 
+/* SetLost
+ *
+ * Sets m_bLost parameter.
+ *
+ * @param i_State: True or false.
+ *
+ */
+
 void Arena::SetLost(bool i_State){
 	this->m_bLost = i_State;
 }
 
+/* GetLost
+ *
+ * Returns m_bLost parameter.
+ *
+ */
+
 bool Arena::GetLost(){
 	return this->m_bLost;
 }
+
+/* PlayerLost
+ *
+ * Public method that returns m_bLost parameter.
+ *
+ */
 
 bool Arena::PlayerLost(){
 	return GetLost();
