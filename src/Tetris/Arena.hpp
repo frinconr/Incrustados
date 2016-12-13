@@ -40,6 +40,7 @@ public:
 	bool CheckCollision(Sprite* i_CurrentSprite);
 	bool CheckHorizontalCollision(Sprite* i_CurrentSprite,eGlobalFlags i_Direction);
 	void PaintMatrix();
+	uint8_t CheckRows();
 
 private:
 	// Game Matrix
@@ -55,7 +56,9 @@ private:
 	uint16_t GetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical);
 	void SetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical, uint16_t i_Value);
 	void UpdateMatrix(Sprite* i_CurrentSprite);
-	void DownMatrix();
+	bool LineComplete(uint8_t i_Row);
+	void CopyUpperRow(uint8_t i_RefRow);
+	void DownARow(uint8_t i_RefRow);
 };
 
 #endif /* ARENA_HPP_ */

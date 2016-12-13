@@ -157,3 +157,48 @@ void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
 		SetMatrixValue(i_u8Horizontal,i_u8Vertical,i_CurrentSprite->m_Color);
 	}
 }
+
+uint8_t Arena::CheckRows(){
+
+	uint8_t i_u8FirstLineFound=NUM_Y_SQUARES;
+	bool	b_FirstLineFound = true;
+
+	for(int i=NUM_Y_SQUARES-1; i>=0; i--){
+
+		if(this->LineComplete(i) && b_FirstLineFound){
+			b_FirstLineFound = false;
+			i_u8FirstLineFound = i;
+			this->DownARow(i);
+		}else if(this->LineComplete(i)){
+			this->DownARow(i);
+		}
+	}
+	return i_u8FirstLineFound;
+}
+
+bool Arena::LineComplete(uint8_t i_Row){
+	bool b_LineComplete = true;
+	for(int Column=0; Column<NUM_X_SQUARES; Column++){
+		if(this->m_u16GameMatrix[i_Row][Column]==BACKGROUND_COLOR){
+			b_LineComplete = false;
+		}
+	}
+	return b_LineComplete;
+}
+
+void Arena::CopyUpperRow(uint8_t i_RefRow){
+	for(int Column=0; Column<NUM_X_SQUARES; Column++){
+		if(i_RefRow == 0){
+			this->m_u16GameMatrix[i_RefRow][Column] = BACKGROUND_COLOR;
+		}else{
+			this->m_u16GameMatrix[i_RefRow][Column] = this->m_u16GameMatrix[i_RefRow-1][Column];
+		}
+	}
+}
+void Arena::DownARow(uint8_t i_RefRow){
+	for(int i=i_RefRow; i>=0; i--){
+		this->CopyUpperRow(i);
+	}
+}
+
+

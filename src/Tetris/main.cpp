@@ -111,6 +111,7 @@ void main(void)
     		CurrentSprite.Delete();
 
     		if(TetrisArena.CheckCollision(&CurrentSprite)){
+    			TetrisArena.CheckRows();
     			TetrisArena.PaintMatrix();
     			CurrentSprite = Sprite::Sprite();
     		}else{
@@ -181,7 +182,7 @@ void Setup(void)
 	// Start Music
 	//InitMusicArray();
 
-	g_u16LatenceSpeed = 50;
+	g_u16LatenceSpeed = 200;
 
 	// ****************************
 	// Initialize global flags
@@ -209,7 +210,7 @@ extern "C"
 		if(g_u16GlobalTicks == 0)
 			g_bGlobalFlags[MOVE_DOWN] = true;
 
-		ChangeNote();
+		//ChangeNote();
 		return;
 	}
 
