@@ -58,6 +58,13 @@ void main(void)
     while(1){
     	__wfe();
 
+    	// Update Level
+    	if(g_bGlobalFlags[UPDATE_LEVEL]) {
+			g_bGlobalFlags[UPDATE_LEVEL] = false;
+			TetrisArena.UpdateLevel();
+		}
+
+    	// Move Right
     	if(g_bGlobalFlags[MOVE_RIGHT]) {
     		g_bGlobalFlags[MOVE_RIGHT] = false;
 
@@ -68,11 +75,7 @@ void main(void)
     		}
     	}
 
-    	if(g_bGlobalFlags[UPDATE_LEVEL]) {
-    		g_bGlobalFlags[UPDATE_LEVEL] = false;
-    		TetrisArena.UpdateLevel();
-    	}
-
+    	// Move Left
     	if(g_bGlobalFlags[MOVE_LEFT]) {
 			g_bGlobalFlags[MOVE_LEFT] = false;
 
@@ -83,6 +86,7 @@ void main(void)
 			}
     	}
 
+    	// Rotate CounterClockwise
     	if(g_bGlobalFlags[MOVE_DOWN] && g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]) {
 			g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE]  = false;
 
@@ -97,6 +101,7 @@ void main(void)
 
     	}
 
+    	// Rotate Clockwise
     	if(g_bGlobalFlags[ROTATE_CLOCKWISE] && g_bGlobalFlags[MOVE_DOWN]) {
     		g_bGlobalFlags[ROTATE_CLOCKWISE] = false;
 
@@ -110,6 +115,7 @@ void main(void)
 			CurrentSprite.Paint();
     	}
 
+    	// Move Down
     	if(g_bGlobalFlags[MOVE_DOWN]){
     		g_bGlobalFlags[MOVE_DOWN] = false;
 
@@ -130,6 +136,7 @@ void main(void)
     		}
     	}
 
+    	// Move Down Quickly
     	if(g_bGlobalFlags[MOVE_ALLDOWN]) {
     		g_bGlobalFlags[MOVE_ALLDOWN] = false;
 
@@ -244,6 +251,7 @@ extern "C"
 
 		if(g_u16GlobalTicks == 0){
 			g_u16LatenceSpeed = g_u16LatenceSpeed/2 + 1;
+			g_bGlobalFlags[UPDATE_LEVEL] = true;
 		}
 
 		// Check if we have to move down
@@ -285,6 +293,7 @@ extern "C"
 	    }
 	}
 
+	// Rotate Clockwise button interrupt
 	void PORT5_IRQHandler(void){
 			P5->IFG &= ~BIT1;
 			if (g_u8DebouncingCounter == 0 ){
@@ -293,6 +302,7 @@ extern "C"
 			}
 	}
 
+	// Rotate Counterclockwise button interrupt
 	void PORT3_IRQHandler(void){
 			P3->IFG &= ~BIT5;
 			if (g_u8DebouncingCounter == 0 ){

@@ -52,10 +52,11 @@ void Arena::PaintArena(){
 
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &l_ArenaBase, FILL_COLOR);
 
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, TRANSPARENT_TEXT);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"LEVEL", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+40, TRANSPARENT_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/3, TRANSPARENT_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"LEVEL", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT*2/3, TRANSPARENT_TEXT);
 
 	this->UpdateScore();
+	this->UpdateLevel();
 	this->ClearMatrix();
 }
 
@@ -83,14 +84,14 @@ void Arena::LostScreen(){
 void Arena::UpdateScore(){
 	char string[8];
 	sprintf(string, "%d", m_u16Score);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/3+8, OPAQUE_TEXT);
 }
 
 void Arena::UpdateLevel(){
 	m_m8Level++;
 	char string[8];
 	sprintf(string, "%d", m_m8Level);
-	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+48, OPAQUE_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT*2/3+8, OPAQUE_TEXT);
 }
 
 
