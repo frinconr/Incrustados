@@ -16,7 +16,8 @@
 #include "main.hpp"
 
 /* Global Variables */
-uint32_t g_u64GlobalTicks = 0;
+uint16_t g_u16GlobalTicks = 0;
+uint16_t g_u16LatenceSpeed;
 
 /* ADC results buffer */
 static uint16_t g_u16ResultsBuffer[2];
@@ -27,6 +28,7 @@ Graphics_Context g_GraphicsContext;
 
 Graphics_Context* Arena::m_GraphicsContext = &g_GraphicsContext;
 Graphics_Context* Sprite::m_GraphicsContext = &g_GraphicsContext;
+
 
 
 // Global Flags
@@ -179,6 +181,8 @@ void Setup(void)
 	// Start Music
 	//InitMusicArray();
 
+	g_u16LatenceSpeed = 50;
+
 	// ****************************
 	// Initialize global flags
 	// ****************************
@@ -200,7 +204,12 @@ extern "C"
 	{
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
-		g_bGlobalFlags[MOVE_DOWN] = true;
+
+		g_u16GlobalTicks += g_u16GlobalTicks % g_u16LatenceSpeed;
+		if(g_u16GlobalTicks == 0)
+			g_bGlobalFlags[MOVE_DOWN] = true;
+
+		ChangeNote();
 		return;
 	}
 
