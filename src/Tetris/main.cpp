@@ -213,9 +213,16 @@ extern "C"
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
 
+		g_u16GlobalTicks++;
+		uint16_t g_u16TimeToMove = g_u16GlobalTicks % g_u16LatenceSpeed;
+
+		if(g_u16GlobalTicks == 0){
+			g_u16LatenceSpeed = g_u16LatenceSpeed/2;
+		}
+
 		// Check if we have to move down
-		g_u16GlobalTicks = (g_u16GlobalTicks+1) % g_u16LatenceSpeed;
-		if(g_u16GlobalTicks == 0)
+
+		if(g_u16TimeToMove == 0)
 			g_bGlobalFlags[MOVE_DOWN] = true;
 
 		// Change Note

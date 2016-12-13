@@ -1,8 +1,9 @@
 /*
- * Area.cpp
+ * Arena.cpp
  *
  *  Created on: Nov 16, 2016
- *      Author: fabian
+ *      Author: Fabian Meléndez
+ *      		Felipe Rincón
  */
 
 #include <Arena.hpp>
