@@ -33,6 +33,15 @@ Arena::~Arena() {
 void Arena::PaintArena(){
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ArenaArea, BACKGROUND_COLOR);
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_ScoreArea, SCORE_COLOR);
+
+	Graphics_Rectangle l_ArenaBase;
+	l_ArenaBase.xMin = 0;
+	l_ArenaBase.xMax = 127;
+	l_ArenaBase.yMin = MAX_ARENA_Y;
+	l_ArenaBase.yMax = 127;
+
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &l_ArenaBase, FILL_COLOR);
+
 	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, TRANSPARENT_TEXT);
 	this->UpdateScore();
 	this->ClearMatrix();

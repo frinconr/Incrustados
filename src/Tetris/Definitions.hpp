@@ -67,6 +67,8 @@ typedef enum {
 	ROTATE_CLOCKWISE,
 	ROTATE_COUNTERCLOCKWISE,
 	CHANGE_SPRITE,
+	CHANGE_NOTE,
+	MOVE_ALLDOWN,
 	// Total flag count
 	NUM_FLAGS
 } eGlobalFlags;

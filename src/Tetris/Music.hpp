@@ -13,8 +13,8 @@
 
 #define ClockFrequency 187500
 
-uint8_t g_u8NoteCountDown;
-uint8_t g_u8NextNoteIndex;
+uint16_t g_u16NoteCountDown;
+uint16_t g_u16NextNoteIndex;
 
 typedef enum {
 	C_4 = (1146), // 261.63 Hz
@@ -28,8 +28,8 @@ typedef enum {
 
 // At Black - 144.
 typedef enum {
-	Black = 1000,
-	Corchea = 500,
+	Black = 250,
+	Corchea = 125,
 } eNoteLength;
 
 struct tNote {
@@ -37,7 +37,7 @@ struct tNote {
    eNoteLength Value;		// Time of note
 };
 
-#define NUM_NOTES 6
+#define NUM_NOTES 9
 tNote* g_nSong = new tNote[NUM_NOTES];
 
 void InitMusicArray() {
@@ -65,20 +65,32 @@ void InitMusicArray() {
 	g_nSong[5].Note = B_4;
 	g_nSong[5].Value = Black;
 
-	g_u8NextNoteIndex = 0;
-	g_u8NoteCountDown = g_nSong[g_u8NextNoteIndex].Value;
-	ConfigBuzzer(g_nSong[g_u8NextNoteIndex].Note);
+	// 7th
+	g_nSong[6].Note = A_4;
+	g_nSong[6].Value = Black;
+
+	// 8th
+	g_nSong[7].Note = C_5;
+	g_nSong[7].Value = Black;
+
+	// 9th
+	g_nSong[8].Note = E_5;
+	g_nSong[8].Value = Black;
+
+	g_u16NextNoteIndex = 0;
+	g_u16NoteCountDown = g_nSong[g_u16NextNoteIndex].Value;
+	ConfigBuzzer(g_nSong[g_u16NextNoteIndex].Note);
 }
 
 
 void ChangeNote() {
-	g_u8NoteCountDown--;
+	g_u16NoteCountDown--;
 
-	if(g_u8NoteCountDown == 0) {
-		g_u8NextNoteIndex = (g_u8NextNoteIndex+1) % NUM_NOTES;
+	if(g_u16NoteCountDown == 0) {
+		g_u16NextNoteIndex = (g_u16NextNoteIndex+1) % NUM_NOTES;
 
-		g_u8NoteCountDown = g_nSong[g_u8NextNoteIndex].Value;
-		ConfigBuzzer(g_nSong[g_u8NextNoteIndex].Note);
+		g_u16NoteCountDown = g_nSong[g_u16NextNoteIndex].Value;
+		ConfigBuzzer(g_nSong[g_u16NextNoteIndex].Note);
 	}
 }
 
