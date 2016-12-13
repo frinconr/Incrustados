@@ -111,8 +111,7 @@ void main(void)
     		CurrentSprite.Delete();
 
     		if(TetrisArena.CheckCollision(&CurrentSprite)){
-    			TetrisArena.CheckRows();
-    			TetrisArena.PaintMatrix();
+    			TetrisArena.PaintFromLine(TetrisArena.CheckRows());
     			CurrentSprite = Sprite::Sprite();
     		}else{
     			CurrentSprite.MoveDown();
@@ -182,7 +181,7 @@ void Setup(void)
 	// Start Music
 	//InitMusicArray();
 
-	g_u16LatenceSpeed = 1200;
+	g_u16LatenceSpeed = 200;
 
 
 	// ****************************

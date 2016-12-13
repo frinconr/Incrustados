@@ -127,24 +127,38 @@ void Arena::SetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical, uint16_t i_
 	this->m_u16GameMatrix[i_Horizontal][i_Vertical] = i_Value;
 }
 
-void Arena::PaintMatrix(){
+void Arena::PaintFromLine(uint8_t i_Row){
 	Graphics_Rectangle m_PaintArea;
 
-	for(int i=0;i<NUM_X_SQUARES;i++){
-			for(int j=0;j<NUM_Y_SQUARES;j++){
-				if(GetMatrixValue(i,j)!= BACKGROUND_COLOR){
-					// Define square to paint:
-					m_PaintArea.xMin = MIN_ARENA_X + i*SEGMENT_WIDTH;
-					m_PaintArea.xMax = MIN_ARENA_X + i*SEGMENT_WIDTH + (SEGMENT_WIDTH-1);
-					m_PaintArea.yMin = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT - (SEGMENT_HEIGHT-1);
-					m_PaintArea.yMax = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT;
+	for(int j=i_Row;j>=0;j--){
+		for(int i=0;i<NUM_X_SQUARES;i++){
 
-					// Paint the rectangle
-					Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, GetMatrixValue(i,j));
-				}
+				// Define square to paint:
+				m_PaintArea.xMin = MIN_ARENA_X + i*SEGMENT_WIDTH;
+				m_PaintArea.xMax = MIN_ARENA_X + i*SEGMENT_WIDTH + (SEGMENT_WIDTH-1);
+				m_PaintArea.yMin = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT - (SEGMENT_HEIGHT-1);
+				m_PaintArea.yMax = MIN_ARENA_Y + (j+1)*SEGMENT_HEIGHT;
+
+				// Paint the rectangle
+				Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, GetMatrixValue(i,j));
+
 			}
 		}
 }
+
+void Arena::PaintSegment(uint8_t i_Horizontal, uint8_t i_Vertical){
+	Graphics_Rectangle m_PaintArea;
+
+	// Define square to paint:
+	m_PaintArea.xMin = MIN_ARENA_X + i_Horizontal*SEGMENT_WIDTH;
+	m_PaintArea.xMax = MIN_ARENA_X + i_Horizontal*SEGMENT_WIDTH + (SEGMENT_WIDTH-1);
+	m_PaintArea.yMin = MIN_ARENA_Y + (i_Vertical+1)*SEGMENT_HEIGHT - (SEGMENT_HEIGHT-1);
+	m_PaintArea.yMax = MIN_ARENA_Y + (i_Vertical+1)*SEGMENT_HEIGHT;
+
+	// Paint the rectangle
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, GetMatrixValue(i_Horizontal,i_Vertical));
+}
+
 
 void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
 
@@ -155,6 +169,7 @@ void Arena::UpdateMatrix(Sprite* i_CurrentSprite){
 		i_u8Vertical = (i_CurrentSprite->m_Blocks[i].Vertical + VERTICAL_JUMP)/10 - 1;
 		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/10;
 		SetMatrixValue(i_u8Horizontal,i_u8Vertical,i_CurrentSprite->m_Color);
+		PaintSegment(i_u8Horizontal,i_u8Vertical);
 	}
 }
 
@@ -169,8 +184,10 @@ uint8_t Arena::CheckRows(){
 			b_FirstLineFound = false;
 			i_u8FirstLineFound = i;
 			this->DownARow(i);
+			i++;
 		}else if(this->LineComplete(i)){
 			this->DownARow(i);
+			i++;
 		}
 	}
 	return i_u8FirstLineFound;
@@ -178,8 +195,8 @@ uint8_t Arena::CheckRows(){
 
 bool Arena::LineComplete(uint8_t i_Row){
 	bool b_LineComplete = true;
-	for(int Column=0; Column<NUM_X_SQUARES; Column++){
-		if(this->m_u16GameMatrix[i_Row][Column]==BACKGROUND_COLOR){
+	for(int x=0; x<NUM_X_SQUARES; x++){
+		if(this->m_u16GameMatrix[x][i_Row]==BACKGROUND_COLOR){
 			b_LineComplete = false;
 		}
 	}
@@ -187,11 +204,11 @@ bool Arena::LineComplete(uint8_t i_Row){
 }
 
 void Arena::CopyUpperRow(uint8_t i_RefRow){
-	for(int Column=0; Column<NUM_X_SQUARES; Column++){
+	for(int x=0; x<NUM_X_SQUARES; x++){
 		if(i_RefRow == 0){
-			this->m_u16GameMatrix[i_RefRow][Column] = BACKGROUND_COLOR;
+			this->m_u16GameMatrix[x][i_RefRow] = BACKGROUND_COLOR;
 		}else{
-			this->m_u16GameMatrix[i_RefRow][Column] = this->m_u16GameMatrix[i_RefRow-1][Column];
+			this->m_u16GameMatrix[x][i_RefRow] = this->m_u16GameMatrix[x][i_RefRow-1];
 		}
 	}
 }
