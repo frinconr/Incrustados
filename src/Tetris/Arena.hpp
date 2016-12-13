@@ -38,7 +38,7 @@ public:
 	// 1-> Horizontal
 	// 0-> Vertical
 	bool CheckCollision(Sprite* i_CurrentSprite);
-	bool CheckHorizontalCollision(Sprite* i_CurrentSprite,bool i_Right);
+	bool CheckHorizontalCollision(Sprite* i_CurrentSprite,eGlobalFlags i_Direction);
 	void PaintMatrix();
 
 private:

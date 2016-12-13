@@ -73,7 +73,7 @@ bool Arena::CheckCollision(Sprite* i_CurrentSprite){
 	return false;
 }
 
-bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, bool i_Right){
+bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Direction){
 
 	uint8_t i_u8Vertical = 0;
 	uint8_t i_u8Horizontal = 0;
@@ -87,18 +87,23 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, bool i_Right){
 			return true;
 		}
 
-		if(i_u8Horizontal == 0 && !i_Right){
+		if(i_u8Horizontal == 0 && i_Direction == MOVE_LEFT){
 			return false;
 		}
 
-		if(i_u8Horizontal == NUM_X_SQUARES-1  && i_Right){
+		if(i_u8Horizontal == NUM_X_SQUARES-1  && i_Direction == MOVE_RIGHT){
 			return false;
 		}
 
-		if(i_Right){
-			i_u8Horizontal = i_u8Horizontal + 1;
-		}else{
-			i_u8Horizontal = i_u8Horizontal - 1;
+		switch(i_Direction){
+			case MOVE_RIGHT:
+				i_u8Horizontal = i_u8Horizontal + 1;
+				break;
+			case MOVE_LEFT:
+				i_u8Horizontal = i_u8Horizontal - 1;
+				break;
+			default:
+				break;
 		}
 
 		if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
