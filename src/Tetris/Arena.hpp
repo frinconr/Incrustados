@@ -41,12 +41,16 @@ public:
 	bool CheckHorizontalCollision(Sprite* i_CurrentSprite,eGlobalFlags i_Direction);
 	void PaintFromLine(uint8_t i_Row);
 	uint8_t CheckRows();
+	bool PlayerLost();
+	void LostScreen();
 
 private:
 	// Game Matrix
 	uint16_t m_u16GameMatrix[NUM_X_SQUARES][NUM_Y_SQUARES];
 	// Score
 	uint8_t m_u8Score;
+	// Lost Boolean
+	bool m_bLost;
 	// Area of the Arena
 	Graphics_Rectangle m_ArenaArea;
 	// Area of the Score Screen
@@ -60,6 +64,8 @@ private:
 	bool LineComplete(uint8_t i_Row);
 	void CopyUpperRow(uint8_t i_RefRow);
 	void DownARow(uint8_t i_RefRow);
+	bool GetLost();
+	void SetLost(bool i_State);
 };
 
 #endif /* ARENA_HPP_ */

@@ -20,6 +20,7 @@ Arena::Arena() {
 	this->m_ScoreArea.yMax = MAX_HEIGHT;
 
 	this->m_u8Score = 0;
+	this->m_bLost = false;
 
 	this->PaintArena();
 
@@ -36,6 +37,20 @@ void Arena::PaintArena(){
 	this->UpdateScore();
 	this->ClearMatrix();
 }
+
+void Arena::LostScreen(){
+	Graphics_Rectangle m_PaintArea;
+
+	// Define square to paint:
+	m_PaintArea.xMin = 0;
+	m_PaintArea.xMax = 127;
+	m_PaintArea.yMin = 0;
+	m_PaintArea.yMax = 127;
+
+	// Paint the rectangle
+	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &m_PaintArea, FILL_COLOR);
+}
+
 
 void Arena::UpdateScore(){
 	char string[8];
@@ -65,6 +80,10 @@ bool Arena::CheckCollision(Sprite* i_CurrentSprite){
 				this->UpdateMatrix(i_CurrentSprite);
 				return true;
 			}else if(GetMatrixValue(i_u8Horizontal, i_u8Vertical) != BACKGROUND_COLOR){
+				if(i_CurrentSprite->m_Blocks[0].Vertical==10){
+					SetLost(true);
+				}
+
 				this->UpdateMatrix(i_CurrentSprite);
 				return true;
 			}
@@ -134,6 +153,9 @@ void Arena::SetMatrixValue(uint8_t i_Horizontal, uint8_t i_Vertical, uint16_t i_
 }
 
 void Arena::PaintFromLine(uint8_t i_Row){
+
+	if(i_Row == NUM_Y_SQUARES ){return;}
+
 	Graphics_Rectangle m_PaintArea;
 
 	for(int j=i_Row;j>=0;j--){
@@ -224,4 +246,15 @@ void Arena::DownARow(uint8_t i_RefRow){
 	}
 }
 
+void Arena::SetLost(bool i_State){
+	this->m_bLost = i_State;
+}
+
+bool Arena::GetLost(){
+	return this->m_bLost;
+}
+
+bool Arena::PlayerLost(){
+	return GetLost();
+}
 

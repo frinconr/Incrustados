@@ -112,7 +112,12 @@ void main(void)
 
     		if(TetrisArena.CheckCollision(&CurrentSprite)){
     			TetrisArena.PaintFromLine(TetrisArena.CheckRows());
-    			CurrentSprite = Sprite::Sprite();
+    			if(TetrisArena.PlayerLost()){
+    				TetrisArena.LostScreen();
+    				break;
+    			}else{
+    				CurrentSprite = Sprite::Sprite();
+    			}
     		}else{
     			CurrentSprite.MoveDown();
     			CurrentSprite.Paint();
