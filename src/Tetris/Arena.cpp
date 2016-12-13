@@ -116,7 +116,7 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 
 	for(int i=0; i<NUM_BLOCKS; i++){
 
-		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical)/SEGMENT_HEIGHT;
+		i_u8Vertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical-1)/SEGMENT_HEIGHT;
 		i_u8UpperVertical = (uint8_t)(i_CurrentSprite->m_Blocks[i].Vertical-SEGMENT_HEIGHT+1)/SEGMENT_HEIGHT;
 		i_u8Horizontal = i_CurrentSprite->m_Blocks[i].Horizontal/SEGMENT_WIDTH;
 
@@ -150,7 +150,13 @@ bool Arena::CheckHorizontalCollision(Sprite* i_CurrentSprite, eGlobalFlags i_Dir
 				return true;
 			}
 
-			if(i_u8UpperVertical && GetMatrixValue(i_u8Horizontal, i_u8UpperVertical) != BACKGROUND_COLOR){return true;}
+
+			if(i_u8UpperVertical && GetMatrixValue(i_u8Horizontal, i_u8UpperVertical) != BACKGROUND_COLOR){
+				if(i_CurrentSprite->m_Blocks[i].Vertical%SEGMENT_HEIGHT == 0) {
+					return false;
+				}
+				return true;
+			}
 
 		}else{return true;}
 	}
