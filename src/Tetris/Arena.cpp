@@ -37,7 +37,7 @@ void Arena::PaintArena(){
 	Graphics_Rectangle l_ArenaBase;
 	l_ArenaBase.xMin = 0;
 	l_ArenaBase.xMax = 127;
-	l_ArenaBase.yMin = MAX_ARENA_Y;
+	l_ArenaBase.yMin = MAX_ARENA_Y+1;
 	l_ArenaBase.yMax = 127;
 
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &l_ArenaBase, FILL_COLOR);
