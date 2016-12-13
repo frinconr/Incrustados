@@ -143,6 +143,9 @@ void Setup(void)
 		g_bGlobalFlags[i] = false;
 	}
 
+	// Start Music
+	InitMusicArray();
+
 	// ****************************
 	// Initialize global flags
 	// ****************************
