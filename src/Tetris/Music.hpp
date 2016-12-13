@@ -27,8 +27,8 @@ typedef enum {
 
 // At Black - 144.
 typedef enum {
-	Black = 410,
-	Corchea = 205,
+	Black = 41,
+	Corchea = 21,
 } eNoteLength;
 
 struct tNote {
