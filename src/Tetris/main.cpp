@@ -68,6 +68,11 @@ void main(void)
     		}
     	}
 
+    	if(g_bGlobalFlags[UPDATE_LEVEL]) {
+    		g_bGlobalFlags[UPDATE_LEVEL] = false;
+    		TetrisArena.UpdateLevel();
+    	}
+
     	if(g_bGlobalFlags[MOVE_LEFT]) {
 			g_bGlobalFlags[MOVE_LEFT] = false;
 

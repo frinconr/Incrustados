@@ -20,6 +20,7 @@ Arena::Arena() {
 	this->m_ScoreArea.yMax = MAX_HEIGHT;
 
 	this->m_u16Score = 0;
+	this->m_m8Level = 0;
 	this->m_bLost = false;
 
 	this->PaintArena();
@@ -43,6 +44,8 @@ void Arena::PaintArena(){
 	Graphics_fillRectangleOnDisplay(Arena::m_GraphicsContext->display, &l_ArenaBase, FILL_COLOR);
 
 	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"SCORE", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2, TRANSPARENT_TEXT);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *)"LEVEL", AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+40, TRANSPARENT_TEXT);
+
 	this->UpdateScore();
 	this->ClearMatrix();
 }
@@ -73,6 +76,14 @@ void Arena::UpdateScore(){
 	sprintf(string, "%d", m_u16Score);
 	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+8, OPAQUE_TEXT);
 }
+
+void Arena::UpdateLevel(){
+	m_m8Level++;
+	char string[8];
+	sprintf(string, "%d", m_m8Level);
+	Graphics_drawStringCentered(Arena::m_GraphicsContext,(int8_t *) string, AUTO_STRING_LENGTH, MAX_SCORE_X/2, MAX_HEIGHT/2+48, OPAQUE_TEXT);
+}
+
 
 void Arena::ClearMatrix(){
 	for(int i=0;i<NUM_X_SQUARES;i++){
