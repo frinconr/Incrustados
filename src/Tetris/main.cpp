@@ -18,6 +18,7 @@
 /* Global Variables */
 uint16_t g_u16GlobalTicks = 0;
 uint16_t g_u16LatenceSpeed;
+uint16_t g_u8DebouncingCounter = 0;
 
 /* ADC results buffer */
 static uint16_t g_u16ResultsBuffer[2];
@@ -104,9 +105,9 @@ void main(void)
 			CurrentSprite.Paint();
     	}
 
-    	if(g_bGlobalFlags[MOVE_DOWN]|| g_bGlobalFlags[MOVE_ALLDOWN]){
+    	if(g_bGlobalFlags[MOVE_DOWN]){
     		g_bGlobalFlags[MOVE_DOWN] = false;
-    		g_bGlobalFlags[MOVE_ALLDOWN] = false;
+
 
     		CurrentSprite.Delete();
 
@@ -123,6 +124,26 @@ void main(void)
     			CurrentSprite.Paint();
     		}
     	}
+
+    	if(g_bGlobalFlags[MOVE_ALLDOWN]) {
+    		g_bGlobalFlags[MOVE_ALLDOWN] = false;
+
+    		CurrentSprite.Delete();
+
+			if(TetrisArena.CheckCollision(&CurrentSprite)){
+				TetrisArena.PaintFromLine(TetrisArena.CheckRows());
+				if(TetrisArena.PlayerLost()){
+					TetrisArena.LostScreen();
+					break;
+				}else{
+					CurrentSprite = Sprite::Sprite();
+				}
+			}else{
+				CurrentSprite.MoveDownQuick();
+				CurrentSprite.Paint();
+			}
+    	}
+
     };
 }
 
@@ -156,7 +177,7 @@ void Setup(void)
 	// - Configure Timer32_1  with MCLK (3Mhz), Division by 1, Enable the interrupt, Periodic Mode
 	// - Enable the interrupt in the NVIC
 	// - Start the timer in UP mode.
-	ConfigTimer32(65530); // 30000 = 1ms
+	ConfigTimer32(3000); // 30000 = 1ms
 
 	// ****************************
 	//       CONFIG SCREEN
@@ -184,7 +205,7 @@ void Setup(void)
 	}
 
 	// Start Music
-	//InitMusicArray();
+	InitMusicArray();
 
 
 	g_u16LatenceSpeed = 150;
@@ -205,7 +226,7 @@ extern "C"
 {
 	/* Timer32 Interruption
 	 *
-	 * Sets the MOVE_DOWN FLAG
+	 * Sets the MOVE_DOWN FLAG depending on the LatenceSpeed.
 	 *
 	 */
 	void T32_INT1_IRQHandler(void)
@@ -227,6 +248,10 @@ extern "C"
 
 		// Change Note
 		ChangeNote();
+
+		if(g_u8DebouncingCounter > 0) {
+			g_u8DebouncingCounter--;
+		}
 
 		return;
 	}
@@ -257,11 +282,17 @@ extern "C"
 
 	void PORT5_IRQHandler(void){
 			P5->IFG &= ~BIT1;
-			g_bGlobalFlags[ROTATE_CLOCKWISE] = true;
+			if (g_u8DebouncingCounter == 0 ){
+				g_u8DebouncingCounter = DEBOUNCE_TIME;
+				g_bGlobalFlags[ROTATE_CLOCKWISE] = true;
+			}
 	}
 
 	void PORT3_IRQHandler(void){
 			P3->IFG &= ~BIT5;
-			g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE] = true;
+			if (g_u8DebouncingCounter == 0 ){
+				g_u8DebouncingCounter = DEBOUNCE_TIME;
+				g_bGlobalFlags[ROTATE_COUNTERCLOCKWISE] = true;
+			}
 	}
 }

@@ -235,7 +235,7 @@ void ConfigScreen(Graphics_Context* Context) {
 	/* Initializes graphics context */
 	Graphics_initContext(Context, &g_sCrystalfontz128x128);
 	Graphics_setForegroundColor(Context, FILL_COLOR);
-	Graphics_setBackgroundColor(Context, BACKGROUND_COLOR);
+	Graphics_setBackgroundColor(Context, GRAPHICS_COLOR_ORANGE);
 	GrContextFontSet(Context, &g_sFontFixed6x8);
 }
 

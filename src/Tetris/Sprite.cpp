@@ -176,6 +176,34 @@ void Sprite::MoveDown(){
 	}
 }
 
+/* MoveDownQuick
+ *
+ * This function moves the position of the segment block, down
+ * on a VERTICAL_JUMP number of pixels.
+ *
+ * It verifies that the movement doesn't overflow the screen.
+ *
+ */
+void Sprite::MoveDownQuick(){
+	// Boolean to see if we can move left
+	bool l_bCanBeMoved = true;
+
+	// Loop through segments to see if we can move
+	for(int i=0; i<NUM_BLOCKS; i++){
+		if(m_Blocks[i].Vertical - (m_Blocks[i].Vertical%SEGMENT_HEIGHT) + SEGMENT_HEIGHT > 120) {
+			l_bCanBeMoved = false;
+			break;
+		}
+	}
+
+	if(l_bCanBeMoved){
+		// Iterate through all segments and change position
+		for(int i=0; i<NUM_BLOCKS; i++){
+			m_Blocks[i].Vertical = m_Blocks[i].Vertical - (m_Blocks[i].Vertical%SEGMENT_HEIGHT) + SEGMENT_HEIGHT;
+		}
+	}
+}
+
 /* MoveRight
  *
  * This function moves the position of the segment block, right

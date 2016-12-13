@@ -28,8 +28,8 @@ typedef enum {
 
 // At Black - 144.
 typedef enum {
-	Black = 250,
-	Corchea = 125,
+	Black = 300,
+	Corchea = 150,
 } eNoteLength;
 
 struct tNote {
@@ -37,7 +37,7 @@ struct tNote {
    eNoteLength Value;		// Time of note
 };
 
-#define NUM_NOTES 9
+#define NUM_NOTES 15
 tNote* g_nSong = new tNote[NUM_NOTES];
 
 void InitMusicArray() {
@@ -63,7 +63,7 @@ void InitMusicArray() {
 
 	// Sixth note
 	g_nSong[5].Note = B_4;
-	g_nSong[5].Value = Black;
+	g_nSong[5].Value = Corchea;
 
 	// 7th
 	g_nSong[6].Note = A_4;
@@ -76,6 +76,31 @@ void InitMusicArray() {
 	// 9th
 	g_nSong[8].Note = E_5;
 	g_nSong[8].Value = Black;
+
+	// 10th
+	g_nSong[9].Note = D_5;
+	g_nSong[9].Value = Corchea;
+
+	// 11th
+	g_nSong[10].Note = C_5;
+	g_nSong[10].Value = Corchea;
+
+	// 12th
+	g_nSong[11].Note = B_4;
+	g_nSong[11].Value = Black;
+
+	//13
+	g_nSong[12].Note = E_5;
+	g_nSong[12].Value = Corchea;
+
+	//14
+	g_nSong[13].Note = E_5;
+	g_nSong[13].Value = Corchea;
+
+	// 15
+	g_nSong[14].Note = E_5;
+	g_nSong[14].Value = Black;
+
 
 	g_u16NextNoteIndex = 0;
 	g_u16NoteCountDown = g_nSong[g_u16NextNoteIndex].Value;

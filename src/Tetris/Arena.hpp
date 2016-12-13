@@ -49,7 +49,7 @@ private:
 	// Game Matrix
 	uint16_t m_u16GameMatrix[NUM_X_SQUARES][NUM_Y_SQUARES];
 	// Score
-	uint8_t m_u8Score;
+	uint16_t m_u16Score;
 	// Lost Boolean
 	bool m_bLost;
 	// Area of the Arena

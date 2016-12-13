@@ -281,6 +281,7 @@ public:
 
 	// Move Sprite
 	void MoveDown();
+	void MoveDownQuick();
 	void MoveRight();
 	void MoveLeft();
 
@@ -299,8 +300,6 @@ public:
 	// Sprite current orientation
 	eSpriteOrientation m_Orientation;
 private:
-
-
 	// Painting area
 	Graphics_Rectangle m_PaintArea;
 
