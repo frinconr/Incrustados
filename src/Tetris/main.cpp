@@ -238,7 +238,7 @@ extern "C"
 		uint16_t g_u16TimeToMove = g_u16GlobalTicks % g_u16LatenceSpeed;
 
 		if(g_u16GlobalTicks == 0){
-			g_u16LatenceSpeed = g_u16LatenceSpeed/2;
+			g_u16LatenceSpeed = g_u16LatenceSpeed/2 + 1;
 		}
 
 		// Check if we have to move down

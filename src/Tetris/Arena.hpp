@@ -36,8 +36,6 @@ public:
 
 	// Static Graphic Context
 	static Graphics_Context* m_GraphicsContext;
-	// 1-> Horizontal
-	// 0-> Vertical
 	bool CheckCollision(Sprite* i_CurrentSprite);
 	bool CheckHorizontalCollision(Sprite* i_CurrentSprite,eGlobalFlags i_Direction);
 	void PaintFromLine(uint8_t i_Row);

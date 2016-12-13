@@ -8,6 +8,14 @@
 
 #include <Arena.hpp>
 
+/* Arena Constructor
+ *
+ * It creates an Arena instance. Initializes the arena area
+ * and the score area for painting. Also resets the score,
+ * lost condition and matrix values to background color.
+ *
+ */
+
 Arena::Arena() {
 
 	this->m_ArenaArea.xMin = MIN_ARENA_X;
