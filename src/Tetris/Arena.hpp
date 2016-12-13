@@ -47,12 +47,13 @@ public:
 	bool PlayerLost();
 	// Paints the lost screen
 	void LostScreen();
-
+	void UpdateLevel();
 private:
 	// Game Matrix
 	uint16_t m_u16GameMatrix[NUM_X_SQUARES][NUM_Y_SQUARES];
 	// Score
 	uint16_t m_u16Score;
+	uint8_t m_m8Level;
 	// Lost Boolean
 	bool m_bLost;
 	// Area of the Arena

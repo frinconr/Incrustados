@@ -79,6 +79,7 @@ typedef enum {
 	CHANGE_SPRITE,
 	CHANGE_NOTE,
 	MOVE_ALLDOWN,
+	UPDATE_LEVEL,
 	// Total flag count
 	NUM_FLAGS
 } eGlobalFlags;
