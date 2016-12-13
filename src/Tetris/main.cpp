@@ -57,10 +57,6 @@ void main(void)
     while(1){
     	__wfe();
 
-    	if(g_bGlobalFlags[CHANGE_NOTE]){
-			ChangeNote();
-		}
-
     	if(g_bGlobalFlags[MOVE_RIGHT]) {
     		g_bGlobalFlags[MOVE_RIGHT] = false;
 
@@ -218,7 +214,7 @@ extern "C"
 			g_bGlobalFlags[MOVE_DOWN] = true;
 
 		// Change Note
-		g_bGlobalFlags[CHANGE_NOTE] = true;
+		ChangeNote();
 
 		return;
 	}
