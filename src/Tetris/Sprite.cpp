@@ -533,7 +533,7 @@ void Sprite::SetOrientationEast(Point i_Point) {
 			m_Blocks[2].Vertical = i_Point.Vertical;
 
 			// Fourth block, right-most segment
-			m_Blocks[3].Horizontal = i_Point.Horizontal -+ SEGMENT_WIDTH;
+			m_Blocks[3].Horizontal = i_Point.Horizontal + SEGMENT_WIDTH;
 			m_Blocks[3].Vertical = i_Point.Vertical;
 
 			break;

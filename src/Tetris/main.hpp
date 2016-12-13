@@ -30,6 +30,7 @@ extern "C"
 #include "Definitions.hpp"
 #include "hardware.hpp"
 #include "Sprite.hpp"
+#include "Music.hpp"
 
 void Setup(void);
 

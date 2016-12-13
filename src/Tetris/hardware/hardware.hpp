@@ -33,6 +33,8 @@ void ConfigTimerA();
 void ConfigScreen(Graphics_Context*);
 void ConfigADC14();
 void ChangeScreenOrientation(bool);
-
+extern "C" {
+	void ConfigBuzzer(uint16_t i_u16Period);
+}
 
 #endif /* HARDWARE_HPP_ */
