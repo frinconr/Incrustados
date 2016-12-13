@@ -182,7 +182,8 @@ void Setup(void)
 	// Start Music
 	//InitMusicArray();
 
-	g_u16LatenceSpeed = 200;
+	g_u16LatenceSpeed = 1200;
+
 
 	// ****************************
 	// Initialize global flags
@@ -206,11 +207,13 @@ extern "C"
 		TIMER32_1->INTCLR = 0U;
 		P1->OUT ^= BIT0;
 
-		g_u16GlobalTicks += g_u16GlobalTicks % g_u16LatenceSpeed;
+		g_u16GlobalTicks = (g_u16GlobalTicks+1) % g_u16LatenceSpeed;
 		if(g_u16GlobalTicks == 0)
 			g_bGlobalFlags[MOVE_DOWN] = true;
 
+		// Change Note
 		//ChangeNote();
+
 		return;
 	}
 
